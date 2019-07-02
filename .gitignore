@@ -1,0 +1,6 @@
+*.log
+*.temp
+*.iml
+/target/
+/.idea/
+*project.properties

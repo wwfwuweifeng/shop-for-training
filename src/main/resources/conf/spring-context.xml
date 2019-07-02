@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task" xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd"
+       default-lazy-init="true">
+
+    <!-- 加载配置属性文件 -->
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:/project.properties" />
+
+    <!-- 使用Annotation自动注册Bean，在主容器中不扫描@Controller注解 -->
+    <context:component-scan base-package="top.wwf"><!-- base-package 如果多个，用“,”分隔 -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <!-- 如果只针对使用了特定注解的bean进行注册，则将下面配置项目加上-->
+        <!--<context:exclude-filter type="annotation" expression="特定注解类"/>-->
+    </context:component-scan>
+
+
+     <!-- mybatis配置 -->
+    <import resource="spring-mybatis.xml"/>
+
+    <!-- 配置 JSR303 Bean Validator 定义 ，用于校验，用到时自己查阅-->
+    <!--<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />-->
+
+    <import resource="spring-jedis.xml"/>
+
+    <!-- 在此配置中，只扫描@Controller注解 -->
+    <import resource="springmvc-context.xml"/>
+
+
+
+</beans>
