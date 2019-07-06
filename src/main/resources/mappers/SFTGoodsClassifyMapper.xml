@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.wwf.modules.goods.dao.SFTGoodsClassifyMapper" >
+  <resultMap id="BaseResultMap" type="top.wwf.modules.goods.entity.SFTGoodsClassify" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="parent_classify_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="classify_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cover_image" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parent_classify_id, classify_name, cover_image, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from stf_goods_classify
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from stf_goods_classify
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
+    insert into stf_goods_classify (id, parent_classify_id, classify_name, 
+      cover_image, create_time)
+    values (#{id,jdbcType=BIGINT}, #{parentClassifyId,jdbcType=BIGINT}, #{classifyName,jdbcType=VARCHAR}, 
+      #{coverImage,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
+    insert into stf_goods_classify
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentClassifyId != null" >
+        parent_classify_id,
+      </if>
+      <if test="classifyName != null" >
+        classify_name,
+      </if>
+      <if test="coverImage != null" >
+        cover_image,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="parentClassifyId != null" >
+        #{parentClassifyId,jdbcType=BIGINT},
+      </if>
+      <if test="classifyName != null" >
+        #{classifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImage != null" >
+        #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
+    update stf_goods_classify
+    <set >
+      <if test="parentClassifyId != null" >
+        parent_classify_id = #{parentClassifyId,jdbcType=BIGINT},
+      </if>
+      <if test="classifyName != null" >
+        classify_name = #{classifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImage != null" >
+        cover_image = #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
+    update stf_goods_classify
+    set parent_classify_id = #{parentClassifyId,jdbcType=BIGINT},
+      classify_name = #{classifyName,jdbcType=VARCHAR},
+      cover_image = #{coverImage,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

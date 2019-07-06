@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.wwf.modules.user.dao.SFTUserPersonalInfoMapper" >
+  <resultMap id="BaseResultMap" type="top.wwf.modules.user.entity.SFTUserPersonalInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="wx_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_sex" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="receiver_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="receiver_tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="receiver_address_simple" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="receiver_address_detail" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="have_receiver_address" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, wx_name, user_sex, user_email, user_tel, receiver_name, receiver_tel, 
+    receiver_address_simple, receiver_address_detail, have_receiver_address, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sft_user_personal_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sft_user_personal_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.wwf.modules.user.entity.SFTUserPersonalInfo" >
+    insert into sft_user_personal_info (id, user_id, wx_name, 
+      user_sex, user_email, user_tel, 
+      receiver_name, receiver_tel, receiver_address_simple, 
+      receiver_address_detail, have_receiver_address, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{wxName,jdbcType=VARCHAR}, 
+      #{userSex,jdbcType=INTEGER}, #{userEmail,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR}, 
+      #{receiverName,jdbcType=VARCHAR}, #{receiverTel,jdbcType=VARCHAR}, #{receiverAddressSimple,jdbcType=VARCHAR}, 
+      #{receiverAddressDetail,jdbcType=VARCHAR}, #{haveReceiverAddress,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="top.wwf.modules.user.entity.SFTUserPersonalInfo" >
+    insert into sft_user_personal_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="wxName != null" >
+        wx_name,
+      </if>
+      <if test="userSex != null" >
+        user_sex,
+      </if>
+      <if test="userEmail != null" >
+        user_email,
+      </if>
+      <if test="userTel != null" >
+        user_tel,
+      </if>
+      <if test="receiverName != null" >
+        receiver_name,
+      </if>
+      <if test="receiverTel != null" >
+        receiver_tel,
+      </if>
+      <if test="receiverAddressSimple != null" >
+        receiver_address_simple,
+      </if>
+      <if test="receiverAddressDetail != null" >
+        receiver_address_detail,
+      </if>
+      <if test="haveReceiverAddress != null" >
+        have_receiver_address,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="wxName != null" >
+        #{wxName,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverTel != null" >
+        #{receiverTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddressSimple != null" >
+        #{receiverAddressSimple,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddressDetail != null" >
+        #{receiverAddressDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="haveReceiverAddress != null" >
+        #{haveReceiverAddress,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.user.entity.SFTUserPersonalInfo" >
+    update sft_user_personal_info
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="wxName != null" >
+        wx_name = #{wxName,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userEmail != null" >
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null" >
+        user_tel = #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverName != null" >
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverTel != null" >
+        receiver_tel = #{receiverTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddressSimple != null" >
+        receiver_address_simple = #{receiverAddressSimple,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddressDetail != null" >
+        receiver_address_detail = #{receiverAddressDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="haveReceiverAddress != null" >
+        have_receiver_address = #{haveReceiverAddress,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.user.entity.SFTUserPersonalInfo" >
+    update sft_user_personal_info
+    set user_id = #{userId,jdbcType=VARCHAR},
+      wx_name = #{wxName,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=INTEGER},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_tel = #{userTel,jdbcType=VARCHAR},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_tel = #{receiverTel,jdbcType=VARCHAR},
+      receiver_address_simple = #{receiverAddressSimple,jdbcType=VARCHAR},
+      receiver_address_detail = #{receiverAddressDetail,jdbcType=VARCHAR},
+      have_receiver_address = #{haveReceiverAddress,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

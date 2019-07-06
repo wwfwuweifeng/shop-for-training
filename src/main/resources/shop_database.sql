@@ -1,3 +1,4 @@
+drop database shop_for_trainning;
 create database if not exists shop_for_trainning;
 use shop_for_trainning;
 create table if not exists sft_user_sys_info(
@@ -32,7 +33,7 @@ create table if not exists sft_user_personal_info(
   update_time timestamp not null default current_timestamp on update current_timestamp
 );
 
-create table if not exists stf_goods_classify(
+create table if not exists sft_goods_classify(
   id bigint(20) unsigned auto_increment primary key ,
   parent_classify_id bigint(20) default 0 comment '若无父节点，则为0，一级节点由人工手动添加到数据库中，目前只提供二级分类',
   classify_name varchar(12) not null comment '分类名,一级节点不超过3字，2级节点不超过5字',
@@ -40,7 +41,7 @@ create table if not exists stf_goods_classify(
   create_time timestamp not null default current_timestamp
 );
 
-create table if not exists stf_goods(
+create table if not exists sft_goods(
   id bigint(20) unsigned auto_increment primary key ,
   goods_id varchar(50) not null comment '唯一标识',
   name varchar(60) not null comment '商品名称，不超过25字',
@@ -62,7 +63,7 @@ create table if not exists stf_goods(
   update_time timestamp not null default current_timestamp on update current_timestamp
 );
 
-create table if not exists stf_goods_param(
+create table if not exists sft_goods_param(
   id bigint(20) unsigned auto_increment primary key ,
   goods_id varchar(50) not null,
   param_name varchar(25) not null comment '参数名，不超过10字',
@@ -70,7 +71,7 @@ create table if not exists stf_goods_param(
   create_time timestamp not null default current_timestamp
 );
 
-create table if not exists stf_order(
+create table if not exists sft_order(
   id bigint(20) unsigned auto_increment primary key ,
   order_id varchar(20) not null comment '订单编号,长度为15位',
   user_id varchar(50) not null ,
@@ -86,7 +87,7 @@ create table if not exists stf_order(
   update_time timestamp not null default current_timestamp on update current_timestamp
 );
 
-create table if not exists stf_order_operate_log(
+create table if not exists sft_order_operate_log(
   id bigint(20) unsigned auto_increment primary key ,
   order_id varchar(20) not null ,
   goods_id varchar(50) not null ,
@@ -99,9 +100,18 @@ create table if not exists stf_order_operate_log(
   create_time timestamp not null default current_timestamp
 );
 
-create table if not exists stf_order_operate_log(
+create table if not exists sft_order_operate_log(
   id bigint(20) unsigned auto_increment primary key ,
   order_id varchar(20)not null ,
   operate_time timestamp not null default current_timestamp,
   operate_type varchar(255) not null comment '操作类型'
 );
+
+create table if not exists sft_cart(
+  id bigint(20) unsigned auto_increment primary key ,
+  user_id varchar(50) not null ,
+  goods_id varchar(50) not null ,
+  checked int default 0 comment '该字段不与前端数据同步，后期考虑是否使用微信小程序自带的本地缓存',
+  num int default 1 comment '添加数量，该字段也不与前端数据同步，考虑是否使用本地缓存',
+  create_time timestamp not null default current_timestamp
+)

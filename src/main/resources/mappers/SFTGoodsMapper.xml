@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.wwf.modules.goods.dao.SFTGoodsMapper" >
+  <resultMap id="BaseResultMap" type="top.wwf.modules.goods.entity.SFToods" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="goods_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="classify_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="classify_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cover_image" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="remain_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sell_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_owner_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="detail" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="price" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_sell_by_shop" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_sell_by_manager" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goods_id, name, classify_id, classify_name, cover_image, remain_num, sell_num, 
+    shop_id, shop_name, shop_owner_id, tag, detail, price, state, is_sell_by_shop, is_sell_by_manager, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from stf_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from stf_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFToods" >
+    insert into stf_goods (id, goods_id, name, 
+      classify_id, classify_name, cover_image, 
+      remain_num, sell_num, shop_id, 
+      shop_name, shop_owner_id, tag, 
+      detail, price, state, 
+      is_sell_by_shop, is_sell_by_manager, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{classifyId,jdbcType=BIGINT}, #{classifyName,jdbcType=VARCHAR}, #{coverImage,jdbcType=VARCHAR}, 
+      #{remainNum,jdbcType=INTEGER}, #{sellNum,jdbcType=INTEGER}, #{shopId,jdbcType=VARCHAR}, 
+      #{shopName,jdbcType=VARCHAR}, #{shopOwnerId,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{isSellByShop,jdbcType=INTEGER}, #{isSellByManager,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFToods" >
+    insert into stf_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="classifyId != null" >
+        classify_id,
+      </if>
+      <if test="classifyName != null" >
+        classify_name,
+      </if>
+      <if test="coverImage != null" >
+        cover_image,
+      </if>
+      <if test="remainNum != null" >
+        remain_num,
+      </if>
+      <if test="sellNum != null" >
+        sell_num,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="shopOwnerId != null" >
+        shop_owner_id,
+      </if>
+      <if test="tag != null" >
+        tag,
+      </if>
+      <if test="detail != null" >
+        detail,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="isSellByShop != null" >
+        is_sell_by_shop,
+      </if>
+      <if test="isSellByManager != null" >
+        is_sell_by_manager,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyId != null" >
+        #{classifyId,jdbcType=BIGINT},
+      </if>
+      <if test="classifyName != null" >
+        #{classifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImage != null" >
+        #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="remainNum != null" >
+        #{remainNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellNum != null" >
+        #{sellNum,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopOwnerId != null" >
+        #{shopOwnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isSellByShop != null" >
+        #{isSellByShop,jdbcType=INTEGER},
+      </if>
+      <if test="isSellByManager != null" >
+        #{isSellByManager,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.goods.entity.SFToods" >
+    update stf_goods
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyId != null" >
+        classify_id = #{classifyId,jdbcType=BIGINT},
+      </if>
+      <if test="classifyName != null" >
+        classify_name = #{classifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImage != null" >
+        cover_image = #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="remainNum != null" >
+        remain_num = #{remainNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellNum != null" >
+        sell_num = #{sellNum,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopOwnerId != null" >
+        shop_owner_id = #{shopOwnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isSellByShop != null" >
+        is_sell_by_shop = #{isSellByShop,jdbcType=INTEGER},
+      </if>
+      <if test="isSellByManager != null" >
+        is_sell_by_manager = #{isSellByManager,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFToods" >
+    update stf_goods
+    set goods_id = #{goodsId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      classify_id = #{classifyId,jdbcType=BIGINT},
+      classify_name = #{classifyName,jdbcType=VARCHAR},
+      cover_image = #{coverImage,jdbcType=VARCHAR},
+      remain_num = #{remainNum,jdbcType=INTEGER},
+      sell_num = #{sellNum,jdbcType=INTEGER},
+      shop_id = #{shopId,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      shop_owner_id = #{shopOwnerId,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      is_sell_by_shop = #{isSellByShop,jdbcType=INTEGER},
+      is_sell_by_manager = #{isSellByManager,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

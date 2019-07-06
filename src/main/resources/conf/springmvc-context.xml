@@ -39,14 +39,14 @@
         </mvc:interceptor>
 
         <!--登陆拦截器-->
-        <mvc:interceptor>
-            <mvc:mapping path="/user/**" />
-            <mvc:mapping path="/contract/**" />
-            <mvc:mapping path="/template/**" />
-            <mvc:exclude-mapping path="/user/login"/>
-            <!--<mvc:exclude-mapping path="/web/**"/>-->
-            <bean class="top.wwf.common.inteceptor.LoginInteceptor" />
-        </mvc:interceptor>
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/user/**" />-->
+            <!--<mvc:mapping path="/contract/**" />-->
+            <!--<mvc:mapping path="/template/**" />-->
+            <!--<mvc:exclude-mapping path="/user/login"/>-->
+            <!--&lt;!&ndash;<mvc:exclude-mapping path="/web/**"/>&ndash;&gt;-->
+            <!--<bean class="top.wwf.common.inteceptor.LoginInteceptor" />-->
+        <!--</mvc:interceptor>-->
 
     </mvc:interceptors>
 

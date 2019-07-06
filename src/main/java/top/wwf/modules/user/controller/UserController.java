@@ -22,39 +22,39 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @ResponseBody
-    @RequestMapping(value = "/login")
-    public ServerResponse login(String code){
-        LoginResultVO result =userService.loginServer(code);
-        return ServerResponse.create(result);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/detailedInfo")
-    public ServerResponse getUserDetailedInfo(String wxName){
-        MySession session    =MySession.getInstance();
-        String    userOpenId = session.getUserOpenId();
-        UserDetailedInfoVO result=userService.getUserDetailedInfo(userOpenId,wxName);
-        return ServerResponse.create(result);
-    }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/editUserInfo")
-    public ServerResponse editUserInfo(UserDetailedInfoVO userDetailedInfoVO){
-        MySession session=MySession.getInstance();
-        String userOpenId=session.getUserOpenId();
-        UserDetailedInfoVO result=userService.editUserInfo(userOpenId,userDetailedInfoVO);
-        return ServerResponse.create(result);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/contractUserInfo")
-    public ServerResponse getDetailedInfoByContractIdAndRole(String contractId,int role){
-        MySession session=MySession.getInstance();
-        String userOpenId=session.getUserOpenId();
-        UserDetailedInfoVO result=userService.getDetailedInfoByContractIdAndRole(userOpenId,contractId,role);
-        return ServerResponse.create(result);
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/login")
+//    public ServerResponse login(String code){
+//        LoginResultVO result =userService.loginServer(code);
+//        return ServerResponse.create(result);
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/detailedInfo")
+//    public ServerResponse getUserDetailedInfo(String wxName){
+//        MySession session    =MySession.getInstance();
+//        String    userOpenId = session.getUserOpenId();
+//        UserDetailedInfoVO result=userService.getUserDetailedInfo(userOpenId,wxName);
+//        return ServerResponse.create(result);
+//    }
+//
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/editUserInfo")
+//    public ServerResponse editUserInfo(UserDetailedInfoVO userDetailedInfoVO){
+//        MySession session=MySession.getInstance();
+//        String userOpenId=session.getUserOpenId();
+//        UserDetailedInfoVO result=userService.editUserInfo(userOpenId,userDetailedInfoVO);
+//        return ServerResponse.create(result);
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/contractUserInfo")
+//    public ServerResponse getDetailedInfoByContractIdAndRole(String contractId,int role){
+//        MySession session=MySession.getInstance();
+//        String userOpenId=session.getUserOpenId();
+//        UserDetailedInfoVO result=userService.getDetailedInfoByContractIdAndRole(userOpenId,contractId,role);
+//        return ServerResponse.create(result);
+//    }
 
 }
