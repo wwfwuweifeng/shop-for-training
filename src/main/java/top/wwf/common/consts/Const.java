@@ -1,17 +1,17 @@
 package top.wwf.common.consts;
 
 
+
 import top.wwf.common.base.GlobalConfig;
 import top.wwf.common.base.MySession;
 import top.wwf.common.exception.MyException;
 import top.wwf.common.utils.MyFileUtils;
-
 import java.io.File;
 
 /**
-* @Description:    常量定义
+* @Description:    TODO
 * @Author:         wwf（hitwh_wwf@163.com）
-* @CreateDate:     2019/1/17 17:49
+* @CreateDate:     2019-07-05 10:41
 */
 public class Const {
 
@@ -57,37 +57,66 @@ public class Const {
     }
 
     /**
+     * 用户权限
+     * 因为涉及权限较简单，此处直接将权限硬编码至代码中
+     */
+    public enum POWER{
+        BUY(1,"购买"),
+        SELL(3,"出售"),
+        MANAGE(3,"管理");
+        private int key;
+        private String desc;
+
+        POWER(int key, String desc) {
+            this.key = key;
+            this.desc = desc;
+        }
+    }
+
+    /**
      * 用户的身份
      */
     public enum  USER_ROLE{
-        PART_A(1,"甲方"),
-        PART_B(2,"乙方"),
-        PART_C(3,"第三方");
-        private int key;
-        private String role;
+        BUYER(1,"买家",POWER.BUY),
+        SELLER(2,"卖家",POWER.BUY,POWER.SELL),
+        MANAGER(3,"管理员",POWER.BUY,POWER.SELL,POWER.MANAGE);
+        private int    key;
+        private String desc;
+        private POWER[] powers;
 
-        USER_ROLE(int key, String role) {
+        USER_ROLE(int key, String desc,POWER... powers) {
             this.key=key;
-            this.role=role;
+            this.desc = desc;
+            this.powers=powers;
         }
 
         public int getKey() {
             return key;
         }
 
-        public String getRole() {
-            return role;
+        public String getDesc() {
+            return desc;
         }
 
-        public static String getRoleByKey(int key){
+        //是否拥有某权限
+        public boolean hasPower(POWER power){
+            for (POWER myPower:this.powers){
+                if (myPower==power)return true;
+            }
+            return false;
+        }
+
+        //获取用户身份
+        public static USER_ROLE getRoleByKey(int key){
             for (USER_ROLE  userRole:USER_ROLE.values()){
                 if (userRole.getKey()==key){
-                    return userRole.getRole();
+                    return userRole;
                 }
             }
             throw new MyException(HttpResponseEnum.PROHIBIT,"参数非法");
         }
     }
+
 
 
     /**
@@ -130,5 +159,36 @@ public class Const {
         }
     }
 
+    public enum GOODS_STATE{
+        ON_SALE(1,"在售"),
+        SELL_OUT(2,"已售完"),
+        LOWER_SHELF(3,"下架"),
+        WAIT_APPROVE(4,"待审批"),
+        APPROVE_FAIL(5,"审批失败");
+
+        private int key;
+        private String desc;
+
+        GOODS_STATE(int key, String desc) {
+            this.key = key;
+            this.desc = desc;
+        }
+        public int getKey() {
+            return key;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public static String getDescByKey(int key){
+            for (GOODS_STATE goodsState:GOODS_STATE.values()){
+                if (key==goodsState.getKey()){
+                    return goodsState.getDesc();
+                }
+            }
+            throw new MyException(HttpResponseEnum.PROHIBIT,"参数非法");
+        }
+    }
 
 }
