@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import top.wwf.modules.order.dao.SFTOrderMapper;
 import top.wwf.modules.order.dao.SFTOrderOperateLogMapper;
+import top.wwf.modules.order.dao.SFTOrderPayMapper;
 
 /**
 * @Description:    TODO
@@ -16,5 +17,7 @@ public class OrderDao {
     private SFTOrderMapper           orderMapper;
     @Autowired
     private SFTOrderOperateLogMapper orderOperateLogMapper;
+    @Autowired
+    private SFTOrderPayMapper orderPayMapper;
 
 }

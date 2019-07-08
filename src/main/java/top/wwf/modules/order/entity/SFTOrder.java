@@ -7,6 +7,8 @@ public class SFTOrder {
 
     private String orderId;
 
+    private String cartNum;
+
     private String userId;
 
     private String shopId;
@@ -16,6 +18,8 @@ public class SFTOrder {
     private Integer orderTotalMoney;
 
     private Integer state;
+
+    private String payId;
 
     private Date createTime;
 
@@ -29,14 +33,16 @@ public class SFTOrder {
 
     private Date updateTime;
 
-    public SFTOrder(Long id, String orderId, String userId, String shopId, String shopName, Integer orderTotalMoney, Integer state, Date createTime, String payTime, String sendTime, String dealTime, String expressNum, Date updateTime) {
+    public SFTOrder(Long id, String orderId, String cartNum, String userId, String shopId, String shopName, Integer orderTotalMoney, Integer state, String payId, Date createTime, String payTime, String sendTime, String dealTime, String expressNum, Date updateTime) {
         this.id = id;
         this.orderId = orderId;
+        this.cartNum = cartNum;
         this.userId = userId;
         this.shopId = shopId;
         this.shopName = shopName;
         this.orderTotalMoney = orderTotalMoney;
         this.state = state;
+        this.payId = payId;
         this.createTime = createTime;
         this.payTime = payTime;
         this.sendTime = sendTime;
@@ -63,6 +69,14 @@ public class SFTOrder {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    public String getCartNum() {
+        return cartNum;
+    }
+
+    public void setCartNum(String cartNum) {
+        this.cartNum = cartNum == null ? null : cartNum.trim();
     }
 
     public String getUserId() {
@@ -103,6 +117,14 @@ public class SFTOrder {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getPayId() {
+        return payId;
+    }
+
+    public void setPayId(String payId) {
+        this.payId = payId == null ? null : payId.trim();
     }
 
     public Date getCreateTime() {

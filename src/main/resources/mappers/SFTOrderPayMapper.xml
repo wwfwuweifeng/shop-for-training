@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.wwf.modules.order.dao.SFTOrderPayMapper" >
+  <resultMap id="BaseResultMap" type="top.wwf.modules.order.entity.SFTOrderPay" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="pay_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cart_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pay_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_total_price" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_actual_pay" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pay_id, order_id, cart_num, user_id, pay_type, order_total_price, order_actual_pay, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sft_order_pay
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sft_order_pay
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
+    insert into sft_order_pay (id, pay_id, order_id, 
+      cart_num, user_id, pay_type, 
+      order_total_price, order_actual_pay, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{payId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{cartNum,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
+      #{orderTotalPrice,jdbcType=INTEGER}, #{orderActualPay,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
+    insert into sft_order_pay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="payId != null" >
+        pay_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="cartNum != null" >
+        cart_num,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="orderTotalPrice != null" >
+        order_total_price,
+      </if>
+      <if test="orderActualPay != null" >
+        order_actual_pay,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="payId != null" >
+        #{payId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="cartNum != null" >
+        #{cartNum,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="orderTotalPrice != null" >
+        #{orderTotalPrice,jdbcType=INTEGER},
+      </if>
+      <if test="orderActualPay != null" >
+        #{orderActualPay,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
+    update sft_order_pay
+    <set >
+      <if test="payId != null" >
+        pay_id = #{payId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="cartNum != null" >
+        cart_num = #{cartNum,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="orderTotalPrice != null" >
+        order_total_price = #{orderTotalPrice,jdbcType=INTEGER},
+      </if>
+      <if test="orderActualPay != null" >
+        order_actual_pay = #{orderActualPay,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
+    update sft_order_pay
+    set pay_id = #{payId,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      cart_num = #{cartNum,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      order_total_price = #{orderTotalPrice,jdbcType=INTEGER},
+      order_actual_pay = #{orderActualPay,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -20,7 +20,7 @@ create table if not exists sft_user_sys_info(
 create table if not exists sft_user_personal_info(
   id bigint(20) unsigned auto_increment primary key ,
   user_id varchar(50) comment '用户在本平台的唯一标识',
-  wx_name varchar(255),
+  wx_name varchar(255) comment '暂时不使用',
   user_sex int comment '用户性别：1 男；2女',
   user_email varchar(255) comment '用户邮箱',
   user_tel varchar(20) comment '用户电话',
@@ -74,11 +74,13 @@ create table if not exists sft_goods_param(
 create table if not exists sft_order(
   id bigint(20) unsigned auto_increment primary key ,
   order_id varchar(20) not null comment '订单编号,长度为15位',
+  cart_num varchar(50) default '' comment '通过购物车提交的订单，才拥有的字段，表示同一批次购物车编号',
   user_id varchar(50) not null ,
   shop_id varchar(50) not null ,
   shop_name varchar(50) not null ,
   order_total_money int default 0 not null comment '订单总额，单位分',
   state int not null comment '订单状态',
+  pay_id varchar(50) not null comment '付款编号，一个订单对应一个付款编号',
   create_time timestamp not null default current_timestamp,
   pay_time varchar(50) default '暂无数据' not null comment '付款时间',
   send_time varchar(50) default '暂无数据' not null comment '发货时间',
@@ -113,5 +115,17 @@ create table if not exists sft_cart(
   goods_id varchar(50) not null ,
   checked int default 0 comment '该字段不与前端数据同步，后期考虑是否使用微信小程序自带的本地缓存',
   num int default 1 comment '添加数量，该字段也不与前端数据同步，考虑是否使用本地缓存',
+  create_time timestamp not null default current_timestamp
+);
+
+create table if not exists sft_order_pay(
+  id bigint(20) unsigned auto_increment primary key ,
+  pay_id varchar(50) not null comment '付款编号，一个订单对应一个付款编号',
+  order_id varchar(20) not null comment '订单编号,长度为15位',
+  cart_num varchar(50) default '' comment '通过购物车提交的订单，才拥有的字段，表示同一批次购物车编号',
+  user_id varchar(50) not null ,
+  pay_type int default 0 comment '付款方式，该字段暂不使用，有时间再考虑',
+  order_total_price int not null default 0 comment '订单总金额，单位分',
+  order_actual_pay int not null default 0 comment '订单实际付款金额，单位分',
   create_time timestamp not null default current_timestamp
 )

@@ -5,11 +5,13 @@
     <constructor >
       <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="order_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cart_num" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="order_total_money" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pay_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="pay_time" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="send_time" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -19,39 +21,44 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, user_id, shop_id, shop_name, order_total_money, state, create_time, 
-    pay_time, send_time, deal_time, express_num, update_time
+    id, order_id, cart_num, user_id, shop_id, shop_name, order_total_money, state, pay_id, 
+    create_time, pay_time, send_time, deal_time, express_num, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from stf_order
+    from sft_order
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from stf_order
+    delete from sft_order
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="top.wwf.modules.order.entity.SFTOrder" >
-    insert into stf_order (id, order_id, user_id, 
-      shop_id, shop_name, order_total_money, 
-      state, create_time, pay_time, 
-      send_time, deal_time, express_num, 
-      update_time)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
-      #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{orderTotalMoney,jdbcType=INTEGER}, 
-      #{state,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=VARCHAR}, 
-      #{sendTime,jdbcType=VARCHAR}, #{dealTime,jdbcType=VARCHAR}, #{expressNum,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into sft_order (id, order_id, cart_num, 
+      user_id, shop_id, shop_name, 
+      order_total_money, state, pay_id, 
+      create_time, pay_time, send_time, 
+      deal_time, express_num, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{cartNum,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
+      #{orderTotalMoney,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{payId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=VARCHAR}, #{sendTime,jdbcType=VARCHAR}, 
+      #{dealTime,jdbcType=VARCHAR}, #{expressNum,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrder" >
-    insert into stf_order
+    insert into sft_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
       <if test="orderId != null" >
         order_id,
+      </if>
+      <if test="cartNum != null" >
+        cart_num,
       </if>
       <if test="userId != null" >
         user_id,
@@ -67,6 +74,9 @@
       </if>
       <if test="state != null" >
         state,
+      </if>
+      <if test="payId != null" >
+        pay_id,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -94,6 +104,9 @@
       <if test="orderId != null" >
         #{orderId,jdbcType=VARCHAR},
       </if>
+      <if test="cartNum != null" >
+        #{cartNum,jdbcType=VARCHAR},
+      </if>
       <if test="userId != null" >
         #{userId,jdbcType=VARCHAR},
       </if>
@@ -108,6 +121,9 @@
       </if>
       <if test="state != null" >
         #{state,jdbcType=INTEGER},
+      </if>
+      <if test="payId != null" >
+        #{payId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -130,10 +146,13 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrder" >
-    update stf_order
+    update sft_order
     <set >
       <if test="orderId != null" >
         order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="cartNum != null" >
+        cart_num = #{cartNum,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
         user_id = #{userId,jdbcType=VARCHAR},
@@ -149,6 +168,9 @@
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="payId != null" >
+        pay_id = #{payId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -172,13 +194,15 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrder" >
-    update stf_order
+    update sft_order
     set order_id = #{orderId,jdbcType=VARCHAR},
+      cart_num = #{cartNum,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},
       shop_name = #{shopName,jdbcType=VARCHAR},
       order_total_money = #{orderTotalMoney,jdbcType=INTEGER},
       state = #{state,jdbcType=INTEGER},
+      pay_id = #{payId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       pay_time = #{payTime,jdbcType=VARCHAR},
       send_time = #{sendTime,jdbcType=VARCHAR},
