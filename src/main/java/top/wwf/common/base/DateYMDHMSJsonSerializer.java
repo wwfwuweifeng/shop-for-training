@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateYMDHMSJsonSerializer extends JsonSerializer<Date> {
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat(Const.DATE_FORMAT);
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat(Const.DATE_FORMAT);
     @Override
     public void serialize(Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         try {

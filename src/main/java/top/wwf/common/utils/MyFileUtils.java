@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import top.wwf.common.base.GlobalConfig;
-import top.wwf.common.consts.Const;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.exception.MyException;
 
@@ -128,69 +127,7 @@ public class MyFileUtils {
         return builder.toString();
     }
 
-    /**
-     * 判断文件是否是docx类型
-     * @param src 文件的字节数组
-     * @return
-     */
-    public static boolean isDocxFile(byte[] src){
-        byte[] fileHeaderByte=null;
-        if (src.length==4){
-            fileHeaderByte=src;
-        }else {
-            fileHeaderByte=new byte[4];
-            System.arraycopy(src,0,fileHeaderByte,0,4);
-        }
-        String fileHeaderValue=bytesToHexString(fileHeaderByte);
-        return Const.DOCX_FILE_HEADER.equals(fileHeaderValue);
-    }
 
-    /**
-     * 判断文件是否是docx类型
-     * @param file 服务器接收到的文件
-     * @return
-     */
-    public static boolean isDocxFile(MultipartFile file){
-        InputStream inputStream=null;
-        byte[] b = new byte[4];
-        try {
-            inputStream=file.getInputStream();
-            inputStream.read(b, 0, b.length);
-        }catch (Exception e){
-            logger.error("判断上传文件：{} 的类型时发生异常，异常原因：",file.getOriginalFilename(),e);
-            throw new MyException(HttpResponseEnum.INTERNAL_SERVER_ERROR);
-        }finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-        return isDocxFile(b);
-    }
-
-    /**
-     * 判断文件是否是docx类型
-     * @param filePath  文件的路径
-     * @return
-     */
-    public static boolean isDocxFile(String filePath){
-
-        File file=new File(filePath);
-        if (!file.isFile()){
-            logger.info("文件:{} 不是docx文件");
-            return false;
-        }
-
-        FileInputStream is = null;
-        try {
-            is = new FileInputStream(file);
-            byte[] b = new byte[4];
-            is.read(b, 0, b.length);
-            return isDocxFile(b);
-        }catch(Exception e) {
-            logger.error("判断文件：{}的类型时，发生错误，错误原因：{}", filePath, e);
-            throw new MyException(HttpResponseEnum.INTERNAL_SERVER_ERROR);
-        }finally {
-            IOUtils.closeQuietly(is);   //如果close出现异常，会被忽略
-        }
-    }
 
 
     public static void createDirectory(String dirPath){

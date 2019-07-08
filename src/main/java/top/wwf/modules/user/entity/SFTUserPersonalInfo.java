@@ -15,6 +15,8 @@ public class SFTUserPersonalInfo {
 
     private String userTel;
 
+    private String shopName;
+
     private String receiverName;
 
     private String receiverTel;
@@ -25,22 +27,26 @@ public class SFTUserPersonalInfo {
 
     private Integer haveReceiverAddress;
 
+    private Integer isDelete;
+
     private Date createTime;
 
     private Date updateTime;
 
-    public SFTUserPersonalInfo(Long id, String userId, String wxName, Integer userSex, String userEmail, String userTel, String receiverName, String receiverTel, String receiverAddressSimple, String receiverAddressDetail, Integer haveReceiverAddress, Date createTime, Date updateTime) {
+    public SFTUserPersonalInfo(Long id, String userId, String wxName, Integer userSex, String userEmail, String userTel, String shopName, String receiverName, String receiverTel, String receiverAddressSimple, String receiverAddressDetail, Integer haveReceiverAddress, Integer isDelete, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.wxName = wxName;
         this.userSex = userSex;
         this.userEmail = userEmail;
         this.userTel = userTel;
+        this.shopName = shopName;
         this.receiverName = receiverName;
         this.receiverTel = receiverTel;
         this.receiverAddressSimple = receiverAddressSimple;
         this.receiverAddressDetail = receiverAddressDetail;
         this.haveReceiverAddress = haveReceiverAddress;
+        this.isDelete = isDelete;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -97,6 +103,14 @@ public class SFTUserPersonalInfo {
         this.userTel = userTel == null ? null : userTel.trim();
     }
 
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName == null ? null : shopName.trim();
+    }
+
     public String getReceiverName() {
         return receiverName;
     }
@@ -135,6 +149,14 @@ public class SFTUserPersonalInfo {
 
     public void setHaveReceiverAddress(Integer haveReceiverAddress) {
         this.haveReceiverAddress = haveReceiverAddress;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     public Date getCreateTime() {

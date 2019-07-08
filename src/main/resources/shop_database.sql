@@ -3,16 +3,17 @@ create database if not exists shop_for_trainning;
 use shop_for_trainning;
 create table if not exists sft_user_sys_info(
   id bigint(20) unsigned auto_increment primary key ,
-  user_id varchar(50) comment '用户在本平台的唯一标识',
-  open_id varchar(255) comment '微信官方给的用户唯一身份凭证',
-  session_key varchar(50) comment '微信服务器返回的临时session_key',
-  token varchar(50) comment '服务器为该用户颁发的临时登录凭证，有效时间以微信的checkSession为准',
+  user_id varchar(50) comment '用户在本平台的唯一标识，用户注册后，再进行分配',
+  open_id varchar(255) comment '微信官方给的用户唯一身份凭证，管理员则无此字段',
+  account varchar(20) comment '账号，只有管理员才拥有的字段，且管理员登录只能使用账号密码登录',
+  password varchar(50) comment '密码，具体作用同上',
+  session_key varchar(50) comment '微信服务器返回的临时session_key，暂时不存储、不使用',
   register_code varchar(12) not null comment '10位注册码，一个注册码只能绑定一个用户和用户身份',
   user_role int not null comment '用户身份：买方、卖方、管理员',
   user_name varchar(50) not null comment '用户姓名，管理员分配注册码是设定，用户无法修改',
-  code_is_used int not null comment '注册码是否已经被使用',
-  shop_id varchar(50) comment '商店id',
-  shop_name varchar(50) comment '商店名，不超过20字，全局唯一',
+  code_used_time varchar(50) default '尚未使用' comment '注册码被使用的时间',
+  shop_id varchar(50) comment '商店id，当被分配有出售权限时，就直接分配',
+  is_delete int default 0 comment '标识位，系统删除用户使用逻辑删除',
   create_time timestamp not null default current_timestamp,
   update_time timestamp not null default current_timestamp on update current_timestamp
 );
@@ -20,15 +21,17 @@ create table if not exists sft_user_sys_info(
 create table if not exists sft_user_personal_info(
   id bigint(20) unsigned auto_increment primary key ,
   user_id varchar(50) comment '用户在本平台的唯一标识',
-  wx_name varchar(255) comment '暂时不使用',
+  wx_name varchar(255) comment '用户微信名，已废弃',
   user_sex int comment '用户性别：1 男；2女',
   user_email varchar(255) comment '用户邮箱',
   user_tel varchar(20) comment '用户电话',
+  shop_name varchar(50) default '' comment '商店名，不超过20字，全局唯一',
   receiver_name varchar(50) comment '收货人姓名',
   receiver_tel varchar(20) comment '收货人电话',
   receiver_address_simple varchar(255) comment '收货地址区域',
   receiver_address_detail varchar(255) comment '收货地址详细',
-  have_receiver_address int comment '是否已经设置了收货人地址',
+  have_receiver_address int default 0 comment '是否已经设置了收货人地址',
+  is_delete int default 0 comment '标识位，系统删除用户使用逻辑删除',
   create_time timestamp not null default current_timestamp,
   update_time timestamp not null default current_timestamp on update current_timestamp
 );
@@ -73,7 +76,7 @@ create table if not exists sft_goods_param(
 
 create table if not exists sft_order(
   id bigint(20) unsigned auto_increment primary key ,
-  order_id varchar(20) not null comment '订单编号,长度为15位',
+  order_id varchar(20) not null comment '订单编号,长度为16位',
   cart_num varchar(50) default '' comment '通过购物车提交的订单，才拥有的字段，表示同一批次购物车编号',
   user_id varchar(50) not null ,
   shop_id varchar(50) not null ,

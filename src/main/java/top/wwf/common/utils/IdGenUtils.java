@@ -55,18 +55,11 @@ public class IdGenUtils {
      * @return
      */
     public static String generateContractId(){
-        Long seedId=JedisUtils.incr(Const.CONTRACT_MAX_ID_KEY);
-        return generateId(seedId, Const.CONTRACT_ID_PREFIX);
+//        Long seedId=JedisUtils.incr(Const.CONTRACT_MAX_ID_KEY);
+//        return generateId(seedId, Const.CONTRACT_ID_PREFIX);
+        return null;
     }
 
-    /**
-     * 生成唯一性的16位模板编号
-     * @return
-     */
-    public static String generateTemplateId(){
-        Long seedId=JedisUtils.incr(Const.TEMPLATE_MAX_ID_KEY);
-        return generateId(seedId,Const.CONTRACT_TEMPLATE_ID_PREFIX);
-    }
 
     /**
      * 用于生成唯一性的16位编号
@@ -102,5 +95,10 @@ public class IdGenUtils {
 //        System.out.println(contractId(12345678));
 //        System.out.println(contractId(1322234566));
 //        System.out.println(contractId(231231311323131231L));
+    }
+
+    public static String generateRegisterCode() {
+
+        return null;
     }
 }

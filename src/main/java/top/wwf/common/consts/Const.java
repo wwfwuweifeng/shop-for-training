@@ -19,9 +19,11 @@ public class Const {
     public static final String IMAGE_SERVER_HOST           =GlobalConfig.IMAGE_SERVER_HOST;
     //web服务器的host
     public static final String WEB_SERVER_START_URL=GlobalConfig.WEB_SERVER_HOST+"/shop-for-training/view/";
+    //session的有效时间,单位秒
+    public static final int SESSION_TIMEOUT=GlobalConfig.SESSION_TIMEOUT;
 
     //应用统一编码
-    public static final String ENCODE                      ="utf-8";
+//    public static final String ENCODE                      ="utf-8";
 
     //上传的文件的临时保存路径
     public static final String UPLOAD_FILE_TEMP_PATH=GlobalConfig.FILE_PARENT_PATH+"uploadFiles"+File.separator;
@@ -79,7 +81,7 @@ public class Const {
     public enum  USER_ROLE{
         BUYER(1,"买家",POWER.BUY),
         SELLER(2,"卖家",POWER.BUY,POWER.SELL),
-        MANAGER(3,"管理员",POWER.BUY,POWER.SELL,POWER.MANAGE);
+        MANAGER(3,"管理员",POWER.MANAGE);  //因为区分网页和小程序两个端口，所以当前管理员只具备管理权限
         private int    key;
         private String desc;
         private POWER[] powers;

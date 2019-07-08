@@ -9,19 +9,21 @@
       <arg column="user_sex" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_email" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="user_tel" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="receiver_name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="receiver_tel" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="receiver_address_simple" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="receiver_address_detail" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="have_receiver_address" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_delete" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, wx_name, user_sex, user_email, user_tel, receiver_name, receiver_tel, 
-    receiver_address_simple, receiver_address_detail, have_receiver_address, create_time, 
-    update_time
+    id, user_id, wx_name, user_sex, user_email, user_tel, shop_name, receiver_name, receiver_tel, 
+    receiver_address_simple, receiver_address_detail, have_receiver_address, is_delete, 
+    create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -36,14 +38,16 @@
   <insert id="insert" parameterType="top.wwf.modules.user.entity.SFTUserPersonalInfo" >
     insert into sft_user_personal_info (id, user_id, wx_name, 
       user_sex, user_email, user_tel, 
-      receiver_name, receiver_tel, receiver_address_simple, 
-      receiver_address_detail, have_receiver_address, 
-      create_time, update_time)
+      shop_name, receiver_name, receiver_tel, 
+      receiver_address_simple, receiver_address_detail, 
+      have_receiver_address, is_delete, create_time, 
+      update_time)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{wxName,jdbcType=VARCHAR}, 
       #{userSex,jdbcType=INTEGER}, #{userEmail,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR}, 
-      #{receiverName,jdbcType=VARCHAR}, #{receiverTel,jdbcType=VARCHAR}, #{receiverAddressSimple,jdbcType=VARCHAR}, 
-      #{receiverAddressDetail,jdbcType=VARCHAR}, #{haveReceiverAddress,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      #{shopName,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}, #{receiverTel,jdbcType=VARCHAR}, 
+      #{receiverAddressSimple,jdbcType=VARCHAR}, #{receiverAddressDetail,jdbcType=VARCHAR}, 
+      #{haveReceiverAddress,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="top.wwf.modules.user.entity.SFTUserPersonalInfo" >
     insert into sft_user_personal_info
@@ -66,6 +70,9 @@
       <if test="userTel != null" >
         user_tel,
       </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
       <if test="receiverName != null" >
         receiver_name,
       </if>
@@ -80,6 +87,9 @@
       </if>
       <if test="haveReceiverAddress != null" >
         have_receiver_address,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -107,6 +117,9 @@
       <if test="userTel != null" >
         #{userTel,jdbcType=VARCHAR},
       </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
       <if test="receiverName != null" >
         #{receiverName,jdbcType=VARCHAR},
       </if>
@@ -121,6 +134,9 @@
       </if>
       <if test="haveReceiverAddress != null" >
         #{haveReceiverAddress,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -148,6 +164,9 @@
       <if test="userTel != null" >
         user_tel = #{userTel,jdbcType=VARCHAR},
       </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
       <if test="receiverName != null" >
         receiver_name = #{receiverName,jdbcType=VARCHAR},
       </if>
@@ -162,6 +181,9 @@
       </if>
       <if test="haveReceiverAddress != null" >
         have_receiver_address = #{haveReceiverAddress,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -179,11 +201,13 @@
       user_sex = #{userSex,jdbcType=INTEGER},
       user_email = #{userEmail,jdbcType=VARCHAR},
       user_tel = #{userTel,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
       receiver_name = #{receiverName,jdbcType=VARCHAR},
       receiver_tel = #{receiverTel,jdbcType=VARCHAR},
       receiver_address_simple = #{receiverAddressSimple,jdbcType=VARCHAR},
       receiver_address_detail = #{receiverAddressDetail,jdbcType=VARCHAR},
       have_receiver_address = #{haveReceiverAddress,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

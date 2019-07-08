@@ -3,6 +3,7 @@ package top.wwf.common.base;
 import top.wwf.common.consts.Const;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.exception.MyException;
+import top.wwf.common.utils.JedisUtils;
 
 /**
  * @Description: 自定义session类
@@ -11,7 +12,7 @@ import top.wwf.common.exception.MyException;
  */
 public class MySession {
     private String token;
-    private String userOpenId;
+    private String userId;
 
     public String getToken() {
         return token;
@@ -21,12 +22,12 @@ public class MySession {
         this.token = token;
     }
 
-    public String getUserOpenId() {
-        return userOpenId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserOpenId(String userOpenId) {
-        this.userOpenId = userOpenId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public static MySession getInstance() {
@@ -36,7 +37,24 @@ public class MySession {
         }
         Const.SESSION_THREAD_LOCAL.remove();    //获取到值后就立刻移除掉
         return session;
+    }
 
+    public String getShopId(){
+        return JedisUtils.hget(userId,"shopId");
+    }
+
+    public void setShopId(String shopId){
+        JedisUtils.hset(userId,"shopId",shopId);
+        JedisUtils.expire(userId,Const.SESSION_TIMEOUT);
+    }
+
+    public Const.USER_ROLE getUserRole(){
+        return Const.USER_ROLE.getRoleByKey(Integer.parseInt(JedisUtils.hget(userId,"role")));
+    }
+
+    public void setUserRole(int role){
+        JedisUtils.hset(userId,"role",role);
+        JedisUtils.expire(userId,Const.SESSION_TIMEOUT);
     }
 
 }

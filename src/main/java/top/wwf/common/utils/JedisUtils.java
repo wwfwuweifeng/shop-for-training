@@ -71,12 +71,12 @@ public class JedisUtils {
      * @param innerKey
      * @param value
      */
-    public static void hset(String outKey,String innerKey,String value){
+    public static void hset(String outKey,String innerKey,Object value){
         String completeKey=PREFIX_KEY+outKey;
         Jedis jedis=null;
         try {
             jedis=getResource();
-            jedis.hset(completeKey,innerKey,value);
+            jedis.hset(completeKey,innerKey,value.toString());
         }catch (Exception e){
             logger.error("hset map:{} field:{} = {} fail, fail reason is : ",outKey,innerKey,value,e);
             throw new MyException(HttpResponseEnum.INTERNAL_SERVER_ERROR);

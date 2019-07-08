@@ -1,11 +1,8 @@
 package top.wwf.common.inteceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import top.wwf.common.base.GlobalConfig;
@@ -14,7 +11,7 @@ import top.wwf.common.base.ServerResponse;
 import top.wwf.common.consts.Const;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.utils.JedisUtils;
-import top.wwf.modules.user.dao.enhance.VPRUserDao;
+import top.wwf.modules.user.dao.enhance.UserDao;
 import top.wwf.modules.user.entity.VPRUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +27,7 @@ import java.io.PrintWriter;
 public class LoginInteceptor implements HandlerInterceptor {
 
     @Autowired
-    private VPRUserDao userDao;
+    private UserDao userDao;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -86,7 +83,7 @@ public class LoginInteceptor implements HandlerInterceptor {
                 userOpenId = user.getOpenId();
             }
         }
-        session.setUserOpenId(userOpenId);
+        session.setUserId(userOpenId);
 //        JedisUtils.expire(Const.TOKEN_PREFIX_KEY+token,GlobalConfig.SESSION_TIMEOUT*60);
         JedisUtils.setex(Const.TOKEN_PREFIX_KEY+token, GlobalConfig.SESSION_TIMEOUT*60,userOpenId);
         return session;

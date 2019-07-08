@@ -9,9 +9,11 @@ public class SFTUserSysInfo {
 
     private String openId;
 
-    private String sessionKey;
+    private String account;
 
-    private String token;
+    private String password;
+
+    private String sessionKey;
 
     private String registerCode;
 
@@ -19,28 +21,29 @@ public class SFTUserSysInfo {
 
     private String userName;
 
-    private Integer codeIsUsed;
+    private String codeUsedTime;
 
     private String shopId;
 
-    private String shopName;
+    private Integer isDelete;
 
     private Date createTime;
 
     private Date updateTime;
 
-    public SFTUserSysInfo(Long id, String userId, String openId, String sessionKey, String token, String registerCode, Integer userRole, String userName, Integer codeIsUsed, String shopId, String shopName, Date createTime, Date updateTime) {
+    public SFTUserSysInfo(Long id, String userId, String openId, String account, String password, String sessionKey, String registerCode, Integer userRole, String userName, String codeUsedTime, String shopId, Integer isDelete, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.openId = openId;
+        this.account = account;
+        this.password = password;
         this.sessionKey = sessionKey;
-        this.token = token;
         this.registerCode = registerCode;
         this.userRole = userRole;
         this.userName = userName;
-        this.codeIsUsed = codeIsUsed;
+        this.codeUsedTime = codeUsedTime;
         this.shopId = shopId;
-        this.shopName = shopName;
+        this.isDelete = isDelete;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -73,20 +76,28 @@ public class SFTUserSysInfo {
         this.openId = openId == null ? null : openId.trim();
     }
 
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account == null ? null : account.trim();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+
     public String getSessionKey() {
         return sessionKey;
     }
 
     public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey == null ? null : sessionKey.trim();
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token == null ? null : token.trim();
     }
 
     public String getRegisterCode() {
@@ -113,12 +124,12 @@ public class SFTUserSysInfo {
         this.userName = userName == null ? null : userName.trim();
     }
 
-    public Integer getCodeIsUsed() {
-        return codeIsUsed;
+    public String getCodeUsedTime() {
+        return codeUsedTime;
     }
 
-    public void setCodeIsUsed(Integer codeIsUsed) {
-        this.codeIsUsed = codeIsUsed;
+    public void setCodeUsedTime(String codeUsedTime) {
+        this.codeUsedTime = codeUsedTime == null ? null : codeUsedTime.trim();
     }
 
     public String getShopId() {
@@ -129,12 +140,12 @@ public class SFTUserSysInfo {
         this.shopId = shopId == null ? null : shopId.trim();
     }
 
-    public String getShopName() {
-        return shopName;
+    public Integer getIsDelete() {
+        return isDelete;
     }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName == null ? null : shopName.trim();
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     public Date getCreateTime() {

@@ -6,21 +6,22 @@
       <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="open_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="account" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="session_key" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="token" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="register_code" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="user_role" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="code_is_used" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="code_used_time" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="shop_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="is_delete" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, open_id, session_key, token, register_code, user_role, user_name, code_is_used, 
-    shop_id, shop_name, create_time, update_time
+    id, user_id, open_id, account, password, session_key, register_code, user_role, user_name, 
+    code_used_time, shop_id, is_delete, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -34,15 +35,15 @@
   </delete>
   <insert id="insert" parameterType="top.wwf.modules.user.entity.SFTUserSysInfo" >
     insert into sft_user_sys_info (id, user_id, open_id, 
-      session_key, token, register_code, 
-      user_role, user_name, code_is_used, 
-      shop_id, shop_name, create_time, 
-      update_time)
+      account, password, session_key, 
+      register_code, user_role, user_name, 
+      code_used_time, shop_id, is_delete, 
+      create_time, update_time)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, 
-      #{sessionKey,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{registerCode,jdbcType=VARCHAR}, 
-      #{userRole,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{codeIsUsed,jdbcType=INTEGER}, 
-      #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sessionKey,jdbcType=VARCHAR}, 
+      #{registerCode,jdbcType=VARCHAR}, #{userRole,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{codeUsedTime,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="top.wwf.modules.user.entity.SFTUserSysInfo" >
     insert into sft_user_sys_info
@@ -56,11 +57,14 @@
       <if test="openId != null" >
         open_id,
       </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
       <if test="sessionKey != null" >
         session_key,
-      </if>
-      <if test="token != null" >
-        token,
       </if>
       <if test="registerCode != null" >
         register_code,
@@ -71,14 +75,14 @@
       <if test="userName != null" >
         user_name,
       </if>
-      <if test="codeIsUsed != null" >
-        code_is_used,
+      <if test="codeUsedTime != null" >
+        code_used_time,
       </if>
       <if test="shopId != null" >
         shop_id,
       </if>
-      <if test="shopName != null" >
-        shop_name,
+      <if test="isDelete != null" >
+        is_delete,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -97,11 +101,14 @@
       <if test="openId != null" >
         #{openId,jdbcType=VARCHAR},
       </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
       <if test="sessionKey != null" >
         #{sessionKey,jdbcType=VARCHAR},
-      </if>
-      <if test="token != null" >
-        #{token,jdbcType=VARCHAR},
       </if>
       <if test="registerCode != null" >
         #{registerCode,jdbcType=VARCHAR},
@@ -112,14 +119,14 @@
       <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="codeIsUsed != null" >
-        #{codeIsUsed,jdbcType=INTEGER},
+      <if test="codeUsedTime != null" >
+        #{codeUsedTime,jdbcType=VARCHAR},
       </if>
       <if test="shopId != null" >
         #{shopId,jdbcType=VARCHAR},
       </if>
-      <if test="shopName != null" >
-        #{shopName,jdbcType=VARCHAR},
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -138,11 +145,14 @@
       <if test="openId != null" >
         open_id = #{openId,jdbcType=VARCHAR},
       </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
       <if test="sessionKey != null" >
         session_key = #{sessionKey,jdbcType=VARCHAR},
-      </if>
-      <if test="token != null" >
-        token = #{token,jdbcType=VARCHAR},
       </if>
       <if test="registerCode != null" >
         register_code = #{registerCode,jdbcType=VARCHAR},
@@ -153,14 +163,14 @@
       <if test="userName != null" >
         user_name = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="codeIsUsed != null" >
-        code_is_used = #{codeIsUsed,jdbcType=INTEGER},
+      <if test="codeUsedTime != null" >
+        code_used_time = #{codeUsedTime,jdbcType=VARCHAR},
       </if>
       <if test="shopId != null" >
         shop_id = #{shopId,jdbcType=VARCHAR},
       </if>
-      <if test="shopName != null" >
-        shop_name = #{shopName,jdbcType=VARCHAR},
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -175,14 +185,15 @@
     update sft_user_sys_info
     set user_id = #{userId,jdbcType=VARCHAR},
       open_id = #{openId,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
       session_key = #{sessionKey,jdbcType=VARCHAR},
-      token = #{token,jdbcType=VARCHAR},
       register_code = #{registerCode,jdbcType=VARCHAR},
       user_role = #{userRole,jdbcType=INTEGER},
       user_name = #{userName,jdbcType=VARCHAR},
-      code_is_used = #{codeIsUsed,jdbcType=INTEGER},
+      code_used_time = #{codeUsedTime,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},
-      shop_name = #{shopName,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
