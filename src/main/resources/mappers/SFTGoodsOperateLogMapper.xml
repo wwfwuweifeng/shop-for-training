@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.wwf.modules.order.dao.SFTOrderOperateLogMapper" >
-  <resultMap id="BaseResultMap" type="top.wwf.modules.order.entity.SFTOrderOperateLog" >
+<mapper namespace="top.wwf.modules.goods.dao.SFTGoodsOperateLogMapper" >
+  <resultMap id="BaseResultMap" type="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
     <constructor >
       <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="order_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="goods_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="operate_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="operate_type" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_id, operate_time, operate_type
+    id, goods_id, operate_time, operate_type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from sft_order_operate_log
+    from sft_goods_operate_log
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sft_order_operate_log
+    delete from sft_goods_operate_log
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="top.wwf.modules.order.entity.SFTOrderOperateLog" >
-    insert into sft_order_operate_log (id, order_id, operate_time, 
+  <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
+    insert into sft_goods_operate_log (id, goods_id, operate_time, 
       operate_type)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
       #{operateType,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrderOperateLog" >
-    insert into sft_order_operate_log
+  <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
+    insert into sft_goods_operate_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="orderId != null" >
-        order_id,
+      <if test="goodsId != null" >
+        goods_id,
       </if>
       <if test="operateTime != null" >
         operate_time,
@@ -48,8 +48,8 @@
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="orderId != null" >
-        #{orderId,jdbcType=VARCHAR},
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
       </if>
       <if test="operateTime != null" >
         #{operateTime,jdbcType=TIMESTAMP},
@@ -59,11 +59,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrderOperateLog" >
-    update sft_order_operate_log
+  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
+    update sft_goods_operate_log
     <set >
-      <if test="orderId != null" >
-        order_id = #{orderId,jdbcType=VARCHAR},
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=VARCHAR},
       </if>
       <if test="operateTime != null" >
         operate_time = #{operateTime,jdbcType=TIMESTAMP},
@@ -74,9 +74,9 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderOperateLog" >
-    update sft_order_operate_log
-    set order_id = #{orderId,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
+    update sft_goods_operate_log
+    set goods_id = #{goodsId,jdbcType=VARCHAR},
       operate_time = #{operateTime,jdbcType=TIMESTAMP},
       operate_type = #{operateType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

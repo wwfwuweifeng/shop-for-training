@@ -1,8 +1,11 @@
 package top.wwf.modules.goods.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class SFTGoods {
+    @JsonIgnore
     private Long id;
 
     private String goodsId;
@@ -32,13 +35,13 @@ public class SFTGoods {
     private Integer price;
 
     private Integer state;
-
+    @JsonIgnore
     private Integer isSellByShop;
-
+    @JsonIgnore
     private Integer isSellByManager;
-
+    @JsonIgnore
     private Date createTime;
-
+    @JsonIgnore
     private Date updateTime;
 
     public SFTGoods(Long id, String goodsId, String name, Long classifyId, String classifyName, String coverImage, Integer remainNum, Integer sellNum, String shopId, String shopName, String shopOwnerId, String tag, String detail, Integer price, Integer state, Integer isSellByShop, Integer isSellByManager, Date createTime, Date updateTime) {

@@ -26,7 +26,7 @@ public class CartDao {
     }
 
     /**
-     * order by createTime
+     * order by createTime desc
      * @param userId
      * @return
      */

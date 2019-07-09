@@ -35,15 +35,9 @@ public class UserDao {
         return null;
     }
 
-    public SFTUserSysInfo getUserSysInfoByShopName(String shopName) {
-        return null;
-    }
 
-    public void updataUserSysInfoByUserId(SFTUserSysInfo userSysInfo) {
 
-    }
-
-    public void updataUserPersonalInfoByUserId(SFTUserPersonalInfo userPersonalInfo) {
+    public void updateUserPersonalInfoByUserId(SFTUserPersonalInfo userPersonalInfo) {
 
     }
 
@@ -59,7 +53,7 @@ public class UserDao {
         return null;
     }
 
-    public void updataUserSysInfoByPrimaryKey(SFTUserSysInfo userSysInfo) {
+    public void updateUserSysInfoByPrimaryKey(SFTUserSysInfo userSysInfo) {
 
     }
 

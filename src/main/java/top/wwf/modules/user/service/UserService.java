@@ -9,12 +9,14 @@ import top.wwf.common.base.DateYMDHMSJsonSerializer;
 import top.wwf.common.base.MySession;
 import top.wwf.common.base.OpenIdResult;
 import top.wwf.common.consts.Const;
+import top.wwf.common.consts.GoodsConst;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.exception.MyException;
 import top.wwf.common.page.PageBean;
 import top.wwf.common.utils.IdGenUtils;
 import top.wwf.common.utils.JedisUtils;
 import top.wwf.common.utils.WeChartUtils;
+import top.wwf.modules.goods.dao.enhance.GoodsDao;
 import top.wwf.modules.order.dao.enhance.OrderDao;
 import top.wwf.modules.order.entity.SFTOrder;
 import top.wwf.modules.user.dao.enhance.UserDao;
@@ -40,6 +42,8 @@ public class UserService {
     private UserDao userDao;
     @Autowired
     private OrderDao orderDao;
+    @Autowired
+    private GoodsDao goodsDao;
 
     /**
      * 当前的登录逻辑，允许一个账号，多处同时登录（一个userId可能同时对应多个token）
@@ -141,7 +145,7 @@ public class UserService {
                 }
             }
         }
-        userDao.updataUserPersonalInfoByUserId(userPersonalInfo);
+        userDao.updateUserPersonalInfoByUserId(userPersonalInfo);
         return userPersonalInfo;
     }
 
@@ -185,7 +189,7 @@ public class UserService {
         userSysInfo.setUserId(IdGenUtils.uuid().replace("-",""));
         userSysInfo.setOpenId(openId);
         userSysInfo.setCodeUsedTime(DateYMDHMSJsonSerializer.dateFormat.format(new Date()));
-        userDao.updataUserSysInfoByPrimaryKey(userSysInfo);
+        userDao.updateUserSysInfoByPrimaryKey(userSysInfo);
 
         SFTUserPersonalInfo userPersonalInfo=new SFTUserPersonalInfo();
         userPersonalInfo.setUserId(userSysInfo.getUserId());
@@ -239,7 +243,7 @@ public class UserService {
                 throw new MyException(HttpResponseEnum.PROHIBIT,"该用户仍有未结束的销售订单");
             }
         }
-        userDao.updataUserSysInfoByPrimaryKey(userSysInfo);
+        userDao.updateUserSysInfoByPrimaryKey(userSysInfo);
         RegisterUserVO registerUserVO=new RegisterUserVO();
         registerUserVO.setRegisterCode(registerCode);
         registerUserVO.setUserName(userName);
@@ -251,6 +255,7 @@ public class UserService {
 
     /**
      * 删除用户，只进行逻辑删除，逻辑删除前，需检验用户是否有未结束的订单
+     * 如果删除的是商家，则所以在售商品自动下架
      * @param registerCode
      * @param pageNum
      * @param pageSize
@@ -276,7 +281,7 @@ public class UserService {
         } else if (StringUtils.isBlank(userSysInfo.getUserId())){
             //还未绑定用户，直接逻辑删除用户的系统信息即可
             userSysInfo.setIsDelete(Const.YES);
-            userDao.updataUserSysInfoByPrimaryKey(userSysInfo);
+            userDao.updateUserSysInfoByPrimaryKey(userSysInfo);
         }else{
             //检验是否有作为买家，仍未结束的订单
             List<SFTOrder> orderList=orderDao.getNotFinishBuyOrderListByUserId(userSysInfo.getUserId());
@@ -294,11 +299,14 @@ public class UserService {
 
             //通过检验，该用户可以进行删除，逻辑删除该用户的sysInfo和personalInfo
             userSysInfo.setIsDelete(Const.YES);
-            userDao.updataUserSysInfoByPrimaryKey(userSysInfo);
+            userDao.updateUserSysInfoByPrimaryKey(userSysInfo);
             SFTUserPersonalInfo userPersonalInfo=new SFTUserPersonalInfo();
             userPersonalInfo.setUserId(userSysInfo.getUserId());
             userPersonalInfo.setIsDelete(Const.YES);
-            userDao.updataUserPersonalInfoByUserId(userPersonalInfo);
+            userDao.updateUserPersonalInfoByUserId(userPersonalInfo);
+            //下架该用户销售的所有商品
+            goodsDao.lowerShelfGoodsByUserId(GoodsConst.STATE.LOWER_SHELF.getKey(), userSysInfo.getUserId());
+
         }
 
         return getUserList(session,pageNum,pageSize);

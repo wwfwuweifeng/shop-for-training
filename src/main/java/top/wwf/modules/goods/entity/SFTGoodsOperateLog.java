@@ -1,24 +1,27 @@
-package top.wwf.modules.order.entity;
+package top.wwf.modules.goods.entity;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import top.wwf.common.base.DateYMDHMSJsonSerializer;
 
 import java.util.Date;
 
-public class SFTOrderOperateLog {
+public class SFTGoodsOperateLog {
     private Long id;
 
-    private String orderId;
+    private String goodsId;
 
     private Date operateTime;
 
     private String operateType;
 
-    public SFTOrderOperateLog(Long id, String orderId, Date operateTime, String operateType) {
+    public SFTGoodsOperateLog(Long id, String goodsId, Date operateTime, String operateType) {
         this.id = id;
-        this.orderId = orderId;
+        this.goodsId = goodsId;
         this.operateTime = operateTime;
         this.operateType = operateType;
     }
 
-    public SFTOrderOperateLog() {
+    public SFTGoodsOperateLog() {
         super();
     }
 
@@ -30,12 +33,12 @@ public class SFTOrderOperateLog {
         this.id = id;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getGoodsId() {
+        return goodsId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId == null ? null : goodsId.trim();
     }
 
     public Date getOperateTime() {

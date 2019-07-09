@@ -161,36 +161,4 @@ public class Const {
         }
     }
 
-    public enum GOODS_STATE{
-        ON_SALE(1,"在售"),
-        SELL_OUT(2,"已售完"),
-        LOWER_SHELF(3,"下架"),
-        WAIT_APPROVE(4,"待审批"),
-        APPROVE_FAIL(5,"审批失败");
-
-        private int key;
-        private String desc;
-
-        GOODS_STATE(int key, String desc) {
-            this.key = key;
-            this.desc = desc;
-        }
-        public int getKey() {
-            return key;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public static String getDescByKey(int key){
-            for (GOODS_STATE goodsState:GOODS_STATE.values()){
-                if (key==goodsState.getKey()){
-                    return goodsState.getDesc();
-                }
-            }
-            throw new MyException(HttpResponseEnum.PROHIBIT,"参数非法");
-        }
-    }
-
 }

@@ -92,7 +92,7 @@ create table if not exists sft_order(
   update_time timestamp not null default current_timestamp on update current_timestamp
 );
 
-create table if not exists sft_order_operate_log(
+create table if not exists sft_order_items(
   id bigint(20) unsigned auto_increment primary key ,
   order_id varchar(20) not null ,
   goods_id varchar(50) not null ,
@@ -131,4 +131,10 @@ create table if not exists sft_order_pay(
   order_total_price int not null default 0 comment '订单总金额，单位分',
   order_actual_pay int not null default 0 comment '订单实际付款金额，单位分',
   create_time timestamp not null default current_timestamp
-)
+);
+create table if not exists sft_goods_operate_log(
+  id bigint(20) unsigned auto_increment primary key ,
+  goods_id varchar(20)not null ,
+  operate_time timestamp not null default current_timestamp,
+  operate_type varchar(255) not null comment '操作类型'
+);

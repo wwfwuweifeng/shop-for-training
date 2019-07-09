@@ -1,5 +1,7 @@
 package top.wwf.modules.goods.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class SFTGoodsClassify {
@@ -11,6 +13,7 @@ public class SFTGoodsClassify {
 
     private String coverImage;
 
+    @JsonIgnore
     private Date createTime;
 
     public SFTGoodsClassify(Long id, Long parentClassifyId, String classifyName, String coverImage, Date createTime) {

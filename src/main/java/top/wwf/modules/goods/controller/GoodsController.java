@@ -5,8 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import top.wwf.common.base.MySession;
 import top.wwf.common.base.ServerResponse;
+import top.wwf.common.consts.HttpResponseEnum;
+import top.wwf.common.page.PageBean;
+import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.service.GoodsService;
+import top.wwf.modules.goods.vo.GoodsClassifyVO;
+import top.wwf.modules.goods.vo.GoodsDetailForSellerVO;
+
+import java.util.List;
 
 /**
 * @Description:    TODO
@@ -21,6 +29,7 @@ public class GoodsController {
 
     /**
      * 买方获取商品列表，若无搜索条件，则KeyWord设为空字符，分页查询返回
+     * 只有处于上架状态的商品会返回，自己出售的商品也会出现在此列表中
      * @return
      */
     @ResponseBody
@@ -31,8 +40,9 @@ public class GoodsController {
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
             ){
-
-        return null;
+        MySession session=MySession.getInstance();
+        PageBean<SFTGoods> result=goodsService.getGoodsListByBuyer(session,classifyId,keyWord,pageNum,pageSize);
+        return ServerResponse.create(result);
     }
 
     /**
@@ -47,30 +57,52 @@ public class GoodsController {
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
     ){
-        return null;
+        MySession session=MySession.getInstance();
+        PageBean<SFTGoods> result=goodsService.getGoodsListBySeller(session,state,keyWord,pageNum,pageSize);
+        return ServerResponse.create(result);
     }
 
     /**
-     * 获取商品的详细信息
+     * 获取商品的详细信息，卖家也可以查看，但是到达提交订单环节，会被拦截
      * @return
      */
     @ResponseBody
-    @RequestMapping("/detail")
-    public ServerResponse getGoodsDetail(){
-        return null;
+    @RequestMapping("/detailByBuyer")
+    public ServerResponse getGoodsDetailByBuyer(
+            @RequestParam(value = "goodsId",defaultValue = "") String goodsId
+
+    ){
+        SFTGoods result=goodsService.getGoodsDetailByBuyer(goodsId);
+        return ServerResponse.create(result);
     }
 
     /**
-     * 卖家添加商品
+     * 卖家获取商品的销售信息，当前状态信息等
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/detailBySeller")
+    public ServerResponse getGoodsDetailBySeller(
+            @RequestParam(value = "goodsId",defaultValue = "") String goodsId){
+        MySession session=MySession.getInstance();
+        GoodsDetailForSellerVO result=goodsService.getGoodsDetailBySeller(session,goodsId);
+        return ServerResponse.create(result);
+    }
+
+
+    /**
+     * 卖家添加商品，预留，看是使用小程序端，还是web端来实现
      * @return
      */
     @ResponseBody
     @RequestMapping("/addGoodsBySeller")
     public ServerResponse addGoodsBySeller(){
+
         return null;
     }
 
     /**
+     * 预留，看是使用小程序还是web端实现
      * 卖家修改商品的详细信息：含修改数量，修改描述等，不含修改状态；
      * 目前为覆盖修改，有时间再考虑新增记录，然后使用版本记录！！！
      * @return
@@ -82,17 +114,48 @@ public class GoodsController {
     }
 
     /**
-     * 编辑商品状态，管理员和卖家均可操作
+     * 管理员编辑商品状态
      * @param operate 操作行为，将对应至一个枚举类
      * @return
      */
     @ResponseBody
-    @RequestMapping("/editGoodsState")
-    public ServerResponse editGoodsState(
+    @RequestMapping("/operateGoodsStateByManager")
+    public ServerResponse operateGoodsStateByManager(
+            @RequestParam(value = "goodsId",defaultValue = "") String goodsId,
             @RequestParam(value = "operate",defaultValue = "0") int operate
     ){
-        return null;
+        MySession session=MySession.getInstance();
+        goodsService.operateGoodsStateByManager(session,goodsId,operate);
+        return ServerResponse.create("还未设置返回数据！！！");
     }
 
+    /**
+     * 销售商编辑商品状态
+     * @param goodsId
+     * @param operate
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/operateGoodsStateBySeller")
+    public ServerResponse operateGoodsStateBySeller(
+            @RequestParam(value = "goodsId",defaultValue = "") String goodsId,
+            @RequestParam(value = "operate",defaultValue = "0") int operate
+    ){
+        MySession session=MySession.getInstance();
+        goodsService.operateGoodsStateBySeller(session,goodsId,operate);
+        GoodsDetailForSellerVO result=goodsService.getGoodsDetailBySeller(session,goodsId);
+        return ServerResponse.create(result);
+    }
+
+    /**
+     * 获取商品的分类列表
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/classifyList")
+    public ServerResponse getGoodsClassifyList(){
+        List<GoodsClassifyVO> result=goodsService.getGoodsClassifyList();
+        return ServerResponse.create(result);
+    }
 
 }
