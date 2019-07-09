@@ -116,8 +116,8 @@ create table if not exists sft_cart(
   id bigint(20) unsigned auto_increment primary key ,
   user_id varchar(50) not null ,
   goods_id varchar(50) not null ,
-  checked int default 0 comment '该字段不与前端数据同步，后期考虑是否使用微信小程序自带的本地缓存',
-  num int default 1 comment '添加数量，该字段也不与前端数据同步，考虑是否使用本地缓存',
+  checked int default 0 comment '该字段不与前端数据同步，后期考虑是否使用微信小程序自带的本地缓存，暂不使用',
+  num int default 1 comment '添加数量，该字段也不与前端数据同步，考虑是否使用本地缓存，暂不使用',
   create_time timestamp not null default current_timestamp
 );
 

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 import top.wwf.modules.goods.dao.SFTGoodsClassifyMapper;
 import top.wwf.modules.goods.dao.SFTGoodsMapper;
 import top.wwf.modules.goods.dao.SFTGoodsParamMapper;
+import top.wwf.modules.goods.entity.SFTGoods;
+
+import java.util.List;
 
 /**
 * @Description:    TODO
@@ -20,4 +23,16 @@ public class GoodsDao {
     @Autowired
     private SFTGoodsParamMapper    goodsParamMapper;
 
+    public SFTGoods getGoodsByGoodsId(String goodsId) {
+        return null;
+    }
+
+    /**
+     * order By createTime
+     * @param goodsIdList
+     * @return
+     */
+    public List<SFTGoods> getGoodsListByGoodsIdList(List<String> goodsIdList) {
+        return null;
+    }
 }

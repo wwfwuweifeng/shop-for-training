@@ -1,12 +1,15 @@
 package top.wwf.modules.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class SFTUserPersonalInfo {
+    @JsonIgnore
     private Long id;
-
+    @JsonIgnore
     private String userId;
-
+    @JsonIgnore
     private String wxName;
 
     private Integer userSex;
@@ -26,11 +29,11 @@ public class SFTUserPersonalInfo {
     private String receiverAddressDetail;
 
     private Integer haveReceiverAddress;
-
+    @JsonIgnore
     private Integer isDelete;
-
+    @JsonIgnore
     private Date createTime;
-
+    @JsonIgnore
     private Date updateTime;
 
     public SFTUserPersonalInfo(Long id, String userId, String wxName, Integer userSex, String userEmail, String userTel, String shopName, String receiverName, String receiverTel, String receiverAddressSimple, String receiverAddressDetail, Integer haveReceiverAddress, Integer isDelete, Date createTime, Date updateTime) {

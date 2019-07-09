@@ -2,7 +2,7 @@ package top.wwf.modules.goods.entity;
 
 import java.util.Date;
 
-public class SFToods {
+public class SFTGoods {
     private Long id;
 
     private String goodsId;
@@ -41,7 +41,7 @@ public class SFToods {
 
     private Date updateTime;
 
-    public SFToods(Long id, String goodsId, String name, Long classifyId, String classifyName, String coverImage, Integer remainNum, Integer sellNum, String shopId, String shopName, String shopOwnerId, String tag, String detail, Integer price, Integer state, Integer isSellByShop, Integer isSellByManager, Date createTime, Date updateTime) {
+    public SFTGoods(Long id, String goodsId, String name, Long classifyId, String classifyName, String coverImage, Integer remainNum, Integer sellNum, String shopId, String shopName, String shopOwnerId, String tag, String detail, Integer price, Integer state, Integer isSellByShop, Integer isSellByManager, Date createTime, Date updateTime) {
         this.id = id;
         this.goodsId = goodsId;
         this.name = name;
@@ -63,7 +63,7 @@ public class SFToods {
         this.updateTime = updateTime;
     }
 
-    public SFToods() {
+    public SFTGoods() {
         super();
     }
 

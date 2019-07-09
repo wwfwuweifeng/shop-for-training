@@ -1,34 +1,37 @@
 package top.wwf.modules.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class SFTUserSysInfo {
+    @JsonIgnore
     private Long id;
-
+    @JsonIgnore
     private String userId;
-
+    @JsonIgnore
     private String openId;
-
+    @JsonIgnore
     private String account;
-
+    @JsonIgnore
     private String password;
-
+    @JsonIgnore
     private String sessionKey;
-
+    @JsonIgnore
     private String registerCode;
 
     private Integer userRole;
 
     private String userName;
-
+    @JsonIgnore
     private String codeUsedTime;
 
     private String shopId;
-
+    @JsonIgnore
     private Integer isDelete;
-
+    @JsonIgnore
     private Date createTime;
-
+    @JsonIgnore
     private Date updateTime;
 
     public SFTUserSysInfo(Long id, String userId, String openId, String account, String password, String sessionKey, String registerCode, Integer userRole, String userName, String codeUsedTime, String shopId, Integer isDelete, Date createTime, Date updateTime) {

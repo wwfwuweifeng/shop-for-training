@@ -1,17 +1,17 @@
 package top.wwf.modules.goods.dao;
 
-import top.wwf.modules.goods.entity.SFToods;
+import top.wwf.modules.goods.entity.SFTGoods;
 
 public interface SFTGoodsMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(SFToods record);
+    int insert(SFTGoods record);
 
-    int insertSelective(SFToods record);
+    int insertSelective(SFTGoods record);
 
-    SFToods selectByPrimaryKey(Long id);
+    SFTGoods selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(SFToods record);
+    int updateByPrimaryKeySelective(SFTGoods record);
 
-    int updateByPrimaryKey(SFToods record);
+    int updateByPrimaryKey(SFTGoods record);
 }
