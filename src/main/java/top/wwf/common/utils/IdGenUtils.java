@@ -101,4 +101,12 @@ public class IdGenUtils {
 
         return null;
     }
+
+    /**
+     * 订单编号
+     * @return
+     */
+    public static String generateOrderId() {
+        return null;
+    }
 }

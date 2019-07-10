@@ -33,7 +33,7 @@
       cart_num, user_id, pay_type, 
       order_total_price, order_actual_pay, create_time
       )
-    values (#{id,jdbcType=BIGINT}, #{payId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{payId,jdbcType=VARCHAR}, #{cartNum,jdbcType=VARCHAR},
       #{cartNum,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
       #{orderTotalPrice,jdbcType=INTEGER}, #{orderActualPay,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
@@ -47,7 +47,7 @@
       <if test="payId != null" >
         pay_id,
       </if>
-      <if test="orderId != null" >
+      <if test="cartNum != null" >
         order_id,
       </if>
       <if test="cartNum != null" >
@@ -76,8 +76,8 @@
       <if test="payId != null" >
         #{payId,jdbcType=VARCHAR},
       </if>
-      <if test="orderId != null" >
-        #{orderId,jdbcType=VARCHAR},
+      <if test="cartNum != null" >
+        #{cartNum,jdbcType=VARCHAR},
       </if>
       <if test="cartNum != null" >
         #{cartNum,jdbcType=VARCHAR},
@@ -105,8 +105,8 @@
       <if test="payId != null" >
         pay_id = #{payId,jdbcType=VARCHAR},
       </if>
-      <if test="orderId != null" >
-        order_id = #{orderId,jdbcType=VARCHAR},
+      <if test="cartNum != null" >
+        order_id = #{cartNum,jdbcType=VARCHAR},
       </if>
       <if test="cartNum != null" >
         cart_num = #{cartNum,jdbcType=VARCHAR},
@@ -132,7 +132,7 @@
   <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
     update sft_order_pay
     set pay_id = #{payId,jdbcType=VARCHAR},
-      order_id = #{orderId,jdbcType=VARCHAR},
+      order_id = #{cartNum,jdbcType=VARCHAR},
       cart_num = #{cartNum,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       pay_type = #{payType,jdbcType=INTEGER},

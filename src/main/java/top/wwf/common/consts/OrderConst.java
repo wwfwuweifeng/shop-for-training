@@ -36,7 +36,7 @@ public class OrderConst {
         ALREADY_CANCEL(7, "已取消", "已取消", Const.NO, Const.NO);
 
         private int    key;
-        private String desc;
+        private String desc;             //状态显示内容
         private String msgForBt;        //主按钮显示的内容
         private int    allowCancel;     //是否允许取消订单
         private int    allowClickMain; //是否允许点击主按钮
@@ -93,7 +93,7 @@ public class OrderConst {
         ALREADY_CANCEL(7, "已取消", "已取消", Const.NO, Const.NO);
 
         private int    key;
-        private String desc;
+        private String desc;            //状态显示内容
         private String msgForBt;        //主按钮显示的内容
         private int    allowCancel;     //是否允许取消订单
         private int    allowClickMain; //是否允许点击主按钮
@@ -129,6 +129,53 @@ public class OrderConst {
         //获取订单状态
         public static STATE_FOR_SELLER getStateByKey(int key){
             for (STATE_FOR_SELLER state: STATE_FOR_SELLER.values()){
+                if (state.getKey()==key){
+                    return state;
+                }
+            }
+            throw new MyException(HttpResponseEnum.PROHIBIT, "参数非法");
+        }
+    }
+
+    /**
+     * 针对管理员的订单状态
+     */
+    public enum STATE_FOR_MANAGER {
+        CREATE(1, "订单已创建",Const.YES),
+        WAIT_PAY(2, "等待买家付款",Const.YES),
+        WAIT_RECEIPT(3, "等待商家接单",Const.YES),
+        WAIT_SEND(4, "等待商家发货",Const.YES),
+        WAIT_SIGN(5, "等待买家签收",Const.NO),
+        ALREADY_DEAL(6, "已成交",Const.NO),
+        ALREADY_CANCEL(7, "已取消",Const.NO);
+
+        private int    key;
+        private String desc;             //状态显示内容
+        private int    allowCancel;     //是否允许取消订单
+
+        STATE_FOR_MANAGER(int key, String desc,int allowCancel) {
+            this.key = key;
+            this.desc = desc;
+            this.allowCancel = allowCancel;
+        }
+
+        public int getKey() {
+            return key;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+
+        public int getAllowCancel() {
+            return allowCancel;
+        }
+
+
+        //获取订单状态
+        public static STATE_FOR_MANAGER getStateByKey(int key){
+            for (STATE_FOR_MANAGER state: STATE_FOR_MANAGER.values()){
                 if (state.getKey()==key){
                     return state;
                 }

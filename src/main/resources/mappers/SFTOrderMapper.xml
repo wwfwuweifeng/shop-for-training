@@ -41,7 +41,7 @@
       create_time, pay_time, send_time, 
       deal_time, express_num, update_time
       )
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{cartNum,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{cartNum,jdbcType=VARCHAR}, #{cartNum,jdbcType=VARCHAR},
       #{userId,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
       #{orderTotalMoney,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{payId,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=VARCHAR}, #{sendTime,jdbcType=VARCHAR}, 
@@ -54,7 +54,7 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="orderId != null" >
+      <if test="cartNum != null" >
         order_id,
       </if>
       <if test="cartNum != null" >
@@ -101,8 +101,8 @@
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="orderId != null" >
-        #{orderId,jdbcType=VARCHAR},
+      <if test="cartNum != null" >
+        #{cartNum,jdbcType=VARCHAR},
       </if>
       <if test="cartNum != null" >
         #{cartNum,jdbcType=VARCHAR},
@@ -148,8 +148,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrder" >
     update sft_order
     <set >
-      <if test="orderId != null" >
-        order_id = #{orderId,jdbcType=VARCHAR},
+      <if test="cartNum != null" >
+        order_id = #{cartNum,jdbcType=VARCHAR},
       </if>
       <if test="cartNum != null" >
         cart_num = #{cartNum,jdbcType=VARCHAR},
@@ -195,7 +195,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrder" >
     update sft_order
-    set order_id = #{orderId,jdbcType=VARCHAR},
+    set order_id = #{cartNum,jdbcType=VARCHAR},
       cart_num = #{cartNum,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       shop_id = #{shopId,jdbcType=VARCHAR},

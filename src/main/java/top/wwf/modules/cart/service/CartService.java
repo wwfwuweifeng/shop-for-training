@@ -53,7 +53,7 @@ public class CartService {
     public List<SFTGoods> getGoodsListByCart(MySession session) {
         List<String> goodsIdList=cartDao.getGoodsIdListInCartByUserId(session.getUserId());
         if (null==goodsIdList||goodsIdList.size()==0) return Lists.newArrayList();
-        else return goodsDao.getGoodsListByGoodsIdList(goodsIdList);
+        else return goodsDao.getSimpleGoodsInfoListByGoodsIdList(goodsIdList);
     }
 
 

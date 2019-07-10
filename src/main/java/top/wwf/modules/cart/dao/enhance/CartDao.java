@@ -37,4 +37,7 @@ public class CartDao {
     public void delGoodsFromCartByPrimaryKey(SFTCart cart) {
 
     }
+
+    public void delGoodsFromCartByUserIdAndGoodsIdList(String userId, Object o) {
+    }
 }

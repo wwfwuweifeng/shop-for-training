@@ -1,17 +1,17 @@
 package top.wwf.modules.order.dao;
 
-import top.wwf.modules.order.entity.SFTOrderItems;
+import top.wwf.modules.order.entity.SFTOrderItem;
 
 public interface SFTOrderItemsMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(SFTOrderItems record);
+    int insert(SFTOrderItem record);
 
-    int insertSelective(SFTOrderItems record);
+    int insertSelective(SFTOrderItem record);
 
-    SFTOrderItems selectByPrimaryKey(Long id);
+    SFTOrderItem selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(SFTOrderItems record);
+    int updateByPrimaryKeySelective(SFTOrderItem record);
 
-    int updateByPrimaryKey(SFTOrderItems record);
+    int updateByPrimaryKey(SFTOrderItem record);
 }

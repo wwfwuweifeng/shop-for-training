@@ -32,7 +32,7 @@ public class SFTGoods {
 
     private String detail;
 
-    private Integer price;
+    private Long price;
 
     private Integer state;
     @JsonIgnore
@@ -44,7 +44,7 @@ public class SFTGoods {
     @JsonIgnore
     private Date updateTime;
 
-    public SFTGoods(Long id, String goodsId, String name, Long classifyId, String classifyName, String coverImage, Integer remainNum, Integer sellNum, String shopId, String shopName, String shopOwnerId, String tag, String detail, Integer price, Integer state, Integer isSellByShop, Integer isSellByManager, Date createTime, Date updateTime) {
+    public SFTGoods(Long id, String goodsId, String name, Long classifyId, String classifyName, String coverImage, Integer remainNum, Integer sellNum, String shopId, String shopName, String shopOwnerId, String tag, String detail, Long price, Integer state, Integer isSellByShop, Integer isSellByManager, Date createTime, Date updateTime) {
         this.id = id;
         this.goodsId = goodsId;
         this.name = name;
@@ -174,11 +174,11 @@ public class SFTGoods {
         this.detail = detail == null ? null : detail.trim();
     }
 
-    public Integer getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

@@ -12,7 +12,6 @@ import top.wwf.common.consts.Const;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.utils.JedisUtils;
 import top.wwf.modules.user.dao.enhance.UserDao;
-import top.wwf.modules.user.entity.VPRUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

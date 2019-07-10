@@ -38,7 +38,7 @@ public class GoodsDao {
      * @param goodsIdList
      * @return
      */
-    public List<SFTGoods> getGoodsListByGoodsIdList(List<String> goodsIdList) {
+    public List<SFTGoods> getOnSellGoodsByGoodsIdList(List<String> goodsIdList,int state) {
         return null;
     }
 
@@ -106,6 +106,15 @@ public class GoodsDao {
      * @return
      */
     public List<SFTGoodsClassify> getSecondClassifyListByParentClassifyId(Long parentClassifyId) {
+        return null;
+    }
+
+    /**
+     * 获取购物车中显示的商品信息，只获取需要的字段，其中主键id,数量和状态必须要有
+     * @param goodsIdList
+     * @return
+     */
+    public List<SFTGoods> getSimpleGoodsInfoListByGoodsIdList(List<String> goodsIdList) {
         return null;
     }
 }

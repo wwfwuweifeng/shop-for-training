@@ -58,7 +58,7 @@ create table if not exists sft_goods(
   shop_owner_id varchar(50) not null comment '商家的用户id',
   tag varchar(50) comment '商品标签，最多支持三个标签，一个标签不超过5个字符，多个标签直接使用&分隔',
   detail longtext comment '商品详细内容',
-  price int default 0 comment '价格，单位分，为了避免浮点数运算',
+  price bigint(20) unsigned default 0 comment '价格，单位分，为了避免浮点数运算',
   state int default 3 comment '商品状态：1、在售；2、已售完；3、下架；4、待批准上架；5、不允许上架',
   is_sell_by_shop int default 0 comment '店家是否进行售卖，商品售完后，自动下架',
   is_sell_by_manager int default 0 comment '管理员是否批准上架，只有首次上架需要审批',
@@ -78,30 +78,34 @@ create table if not exists sft_order(
   id bigint(20) unsigned auto_increment primary key ,
   order_id varchar(20) not null comment '订单编号,长度为16位',
   cart_num varchar(50) default '' comment '通过购物车提交的订单，才拥有的字段，表示同一批次购物车编号',
-  user_id varchar(50) not null ,
+  buyer_id varchar(50) not null comment '买家的用户id',
   shop_id varchar(50) not null ,
   shop_name varchar(50) not null ,
-  order_total_money int default 0 not null comment '订单总额，单位分',
+  order_total_money bigint(20) unsigned default 0 not null comment '订单总额，单位分',
   state int not null comment '订单状态',
   pay_id varchar(50) not null comment '付款编号，一个订单对应一个付款编号',
   create_time timestamp not null default current_timestamp,
   pay_time varchar(50) default '暂无数据' not null comment '付款时间',
   send_time varchar(50) default '暂无数据' not null comment '发货时间',
   deal_time varchar(50) default '暂无数据' not null comment '成交时间',
+  receiver_people varchar(255) comment '收货人，含姓名和电话',
+  receiver_address varchar(255) comment '收货地址',
   express_num varchar(50) default '暂无数据' not null comment '快递单号',
   update_time timestamp not null default current_timestamp on update current_timestamp
 );
 
-create table if not exists sft_order_items(
+create table if not exists sft_order_item(
   id bigint(20) unsigned auto_increment primary key ,
   order_id varchar(20) not null ,
   goods_id varchar(50) not null ,
   goods_name varchar(60) not null comment '购买时的商品名称',
   goods_cover_image varchar(255) not null comment '购买时的商品封面图',
+  cart_num varchar(50) default '' comment '保留字段，暂无作用，表示同一批次购物车编号',
+  shop_id varchar(50) not null ,
   tag varchar(50) comment '购买时的商品标签',
-  buy_price int comment '购买时的商品单价',
+  buy_price bigint(20) unsigned default 0 comment '购买时的商品单价',
   buy_num int comment '购买数量',
-  total_money int comment '总计，单位分',
+  total_money bigint(20) unsigned default 0 comment '总计，单位分',
   create_time timestamp not null default current_timestamp
 );
 
@@ -116,6 +120,7 @@ create table if not exists sft_cart(
   id bigint(20) unsigned auto_increment primary key ,
   user_id varchar(50) not null ,
   goods_id varchar(50) not null ,
+  shop_id varchar(50) not null ,
   checked int default 0 comment '该字段不与前端数据同步，后期考虑是否使用微信小程序自带的本地缓存，暂不使用',
   num int default 1 comment '添加数量，该字段也不与前端数据同步，考虑是否使用本地缓存，暂不使用',
   create_time timestamp not null default current_timestamp
@@ -128,8 +133,8 @@ create table if not exists sft_order_pay(
   cart_num varchar(50) default '' comment '通过购物车提交的订单，才拥有的字段，表示同一批次购物车编号',
   user_id varchar(50) not null ,
   pay_type int default 0 comment '付款方式，该字段暂不使用，有时间再考虑',
-  order_total_price int not null default 0 comment '订单总金额，单位分',
-  order_actual_pay int not null default 0 comment '订单实际付款金额，单位分',
+  order_total_price bigint(20) unsigned default 0 comment '订单总金额，单位分',
+  order_actual_pay bigint(20) unsigned default 0 comment '订单实际付款金额，单位分',
   create_time timestamp not null default current_timestamp
 );
 create table if not exists sft_goods_operate_log(

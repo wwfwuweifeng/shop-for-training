@@ -15,7 +15,7 @@ public class SFTOrder {
 
     private String shopName;
 
-    private Integer orderTotalMoney;
+    private Long orderTotalMoney;
 
     private Integer state;
 
@@ -33,7 +33,7 @@ public class SFTOrder {
 
     private Date updateTime;
 
-    public SFTOrder(Long id, String orderId, String cartNum, String userId, String shopId, String shopName, Integer orderTotalMoney, Integer state, String payId, Date createTime, String payTime, String sendTime, String dealTime, String expressNum, Date updateTime) {
+    public SFTOrder(Long id, String orderId, String cartNum, String userId, String shopId, String shopName, Long orderTotalMoney, Integer state, String payId, Date createTime, String payTime, String sendTime, String dealTime, String expressNum, Date updateTime) {
         this.id = id;
         this.orderId = orderId;
         this.cartNum = cartNum;
@@ -103,11 +103,11 @@ public class SFTOrder {
         this.shopName = shopName == null ? null : shopName.trim();
     }
 
-    public Integer getOrderTotalMoney() {
+    public Long getOrderTotalMoney() {
         return orderTotalMoney;
     }
 
-    public void setOrderTotalMoney(Integer orderTotalMoney) {
+    public void setOrderTotalMoney(Long orderTotalMoney) {
         this.orderTotalMoney = orderTotalMoney;
     }
 
@@ -173,5 +173,22 @@ public class SFTOrder {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public void setReceiverPeople(String receiverPeople) {
+
+    }
+    public String getReceiverAddress(){
+        return null;
+    }
+
+
+
+    public void setReceiverAddress(String receiverAddress) {
+
+    }
+
+    public String getReceiverPeople() {
+        return "";
     }
 }

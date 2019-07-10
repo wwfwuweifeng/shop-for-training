@@ -2,11 +2,18 @@ package top.wwf.modules.order.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import top.wwf.common.base.MySession;
 import top.wwf.common.base.ServerResponse;
+import top.wwf.common.consts.Const;
+import top.wwf.modules.cart.entity.SFTCart;
+import top.wwf.modules.order.dto.SubmitOrderDTO;
 import top.wwf.modules.order.service.OrderService;
+import top.wwf.modules.order.vo.OrderInfoVO;
+import top.wwf.modules.order.vo.SubmitOrderVO;
 
 /**
 * @Description:    TODO
@@ -20,13 +27,16 @@ public class OrderController {
     private OrderService orderService;
 
     /**
-     * 通过购物车提交订单
+     * 通过购物车提交订单，将订单按商店进行分解，最后返回所有订单总的付款金额
      * @return
      */
     @ResponseBody
     @RequestMapping("/submitOrderByCart")
-    public ServerResponse submitOrderByCart(){
-        return null;
+    public ServerResponse submitOrderByCart(@RequestBody SubmitOrderDTO submitOrderDTO){
+        MySession     session =MySession.getInstance();
+        SubmitOrderVO result  =orderService.submitOrderByCart(session,submitOrderDTO.getCartList(),
+                                                              submitOrderDTO.getReceiverPeople(),submitOrderDTO.getReceiverAddress());
+        return ServerResponse.create(result);
     }
 
     /**
@@ -35,22 +45,25 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/submitOrderByBuy")
-    public ServerResponse submitOrderByBuy(){
-        return null;
+    public ServerResponse submitOrderByBuy(@RequestBody SubmitOrderDTO submitOrderDTO){   //还是将提交的参数封装成一个购物车项
+        MySession session=MySession.getInstance();
+        SubmitOrderVO result=orderService.submitOrderByBuy(session,submitOrderDTO.getCart(),
+                                                           submitOrderDTO.getReceiverPeople(),submitOrderDTO.getReceiverAddress());
+        return ServerResponse.create(result);
     }
 
     /**
-     * 通过订单付款，即为一个订单进行付款
+     * 通过订单付款，即为一个订单进行付款，此部分先预留，看后面是否接入微信支付
      * @return
      */
     @ResponseBody
     @RequestMapping("/payByOrder")
-    public ServerResponse payByOrder(){
+    public ServerResponse payByOrder(String orderId){
      return null;
     }
 
     /**
-     * 通过购物车提交订单，并进行多订单付款
+     * 通过购物车提交订单，并进行多订单付款，此部分先预留，看后面是否接入微信支付
      * @return
      */
     @ResponseBody
@@ -65,8 +78,12 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/receipt")
-    public ServerResponse receiptOrder(){
-        return null;
+    public ServerResponse receiptOrder(String orderId){
+        MySession session=MySession.getInstance();
+        orderService.receiptOrder(session,orderId);
+        //获取最新的订单页信息返回
+        OrderInfoVO result=orderService.getOrderDetail(session, orderId, Const.USER_ROLE.SELLER.getKey());
+        return ServerResponse.create(result);
     }
 
     /**
@@ -75,8 +92,11 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/send")
-    public ServerResponse sendGoodsForOrder(){
-        return null;
+    public ServerResponse sendGoodsForOrder(String orderId,String expressNum){
+        MySession session=MySession.getInstance();
+        orderService.sendGoodsForOrder(session,orderId,expressNum);
+        OrderInfoVO result=orderService.getOrderDetail(session, orderId, Const.USER_ROLE.SELLER.getKey());
+        return ServerResponse.create(result);
     }
 
     /**
@@ -85,21 +105,27 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/sign")
-    public ServerResponse signOrder(){
-        return null;
+    public ServerResponse signOrder(String orderId){
+        MySession session=MySession.getInstance();
+        orderService.signOrder(session,orderId);
+        OrderInfoVO result=orderService.getOrderDetail(session, orderId, Const.USER_ROLE.BUYER.getKey());
+        return ServerResponse.create(result);
     }
 
     /**
-     * 取消订单
+     * 取消订单，含买家取消订单，卖家拒绝接单，管理员取消订单 三种情况
      * @param role 表示以何种身份进行操作
      * @return
      */
     @ResponseBody
     @RequestMapping("/cancel")
-    public ServerResponse cancelOrder(
+    public ServerResponse cancelOrder(String orderId,
             @RequestParam(value = "role",defaultValue = "0") int role
     ){
-        return null;
+        MySession session=MySession.getInstance();
+        orderService.cancelOrder(session,orderId);
+        OrderInfoVO result=orderService.getOrderDetail(session, orderId,role);
+        return ServerResponse.create(result);
     }
 
     /**
@@ -139,7 +165,10 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/detail")
-    public ServerResponse getOrderDetail(){
-        return null;
+    public ServerResponse getOrderDetail(String orderId,
+            @RequestParam(value = "role",defaultValue = "0") int role){
+        MySession session=MySession.getInstance();
+        OrderInfoVO result=orderService.getOrderDetail(session,orderId,role);
+        return ServerResponse.create(result);
     }
 }

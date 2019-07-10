@@ -75,4 +75,9 @@ public class SFTCart {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    public String getShopId() {
+
+        return null;
+    }
 }

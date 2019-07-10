@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.wwf.modules.order.dao.SFTOrderItemsMapper" >
-  <resultMap id="BaseResultMap" type="top.wwf.modules.order.entity.SFTOrderItems" >
+  <resultMap id="BaseResultMap" type="top.wwf.modules.order.entity.SFTOrderItem" >
     <constructor >
       <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="order_id" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -29,23 +29,23 @@
     delete from sft_order_items
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="top.wwf.modules.order.entity.SFTOrderItems" >
+  <insert id="insert" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
     insert into sft_order_items (id, order_id, goods_id, 
       goods_name, goods_cover_image, tag, 
       buy_price, buy_num, total_money, 
       create_time)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{cartNum,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
       #{goodsName,jdbcType=VARCHAR}, #{goodsCoverImage,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
       #{buyPrice,jdbcType=INTEGER}, #{buyNum,jdbcType=INTEGER}, #{totalMoney,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrderItems" >
+  <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
     insert into sft_order_items
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="orderId != null" >
+      <if test="cartNum != null" >
         order_id,
       </if>
       <if test="goodsId != null" >
@@ -77,8 +77,8 @@
       <if test="id != null" >
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="orderId != null" >
-        #{orderId,jdbcType=VARCHAR},
+      <if test="cartNum != null" >
+        #{cartNum,jdbcType=VARCHAR},
       </if>
       <if test="goodsId != null" >
         #{goodsId,jdbcType=VARCHAR},
@@ -106,11 +106,11 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrderItems" >
+  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
     update sft_order_items
     <set >
-      <if test="orderId != null" >
-        order_id = #{orderId,jdbcType=VARCHAR},
+      <if test="cartNum != null" >
+        order_id = #{cartNum,jdbcType=VARCHAR},
       </if>
       <if test="goodsId != null" >
         goods_id = #{goodsId,jdbcType=VARCHAR},
@@ -139,9 +139,9 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderItems" >
+  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
     update sft_order_items
-    set order_id = #{orderId,jdbcType=VARCHAR},
+    set order_id = #{cartNum,jdbcType=VARCHAR},
       goods_id = #{goodsId,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_cover_image = #{goodsCoverImage,jdbcType=VARCHAR},

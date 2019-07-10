@@ -148,7 +148,7 @@ public class GoodsController {
     }
 
     /**
-     * 获取商品的分类列表
+     * 获取商品的分类列表，用于客户端
      * @return
      */
     @ResponseBody
@@ -156,6 +156,17 @@ public class GoodsController {
     public ServerResponse getGoodsClassifyList(){
         List<GoodsClassifyVO> result=goodsService.getGoodsClassifyList();
         return ServerResponse.create(result);
+    }
+
+    /**
+     * 添加商品分类，目前只支持添加二级分类
+     * 返回结果待定
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addClassify")
+    public ServerResponse addGoodsClassify(Long parentId,String classifyName){
+        return null;
     }
 
 }

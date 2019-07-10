@@ -2,7 +2,7 @@ package top.wwf.modules.order.entity;
 
 import java.util.Date;
 
-public class SFTOrderItems {
+public class SFTOrderItem {
     private Long id;
 
     private String orderId;
@@ -15,15 +15,15 @@ public class SFTOrderItems {
 
     private String tag;
 
-    private Integer buyPrice;
+    private Long buyPrice;
 
     private Integer buyNum;
 
-    private Integer totalMoney;
+    private Long totalMoney;
 
     private Date createTime;
 
-    public SFTOrderItems(Long id, String orderId, String goodsId, String goodsName, String goodsCoverImage, String tag, Integer buyPrice, Integer buyNum, Integer totalMoney, Date createTime) {
+    public SFTOrderItem(Long id, String orderId, String goodsId, String goodsName, String goodsCoverImage, String tag, Long buyPrice, Integer buyNum, Long totalMoney, Date createTime) {
         this.id = id;
         this.orderId = orderId;
         this.goodsId = goodsId;
@@ -36,7 +36,7 @@ public class SFTOrderItems {
         this.createTime = createTime;
     }
 
-    public SFTOrderItems() {
+    public SFTOrderItem() {
         super();
     }
 
@@ -88,11 +88,11 @@ public class SFTOrderItems {
         this.tag = tag == null ? null : tag.trim();
     }
 
-    public Integer getBuyPrice() {
+    public Long getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(Integer buyPrice) {
+    public void setBuyPrice(Long buyPrice) {
         this.buyPrice = buyPrice;
     }
 
@@ -104,11 +104,11 @@ public class SFTOrderItems {
         this.buyNum = buyNum;
     }
 
-    public Integer getTotalMoney() {
+    public Long getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(Integer totalMoney) {
+    public void setTotalMoney(Long totalMoney) {
         this.totalMoney = totalMoney;
     }
 
@@ -118,5 +118,13 @@ public class SFTOrderItems {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getShopId() {
+        return null;
+    }
+
+    public void setCartNum(String cartNum) {
+
     }
 }
