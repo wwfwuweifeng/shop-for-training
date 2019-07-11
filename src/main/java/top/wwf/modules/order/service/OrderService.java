@@ -392,21 +392,57 @@ public class OrderService {
         orderDao.addOrderOperateLog(orderOperateLog);
     }
 
-    public PageBean getOrderListByBuyer(MySession session, int state, String keyWord, int pageNum, int pageSize) {
+    /**
+     * 支持订单号、商店名、付款编号、收货人、收获地址、快递编号的模糊查询
+     * @param session
+     * @param state
+     * @param keyword
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public PageBean getOrderListByBuyer(MySession session, int state, String keyword, int pageNum, int pageSize) {
         if (state!=0){
             OrderConst.STATE_FOR_BUYER.getStateByKey(state);    //检查state参数值是否合法
         }
         PageHelper.startPage(pageNum,pageSize);
-        List<OrderSimpleInfoVO> orderSimpleInfoVOList=orderDao.getOrderListByBuyerWithCondition(session.getUserId(),state,keyWord);
+        List<OrderSimpleInfoVO> orderSimpleInfoVOList=Lists.newLinkedList();
+        List<SFTOrder> orderList=orderDao.getOrderListByBuyerIdAndStateAndKeyword(session.getUserId(), state, keyword);
+        OrderSimpleInfoVO orderSimpleInfoVO;
+        for (SFTOrder order:orderList){
+            orderSimpleInfoVO=new OrderSimpleInfoVO();
+            orderSimpleInfoVO.setOrderId(order.getOrderId());
+            orderSimpleInfoVO.setOrderState(order.getState());
+            orderSimpleInfoVO.setOrderStateDesc(OrderConst.STATE_FOR_BUYER.getStateByKey(order.getState()).getDesc());
+            orderSimpleInfoVO.setOrderTotalMoney(order.getOrderTotalMoney()/100+"."+order.getOrderTotalMoney()%100);
+            orderSimpleInfoVO.setShopName(order.getShopName());
+            orderSimpleInfoVO.setOrderItemList(orderDao.getOrderItemListByOrderId(order.getOrderId()));
+            orderSimpleInfoVOList.add(orderSimpleInfoVO);
+        }
         return PageBean.createByPage(orderSimpleInfoVOList);
     }
 
-    public PageBean getOrderListBySeller(MySession session, int state, String keyWord, int pageNum, int pageSize) {
+    /**
+     * 支持订单号、付款编号、收货人、收获地址、快递编号的模糊查询
+     */
+    public PageBean getOrderListBySeller(MySession session, int state, String keyword, int pageNum, int pageSize) {
         if (state!=0){
             OrderConst.STATE_FOR_SELLER.getStateByKey(state);    //检查state参数值是否合法
         }
         PageHelper.startPage(pageNum,pageSize);
-        List<OrderSimpleInfoVO> orderSimpleInfoVOList=orderDao.getOrderListBySellerWithCondition(session.getUserId(),state,keyWord);
+        List<OrderSimpleInfoVO> orderSimpleInfoVOList=Lists.newLinkedList();
+        List<SFTOrder> orderList=orderDao.getOrderListByShopIdAndStateAndKeyword(session.getShopId(), state, keyword);
+        OrderSimpleInfoVO orderSimpleInfoVO;
+        for (SFTOrder order:orderList){
+            orderSimpleInfoVO=new OrderSimpleInfoVO();
+            orderSimpleInfoVO.setOrderId(order.getOrderId());
+            orderSimpleInfoVO.setOrderState(order.getState());
+            orderSimpleInfoVO.setOrderStateDesc(OrderConst.STATE_FOR_SELLER.getStateByKey(order.getState()).getDesc());
+            orderSimpleInfoVO.setOrderTotalMoney(order.getOrderTotalMoney()/100+"."+order.getOrderTotalMoney()%100);
+            orderSimpleInfoVO.setShopName(order.getShopName());
+            orderSimpleInfoVO.setOrderItemList(orderDao.getOrderItemListByOrderId(order.getOrderId()));
+            orderSimpleInfoVOList.add(orderSimpleInfoVO);
+        }
         return PageBean.createByPage(orderSimpleInfoVOList);
     }
 }

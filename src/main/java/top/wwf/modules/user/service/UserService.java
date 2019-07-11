@@ -12,6 +12,7 @@ import top.wwf.common.base.OpenIdResult;
 import top.wwf.common.consts.Const;
 import top.wwf.common.consts.GoodsConst;
 import top.wwf.common.consts.HttpResponseEnum;
+import top.wwf.common.consts.OrderConst;
 import top.wwf.common.exception.MyException;
 import top.wwf.common.page.PageBean;
 import top.wwf.common.utils.IdGenUtils;
@@ -238,7 +239,7 @@ public class UserService {
             userSysInfo.setShopId(IdGenUtils.uuid().replace("-",""));
         }else if (Const.USER_ROLE.getRoleByKey(userSysInfo.getUserRole())== Const.USER_ROLE.SELLER && userRole==Const.USER_ROLE.BUYER){
             //由卖家切换为买家，则需要判断是否有未结束的销售订单
-            List<SFTOrder> orderList=orderDao.getNotFinishSellOrderListByShopId(userSysInfo.getShopId());
+            List<SFTOrder> orderList=orderDao.getNotFinishSellOrderListByShopId(userSysInfo.getShopId(),OrderConst.STATE_FOR_SELLER.ALREADY_DEAL.getKey(),OrderConst.STATE_FOR_SELLER.ALREADY_CANCEL.getKey());
             if (null!=orderList&&orderList.size()>0){
                 //还有未结束的销售订单
                 throw new MyException(HttpResponseEnum.PROHIBIT,"该用户仍有未结束的销售订单");
@@ -285,13 +286,13 @@ public class UserService {
             userDao.updateUserSysInfoByPrimaryKey(userSysInfo);
         }else{
             //检验是否有作为买家，仍未结束的订单
-            List<SFTOrder> orderList=orderDao.getNotFinishBuyOrderListByUserId(userSysInfo.getUserId());
+            List<SFTOrder> orderList=orderDao.getNotFinishBuyOrderListByUserId(userSysInfo.getUserId(),OrderConst.STATE_FOR_SELLER.ALREADY_DEAL.getKey(),OrderConst.STATE_FOR_SELLER.ALREADY_CANCEL.getKey());
             if (null!=orderList&&orderList.size()>0){
                 throw new MyException(HttpResponseEnum.PROHIBIT,"该用户仍有未结束的订单，无法删除该用户");
             }
             if (Const.USER_ROLE.getRoleByKey(userSysInfo.getUserRole())== Const.USER_ROLE.SELLER){
                 //当前用户拥有销售权利，检验是否有作为卖家，仍未结束的订单
-                orderList=orderDao.getNotFinishSellOrderListByShopId(userSysInfo.getShopId());
+                orderList=orderDao.getNotFinishSellOrderListByShopId(userSysInfo.getShopId(), OrderConst.STATE_FOR_SELLER.ALREADY_DEAL.getKey(),OrderConst.STATE_FOR_SELLER.ALREADY_CANCEL.getKey());
                 if (null!=orderList&&orderList.size()>0){
                     //还有未结束的销售订单
                     throw new MyException(HttpResponseEnum.PROHIBIT,"该用户仍有未结束的销售订单，无法删除该用户");

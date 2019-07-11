@@ -2,10 +2,9 @@ package top.wwf.modules.order.dao;
 
 import top.wwf.modules.order.entity.SFTOrderOperateLog;
 
-public interface SFTOrderOperateLogMapper {
-    int deleteByPrimaryKey(Long id);
+import java.util.List;
 
-    int insert(SFTOrderOperateLog record);
+public interface SFTOrderOperateLogMapper {
 
     int insertSelective(SFTOrderOperateLog record);
 
@@ -13,5 +12,5 @@ public interface SFTOrderOperateLogMapper {
 
     int updateByPrimaryKeySelective(SFTOrderOperateLog record);
 
-    int updateByPrimaryKey(SFTOrderOperateLog record);
+    List<SFTOrderOperateLog> selectOperateLogListByOrderId(String orderId);
 }

@@ -2,10 +2,12 @@ package top.wwf.modules.order.dao;
 
 import top.wwf.modules.order.entity.SFTOrderItem;
 
-public interface SFTOrderItemMapper {
-    int deleteByPrimaryKey(Long id);
+import java.util.List;
 
-    int insert(SFTOrderItem record);
+public interface SFTOrderItemMapper {
+
+
+
 
     int insertSelective(SFTOrderItem record);
 
@@ -13,5 +15,8 @@ public interface SFTOrderItemMapper {
 
     int updateByPrimaryKeySelective(SFTOrderItem record);
 
-    int updateByPrimaryKey(SFTOrderItem record);
+
+    void insertOrderItems(List<SFTOrderItem> orderItemList);
+
+    List<SFTOrderItem> selectOrderItemListByOrderId(String orderId);
 }

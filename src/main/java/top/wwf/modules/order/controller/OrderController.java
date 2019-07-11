@@ -131,6 +131,7 @@ public class OrderController {
 
     /**
      * 买方获取订单列表，分状态显示，若无搜索条件，则KeyWord设为空字符，分页查询返回
+     * 支持订单号、商店名、付款编号、收货人、收获地址、快递编号的模糊查询
      * @return
      */
     @ResponseBody
@@ -148,6 +149,7 @@ public class OrderController {
 
     /**
      * 卖家获取已销售的订单列表，分状态显示，若无搜索条件，则KeyWord设为空字符，分页查询返回
+     * 支持订单号、付款编号、收货人、收获地址、快递编号的模糊查询
      * @return
      */
     @ResponseBody

@@ -27,22 +27,7 @@
     from sft_order_item
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sft_order_item
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
-    insert into sft_order_item (id, order_id, goods_id, 
-      goods_name, goods_cover_image, cart_num, 
-      shop_id, tag, buy_price, 
-      buy_num, total_money, create_time
-      )
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
-      #{goodsName,jdbcType=VARCHAR}, #{goodsCoverImage,jdbcType=VARCHAR}, #{cartNum,jdbcType=VARCHAR}, 
-      #{shopId,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, #{buyPrice,jdbcType=BIGINT}, 
-      #{buyNum,jdbcType=INTEGER}, #{totalMoney,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
+
   <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
     insert into sft_order_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -122,7 +107,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
+    <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
     update sft_order_item
     <set >
       <if test="orderId != null" >
@@ -161,19 +146,34 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderItem" >
-    update sft_order_item
-    set order_id = #{orderId,jdbcType=VARCHAR},
-      goods_id = #{goodsId,jdbcType=VARCHAR},
-      goods_name = #{goodsName,jdbcType=VARCHAR},
-      goods_cover_image = #{goodsCoverImage,jdbcType=VARCHAR},
-      cart_num = #{cartNum,jdbcType=VARCHAR},
-      shop_id = #{shopId,jdbcType=VARCHAR},
-      tag = #{tag,jdbcType=VARCHAR},
-      buy_price = #{buyPrice,jdbcType=BIGINT},
-      buy_num = #{buyNum,jdbcType=INTEGER},
-      total_money = #{totalMoney,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
+  <insert id="insertOrderItems">
+    insert into sft_order_item (id, order_id, goods_id,
+      goods_name, goods_cover_image, cart_num,
+      shop_id, tag, buy_price,
+      buy_num, total_money, create_time
+      )
+    values
+    <foreach collection="list" item="orderItem" separator="," close=";">
+    (<if test="orderItem.id != null" >
+      #{orderItem.id,jdbcType=BIGINT},
+    </if>
+      <if test="orderItem.orderId != null" >#{orderItem.orderId,jdbcType=VARCHAR},</if>
+      <if test="orderItem.goodsId != null" >#{orderItem.goodsId,jdbcType=VARCHAR},</if>
+      <if test="orderItem.goodsName != null" >#{orderItem.goodsName,jdbcType=VARCHAR},</if>
+      <if test="orderItem.goodsCoverImage != null" >#{orderItem.goodsCoverImage,jdbcType=VARCHAR},</if>
+      <if test="orderItem.cartNum != null" >#{orderItem.cartNum,jdbcType=VARCHAR},</if>
+      <if test="orderItem.shopId != null" >#{orderItem.shopId,jdbcType=VARCHAR},</if>
+      <if test="orderItem.tag != null" >#{orderItem.tag,jdbcType=VARCHAR},</if>
+      <if test="orderItem.buyPrice != null" >#{orderItem.buyPrice,jdbcType=BIGINT},</if>
+      <if test="orderItem.buyNum != null" >#{orderItem.buyNum,jdbcType=INTEGER},</if>
+      <if test="orderItem.totalMoney != null" >#{orderItem.totalMoney,jdbcType=BIGINT},</if>
+      <if test="orderItem.createTime != null" >#{orderItem.createTime,jdbcType=TIMESTAMP},</if>
+  </foreach>
+  </insert>
+
+  <select id="selectOrderItemListByOrderId" resultType="top.wwf.modules.order.entity.SFTOrderItem">
+    select <include refid="Base_Column_List"/>
+    from sft_order_item where order_id=#{orderId} order by id
+  </select>
 </mapper>

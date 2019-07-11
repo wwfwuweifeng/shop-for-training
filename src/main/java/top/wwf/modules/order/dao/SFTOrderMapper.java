@@ -1,11 +1,11 @@
 package top.wwf.modules.order.dao;
 
 import top.wwf.modules.order.entity.SFTOrder;
+import top.wwf.modules.order.vo.OrderSimpleInfoVO;
+
+import java.util.List;
 
 public interface SFTOrderMapper {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(SFTOrder record);
 
     int insertSelective(SFTOrder record);
 
@@ -13,5 +13,19 @@ public interface SFTOrderMapper {
 
     int updateByPrimaryKeySelective(SFTOrder record);
 
-    int updateByPrimaryKey(SFTOrder record);
+    List<SFTOrder> selectNotFinishSellOrderListByShopId(String shopId,int dealState,int cancelState);
+
+    List<SFTOrder> selectNotFinishBuyOrderListByUserId(String userId, int dealState, int cancelState);
+
+    void insertOrders(List<SFTOrder> orderList);
+
+    SFTOrder selectByOrderIdAndBuyerId(String orderId, String buyerId);
+
+    SFTOrder selectByOrderIdAndShopId(String orderId, String shopId);
+
+    SFTOrder selectByOrderId(String orderId);
+
+    List<SFTOrder> selectListByShopIdAndStateAndKeyword(String shopId, int state, String keyword);
+
+    List<SFTOrder> selectListByBuyerIdAndStateAndKeyword(String buyerId, int state, String keyword);
 }
