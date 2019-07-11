@@ -49,13 +49,27 @@ public class GoodsService {
         return PageBean.createByPage(goodsList);
     }
 
+    /**
+     * 支持商品名、商品分类、商品标签的模糊查询
+     * @param session
+     * @param state
+     * @param keyWord
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public PageBean<SFTGoods> getGoodsListBySeller(MySession session, int state, String keyWord, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<SFTGoods> goodsList=goodsDao.getGoodsListForSeller(state,keyWord,session.getUserId());
+        List<SFTGoods> goodsList=goodsDao.getGoodsListForSeller(state,keyWord,session.getShopId());
         return PageBean.createByPage(goodsList);
     }
 
+    /**
+     * 支持商品名、商店名、商品分类、商品标签的模糊查询
+     * @param goodsId
+     * @return
+     */
     public GoodsDetailForBuyerVO getGoodsDetailByBuyer(String goodsId) {
         SFTGoods goods=goodsDao.getGoodsByGoodsId(goodsId);
         if (null==goods) {

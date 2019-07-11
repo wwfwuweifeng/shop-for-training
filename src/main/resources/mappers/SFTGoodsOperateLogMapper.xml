@@ -18,16 +18,7 @@
     from sft_goods_operate_log
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sft_goods_operate_log
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
-    insert into sft_goods_operate_log (id, goods_id, operate_time, 
-      operate_type)
-    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
-      #{operateType,jdbcType=VARCHAR})
-  </insert>
+
   <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
     insert into sft_goods_operate_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -74,11 +65,10 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoodsOperateLog" >
-    update sft_goods_operate_log
-    set goods_id = #{goodsId,jdbcType=VARCHAR},
-      operate_time = #{operateTime,jdbcType=TIMESTAMP},
-      operate_type = #{operateType,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
+  <select id="selectListByGoodsId" resultType="top.wwf.modules.goods.entity.SFTGoodsOperateLog">
+    select <include refid="Base_Column_List"/>
+    from sft_goods_operate_log where goods_id=#{goodsId} order by operate_time desc
+  </select>
+
 </mapper>

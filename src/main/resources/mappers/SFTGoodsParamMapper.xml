@@ -19,16 +19,12 @@
     from sft_goods_param
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sft_goods_param
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
-    insert into sft_goods_param (id, goods_id, param_name, 
-      param_value, create_time)
-    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=VARCHAR}, #{paramName,jdbcType=VARCHAR}, 
-      #{paramValue,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
-  </insert>
+
   <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
     insert into sft_goods_param
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -84,12 +80,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
-    update sft_goods_param
-    set goods_id = #{goodsId,jdbcType=VARCHAR},
-      param_name = #{paramName,jdbcType=VARCHAR},
-      param_value = #{paramValue,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+  <select id="selectListByGoodsId" resultType="top.wwf.modules.goods.entity.SFTGoodsParam">
+    select <include refid="Base_Column_List"/>
+    from sft_goods_param where goods_id=#{goodsId}
+  </select>
 </mapper>

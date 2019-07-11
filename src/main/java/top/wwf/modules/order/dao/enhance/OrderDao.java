@@ -1,5 +1,6 @@
 package top.wwf.modules.order.dao.enhance;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import top.wwf.modules.order.dao.SFTOrderItemMapper;
@@ -101,10 +102,12 @@ public class OrderDao {
 
 
     public List<SFTOrder> getOrderListByShopIdAndStateAndKeyword(String shopId, int state, String keyword) {
+        if (StringUtils.isBlank(keyword)){keyword=null;}
         return orderMapper.selectListByShopIdAndStateAndKeyword(shopId,state,keyword);
     }
 
     public List<SFTOrder> getOrderListByBuyerIdAndStateAndKeyword(String buyerId, int state, String keyword) {
+        if (StringUtils.isBlank(keyword)){keyword=null;}
         return orderMapper.selectListByBuyerIdAndStateAndKeyword(buyerId,state,keyword);
     }
 }

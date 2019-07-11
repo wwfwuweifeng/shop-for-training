@@ -2,10 +2,12 @@ package top.wwf.modules.goods.dao;
 
 import top.wwf.modules.goods.entity.SFTGoodsClassify;
 
+import java.util.List;
+
 public interface SFTGoodsClassifyMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(SFTGoodsClassify record);
+
 
     int insertSelective(SFTGoodsClassify record);
 
@@ -13,5 +15,8 @@ public interface SFTGoodsClassifyMapper {
 
     int updateByPrimaryKeySelective(SFTGoodsClassify record);
 
-    int updateByPrimaryKey(SFTGoodsClassify record);
+
+    List<SFTGoodsClassify> selectFirstGoodsClassifyList();
+
+    List<SFTGoodsClassify> selectSecondClassifyListByParentClassifyId(Long parentClassifyId);
 }

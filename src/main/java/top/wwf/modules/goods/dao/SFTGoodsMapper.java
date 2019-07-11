@@ -1,11 +1,12 @@
 package top.wwf.modules.goods.dao;
 
+import org.apache.ibatis.annotations.Param;
 import top.wwf.modules.goods.entity.SFTGoods;
 
-public interface SFTGoodsMapper {
-    int deleteByPrimaryKey(Long id);
+import java.util.List;
 
-    int insert(SFTGoods record);
+public interface SFTGoodsMapper {
+
 
     int insertSelective(SFTGoods record);
 
@@ -13,5 +14,16 @@ public interface SFTGoodsMapper {
 
     int updateByPrimaryKeySelective(SFTGoods record);
 
-    int updateByPrimaryKey(SFTGoods record);
+
+    SFTGoods selectByGoodsId(String goodsId);
+
+    List<SFTGoods> selectByGoodsIdListAndState(@Param("goodsIds")List<String> goodsIdList, @Param("state") int state);
+
+    List<SFTGoods> selectListByStateAndClassifyIdAndKeyword(int state, Long classifyId, String keyword);
+
+    List<SFTGoods> selectListByStateAndShopIdAndKeyword(int state, String shopId, String keyword);
+
+    void updateStateByShopId(int state, String shopId);
+
+    List<SFTGoods> selectSimpleInfoListByGoodsIdList(List<String> goodsIdList);
 }

@@ -35,26 +35,7 @@
     from sft_goods
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sft_goods
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoods" >
-    insert into sft_goods (id, goods_id, name, 
-      classify_id, classify_name, cover_image, 
-      remain_num, sell_num, shop_id, 
-      shop_name, shop_owner_id, tag, 
-      detail, price, state, 
-      is_sell_by_shop, is_sell_by_manager, create_time, 
-      update_time)
-    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{classifyId,jdbcType=BIGINT}, #{classifyName,jdbcType=VARCHAR}, #{coverImage,jdbcType=VARCHAR}, 
-      #{remainNum,jdbcType=INTEGER}, #{sellNum,jdbcType=INTEGER}, #{shopId,jdbcType=VARCHAR}, 
-      #{shopName,jdbcType=VARCHAR}, #{shopOwnerId,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
-      #{detail,jdbcType=VARCHAR}, #{price,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, 
-      #{isSellByShop,jdbcType=INTEGER}, #{isSellByManager,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
+
   <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoods" >
     insert into sft_goods
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -236,26 +217,53 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoods" >
-    update sft_goods
-    set goods_id = #{goodsId,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      classify_id = #{classifyId,jdbcType=BIGINT},
-      classify_name = #{classifyName,jdbcType=VARCHAR},
-      cover_image = #{coverImage,jdbcType=VARCHAR},
-      remain_num = #{remainNum,jdbcType=INTEGER},
-      sell_num = #{sellNum,jdbcType=INTEGER},
-      shop_id = #{shopId,jdbcType=VARCHAR},
-      shop_name = #{shopName,jdbcType=VARCHAR},
-      shop_owner_id = #{shopOwnerId,jdbcType=VARCHAR},
-      tag = #{tag,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=VARCHAR},
-      price = #{price,jdbcType=BIGINT},
-      state = #{state,jdbcType=INTEGER},
-      is_sell_by_shop = #{isSellByShop,jdbcType=INTEGER},
-      is_sell_by_manager = #{isSellByManager,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <select id="selectByGoodsId" resultType="top.wwf.modules.goods.entity.SFTGoods">
+    select <include refid="Base_Column_List"/>
+    from sft_goods where goods_id=#{goodsId}
+  </select>
+  <select id="selectByGoodsIdListAndState" resultType="top.wwf.modules.goods.entity.SFTGoods">
+    select <include refid="Base_Column_List"/>
+    from sft_goods where state=#{state} and  goods_id in
+        <foreach collection="goodsIds" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+  </select>
+  <select id="selectListByStateAndClassifyIdAndKeyword" resultType="top.wwf.modules.goods.entity.SFTGoods">
+    select <include refid="Base_Column_List"/>
+    from sft_goods where state=#{param1}
+    <if test="param2 != 0"> and classify_id=#{param2}</if>
+     <if test="param3 != null">
+       and (
+       name like "%"#{param3}"%" or
+       classify_name like "%"#{param3}"%" or
+       shop_name like "%"#{param3}"%" or
+       tag like "%"#{param3}"%"
+       )
+     </if>
+     order by sell_num desc
+  </select>
+    <select id="selectListByStateAndShopIdAndKeyword" resultType="top.wwf.modules.goods.entity.SFTGoods">
+        select <include refid="Base_Column_List"/>
+        from sft_goods where shop_id=#{param2}
+        <if test="param1 != 0"> and state=#{param1}</if>
+        <if test="param3 != null">
+            and (
+            name like "%"#{param3}"%" or
+            classify_name like "%"#{param3}"%" or
+            tag like "%"#{param3}"%"
+            )
+        </if>
+        order by update_time desc
+    </select>
+    <select id="selectSimpleInfoListByGoodsIdList" resultType="top.wwf.modules.goods.entity.SFTGoods">
+        select id,state,shop_name,price,remain_num,sell_num,goods_id,"name",cover_image,tag
+        from sft_goods where goods_id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="updateStateByShopId">
+        update sft_goods set state=#{param1} where shop_id=#{param2}
+    </update>
 </mapper>

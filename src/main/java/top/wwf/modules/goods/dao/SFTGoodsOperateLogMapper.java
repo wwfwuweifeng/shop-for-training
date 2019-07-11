@@ -1,11 +1,14 @@
 package top.wwf.modules.goods.dao;
 
+import top.wwf.modules.goods.entity.SFTGoodsClassify;
 import top.wwf.modules.goods.entity.SFTGoodsOperateLog;
 
-public interface SFTGoodsOperateLogMapper {
-    int deleteByPrimaryKey(Long id);
+import java.util.List;
 
-    int insert(SFTGoodsOperateLog record);
+public interface SFTGoodsOperateLogMapper {
+
+
+
 
     int insertSelective(SFTGoodsOperateLog record);
 
@@ -13,5 +16,7 @@ public interface SFTGoodsOperateLogMapper {
 
     int updateByPrimaryKeySelective(SFTGoodsOperateLog record);
 
-    int updateByPrimaryKey(SFTGoodsOperateLog record);
+    List<SFTGoodsOperateLog> selectListByGoodsId(String goodsId);
+
+
 }

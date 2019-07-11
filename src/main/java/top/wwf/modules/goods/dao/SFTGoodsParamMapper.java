@@ -2,10 +2,11 @@ package top.wwf.modules.goods.dao;
 
 import top.wwf.modules.goods.entity.SFTGoodsParam;
 
+import java.util.List;
+
 public interface SFTGoodsParamMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(SFTGoodsParam record);
 
     int insertSelective(SFTGoodsParam record);
 
@@ -13,5 +14,5 @@ public interface SFTGoodsParamMapper {
 
     int updateByPrimaryKeySelective(SFTGoodsParam record);
 
-    int updateByPrimaryKey(SFTGoodsParam record);
+    List<SFTGoodsParam> selectListByGoodsId(String goodsId);
 }

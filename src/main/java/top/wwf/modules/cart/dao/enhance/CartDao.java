@@ -18,11 +18,11 @@ public class CartDao {
     private SFTCartMapper cartMapper;
 
     public SFTCart getCartByUserIdAndGoodsId(String userId, String goodsId) {
-        return null;
+        return cartMapper.selectByUserIdAndGoodsId(userId,goodsId);
     }
 
     public void addGoodsToCart(SFTCart cart) {
-
+        cartMapper.insertSelective(cart);
     }
 
     /**
@@ -31,13 +31,14 @@ public class CartDao {
      * @return
      */
     public List<String> getGoodsIdListInCartByUserId(String userId) {
-        return null;
+        return cartMapper.selectGoodsIdListByUserId(userId);
     }
 
     public void delGoodsFromCartByPrimaryKey(SFTCart cart) {
-
+        cartMapper.deleteByPrimaryKey(cart.getId());
     }
 
-    public void delGoodsFromCartByUserIdAndGoodsIdList(String userId, Object o) {
+    public void delGoodsFromCartByUserIdAndGoodsIdList(String userId, List<String>  goodsIdList) {
+        cartMapper.deleteByUserIdAndGoodsIdList(userId,goodsIdList);
     }
 }

@@ -307,7 +307,7 @@ public class UserService {
             userPersonalInfo.setIsDelete(Const.YES);
             userDao.updateUserPersonalInfoByUserId(userPersonalInfo);
             //下架该用户销售的所有商品
-            goodsDao.lowerShelfGoodsByUserId(GoodsConst.STATE.LOWER_SHELF.getKey(), userSysInfo.getUserId());
+            goodsDao.lowerShelfGoodsByShopId(GoodsConst.STATE.LOWER_SHELF.getKey(), userSysInfo.getShopId());
 
         }
 

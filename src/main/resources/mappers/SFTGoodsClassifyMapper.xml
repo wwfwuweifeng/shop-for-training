@@ -19,16 +19,11 @@
     from sft_goods_classify
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sft_goods_classify
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
-    insert into sft_goods_classify (id, parent_classify_id, classify_name, 
-      cover_image, create_time)
-    values (#{id,jdbcType=BIGINT}, #{parentClassifyId,jdbcType=BIGINT}, #{classifyName,jdbcType=VARCHAR}, 
-      #{coverImage,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
-  </insert>
+
   <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
     insert into sft_goods_classify
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -84,12 +79,14 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
-    update sft_goods_classify
-    set parent_classify_id = #{parentClassifyId,jdbcType=BIGINT},
-      classify_name = #{classifyName,jdbcType=VARCHAR},
-      cover_image = #{coverImage,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
+  <select id="selectFirstGoodsClassifyList" resultType="top.wwf.modules.goods.entity.SFTGoodsClassify">
+    select <include refid="Base_Column_List"/>
+    from sft_goods_classify where parent_classify_id=0 order by create_time
+  </select>
+  <select id="selectSecondClassifyListByParentClassifyId" resultType="top.wwf.modules.goods.entity.SFTGoodsClassify">
+    select <include refid="Base_Column_List"/>
+    from sft_goods_classify where parent_classify_id=#{parentClassifyId} order by create_time
+  </select>
+
 </mapper>

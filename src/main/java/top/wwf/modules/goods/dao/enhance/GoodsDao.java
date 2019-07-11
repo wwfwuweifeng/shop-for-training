@@ -1,8 +1,8 @@
 package top.wwf.modules.goods.dao.enhance;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import top.wwf.common.consts.Const;
 import top.wwf.modules.goods.dao.SFTGoodsClassifyMapper;
 import top.wwf.modules.goods.dao.SFTGoodsMapper;
 import top.wwf.modules.goods.dao.SFTGoodsOperateLogMapper;
@@ -31,7 +31,7 @@ public class GoodsDao {
     private SFTGoodsOperateLogMapper goodsOperateLogMapper;
 
     public SFTGoods getGoodsByGoodsId(String goodsId) {
-        return null;
+        return goodsMapper.selectByGoodsId(goodsId);
     }
 
     /**
@@ -40,47 +40,41 @@ public class GoodsDao {
      * @return
      */
     public List<SFTGoods> getOnSellGoodsByGoodsIdList(List<String> goodsIdList,int state) {
-        return null;
+        return goodsMapper.selectByGoodsIdListAndState(goodsIdList,state);
     }
 
     /**
      * order by sellNum
      * @param classifyId
-     * @param keyWord
-     * @param userId   商品出售商家的id不能与此相同，预留参数，暂时不使用
+     * @param keyword
+     * @param userId   商品出售商家的id不能与此相同，预留参数，当前暂不使用
      * @param state
      * @return
      */
-    public List<SFTGoods> getGoodsListForBuyer(Long classifyId, String keyWord, String userId, int state) {
-        return null;
+    public List<SFTGoods> getGoodsListForBuyer(Long classifyId, String keyword, String userId, int state) {
+        if (StringUtils.isBlank(keyword)){keyword=null;}
+        return goodsMapper.selectListByStateAndClassifyIdAndKeyword(state, classifyId, keyword);
     }
 
     /**
      * order by updateTime
      * @param state 商品状态，sql进行实现，前端有时间再补上
-     * @param keyWord
-     * @param userId
+     * @param keyword
+     * @param shopId
      * @return
      */
-    public List<SFTGoods> getGoodsListForSeller(int state, String keyWord, String userId) {
-        return null;
+    public List<SFTGoods> getGoodsListForSeller(int state, String shopId,String keyword) {
+        if (StringUtils.isBlank(keyword)){keyword=null;}
+        return goodsMapper.selectListByStateAndShopIdAndKeyword(state,shopId,keyword);
     }
 
-    /**
-     * 下架某个用户的所有销售商品
-     * @param state 下架商品需要设置的状态
-     * @param userId
-     */
-    public void lowerShelfGoodsByUserId(int state, String userId) {
-
-    }
 
     public void updateGoodsByPrimaryKey(SFTGoods goods) {
-
+        goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
     public void addGoodsOperateLog(SFTGoodsOperateLog goodsOperateLog) {
-
+        goodsOperateLogMapper.insertSelective(goodsOperateLog);
     }
 
     /**
@@ -89,7 +83,7 @@ public class GoodsDao {
      * @return
      */
     public List<SFTGoodsOperateLog> getGoodsOperateLogListByGoodsId(String goodsId) {
-        return null;
+        return goodsOperateLogMapper.selectListByGoodsId(goodsId);
     }
 
     /**
@@ -98,7 +92,7 @@ public class GoodsDao {
      * @return
      */
     public List<SFTGoodsClassify> getFirstGoodsClassifyList() {
-        return null;
+        return goodsClassifyMapper.selectFirstGoodsClassifyList();
     }
 
     /**
@@ -107,16 +101,17 @@ public class GoodsDao {
      * @return
      */
     public List<SFTGoodsClassify> getSecondClassifyListByParentClassifyId(Long parentClassifyId) {
-        return null;
+        return goodsClassifyMapper.selectSecondClassifyListByParentClassifyId(parentClassifyId);
     }
 
     /**
+     * 如果为空会不会报错？？？？忘了
      * 获取购物车中显示的商品信息，只获取需要的字段，其中主键id,数量和状态必须要有
      * @param goodsIdList
      * @return
      */
     public List<SFTGoods> getSimpleGoodsInfoListByGoodsIdList(List<String> goodsIdList) {
-        return null;
+        return goodsMapper.selectSimpleInfoListByGoodsIdList(goodsIdList);
     }
 
     /**
@@ -125,6 +120,15 @@ public class GoodsDao {
      * @return
      */
     public List<SFTGoodsParam> getGoodsParamListByGoodsId(String goodsId) {
-        return null;
+        return goodsParamMapper.selectListByGoodsId(goodsId);
+    }
+
+    /**
+     * 下架某个商店的所有销售商品
+     * @param state 下架商品需要设置的状态
+     * @param shopId
+     */
+    public void lowerShelfGoodsByShopId(int state, String shopId) {
+        goodsMapper.updateStateByShopId(state,shopId);
     }
 }
