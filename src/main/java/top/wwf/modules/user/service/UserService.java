@@ -1,6 +1,7 @@
 package top.wwf.modules.user.service;
 
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -325,7 +326,17 @@ public class UserService {
             throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");
         }
         PageHelper.startPage(pageNum,pageSize);
-        List<RegisterUserVO> registerUserVOList=userDao.getUserListWithoutManager();
+        List<RegisterUserVO> registerUserVOList= Lists.newLinkedList();
+        List<SFTUserSysInfo> userSysInfoList= userDao.getUserListWithoutManager(Const.USER_ROLE.MANAGER.getKey());
+        RegisterUserVO registerUserVO;
+        for (SFTUserSysInfo userSysInfo:userSysInfoList){
+            registerUserVO=new RegisterUserVO();
+            registerUserVO.setUserRole(Const.USER_ROLE.getRoleByKey(userSysInfo.getUserRole()).getDesc());
+            registerUserVO.setCodeUsedTime(userSysInfo.getCodeUsedTime());
+            registerUserVO.setUserName(userSysInfo.getUserName());
+            registerUserVO.setRegisterCode(registerUserVO.getRegisterCode());
+            registerUserVOList.add(registerUserVO);
+        }
         return PageBean.createByPage(registerUserVOList);
 
     }

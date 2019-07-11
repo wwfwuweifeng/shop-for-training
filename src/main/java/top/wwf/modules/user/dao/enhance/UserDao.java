@@ -6,7 +6,6 @@ import top.wwf.modules.user.dao.SFTUserSysInfoMapper;
 import top.wwf.modules.user.dao.SFTUserPersonalInfoMapper;
 import top.wwf.modules.user.entity.SFTUserPersonalInfo;
 import top.wwf.modules.user.entity.SFTUserSysInfo;
-import top.wwf.modules.user.vo.RegisterUserVO;
 
 import java.util.List;
 
@@ -23,46 +22,45 @@ public class UserDao {
     @Autowired
     private SFTUserSysInfoMapper userSysInfoMapper;
 
-    public SFTUserSysInfo getUserSysInfoByOpenId(String openid) {
-        return null;
+    public SFTUserSysInfo getUserSysInfoByOpenId(String openId) {
+        return userSysInfoMapper.selectByOpenId(openId);
     }
 
     public SFTUserPersonalInfo getUserPersonalInfoByUserId(String userId) {
-        return null;
+        return userPersonalInfoMapper.selectByUserId(userId);
     }
 
     public SFTUserSysInfo getUserSysInfoByAccountAndPassword(String account, String password) {
-        return null;
+        return userSysInfoMapper.selectByAccountAndPassword(account,password);
     }
-
 
 
     public void updateUserPersonalInfoByUserId(SFTUserPersonalInfo userPersonalInfo) {
-
+        userPersonalInfoMapper.updateByUserId(userPersonalInfo);
     }
 
     public SFTUserPersonalInfo getUserPersonalInfoByShopName(String shopName) {
-        return null;
+        return userPersonalInfoMapper.selectByShopName(shopName);
     }
 
     public void addUserSysInfo(SFTUserSysInfo userSysInfo) {
-
+        userSysInfoMapper.insertSelective(userSysInfo);
     }
 
     public SFTUserSysInfo getUserSysInfoByRegisterCode(String registerCode) {
-        return null;
+        return userSysInfoMapper.selectByRegisterCode(registerCode);
     }
 
     public void updateUserSysInfoByPrimaryKey(SFTUserSysInfo userSysInfo) {
-
+        userSysInfoMapper.updateByPrimaryKeySelective(userSysInfo);
     }
 
     public void addUserPersonalInfo(SFTUserPersonalInfo userPersonalInfo) {
-
+        userPersonalInfoMapper.insertSelective(userPersonalInfo);
     }
 
     //记得isDelete的字段设为0
-    public List<RegisterUserVO> getUserListWithoutManager() {
-        return null;
+    public List<SFTUserSysInfo> getUserListWithoutManager(int managerRole) {
+        return userSysInfoMapper.selectUserListWithoutManager(managerRole);
     }
 }

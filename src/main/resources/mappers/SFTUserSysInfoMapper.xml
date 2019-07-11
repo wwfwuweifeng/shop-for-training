@@ -29,22 +29,7 @@
     from sft_user_sys_info
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sft_user_sys_info
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="top.wwf.modules.user.entity.SFTUserSysInfo" >
-    insert into sft_user_sys_info (id, user_id, open_id, 
-      account, password, session_key, 
-      register_code, user_role, user_name, 
-      code_used_time, shop_id, is_delete, 
-      create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, 
-      #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sessionKey,jdbcType=VARCHAR}, 
-      #{registerCode,jdbcType=VARCHAR}, #{userRole,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
-      #{codeUsedTime,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
+
   <insert id="insertSelective" parameterType="top.wwf.modules.user.entity.SFTUserSysInfo" >
     insert into sft_user_sys_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -181,21 +166,20 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.user.entity.SFTUserSysInfo" >
-    update sft_user_sys_info
-    set user_id = #{userId,jdbcType=VARCHAR},
-      open_id = #{openId,jdbcType=VARCHAR},
-      account = #{account,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      session_key = #{sessionKey,jdbcType=VARCHAR},
-      register_code = #{registerCode,jdbcType=VARCHAR},
-      user_role = #{userRole,jdbcType=INTEGER},
-      user_name = #{userName,jdbcType=VARCHAR},
-      code_used_time = #{codeUsedTime,jdbcType=VARCHAR},
-      shop_id = #{shopId,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+  <select id="selectByOpenId" resultType="top.wwf.modules.user.entity.SFTUserSysInfo">
+    select <include refid="Base_Column_List"/>
+    from sft_user_sys_info where open_id=#{openId}
+  </select>
+  <select id="selectByAccountAndPassword" resultType="top.wwf.modules.user.entity.SFTUserSysInfo">
+    select <include refid="Base_Column_List"/>
+    from sft_user_sys_info where account=#{param1} and password=#{param2}
+  </select>
+  <select id="selectByRegisterCode" resultType="top.wwf.modules.user.entity.SFTUserSysInfo">
+    select <include refid="Base_Column_List"/>
+    from sft_user_sys_info where register_code=#{registerCode}
+  </select>
+  <select id="selectUserListWithoutManager" resultType="top.wwf.modules.user.entity.SFTUserSysInfo">
+    select <include refid="Base_Column_List"/>
+    from sft_user_sys_info where user_role!=#{managerRole} and is_delete=0
+  </select>
 </mapper>

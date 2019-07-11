@@ -1,11 +1,9 @@
 package top.wwf.modules.user.dao;
 
 import top.wwf.modules.user.entity.SFTUserPersonalInfo;
+import top.wwf.modules.user.entity.SFTUserSysInfo;
 
 public interface SFTUserPersonalInfoMapper {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(SFTUserPersonalInfo record);
 
     int insertSelective(SFTUserPersonalInfo record);
 
@@ -13,5 +11,10 @@ public interface SFTUserPersonalInfoMapper {
 
     int updateByPrimaryKeySelective(SFTUserPersonalInfo record);
 
-    int updateByPrimaryKey(SFTUserPersonalInfo record);
+
+    SFTUserPersonalInfo selectByUserId(String userId);
+
+    void updateByUserId(SFTUserPersonalInfo userPersonalInfo);
+
+    SFTUserPersonalInfo selectByShopName(String shopName);
 }

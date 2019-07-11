@@ -2,10 +2,9 @@ package top.wwf.modules.user.dao;
 
 import top.wwf.modules.user.entity.SFTUserSysInfo;
 
-public interface SFTUserSysInfoMapper {
-    int deleteByPrimaryKey(Long id);
+import java.util.List;
 
-    int insert(SFTUserSysInfo record);
+public interface SFTUserSysInfoMapper {
 
     int insertSelective(SFTUserSysInfo record);
 
@@ -13,5 +12,12 @@ public interface SFTUserSysInfoMapper {
 
     int updateByPrimaryKeySelective(SFTUserSysInfo record);
 
-    int updateByPrimaryKey(SFTUserSysInfo record);
+
+    SFTUserSysInfo selectByOpenId(String openId);
+
+    SFTUserSysInfo selectByAccountAndPassword(String account, String password);
+
+    SFTUserSysInfo selectByRegisterCode(String registerCode);
+
+    List<SFTUserSysInfo> selectUserListWithoutManager(int managerRole);
 }
