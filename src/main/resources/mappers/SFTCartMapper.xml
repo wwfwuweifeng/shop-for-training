@@ -6,34 +6,35 @@
       <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="goods_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="shop_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="checked" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="num" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, goods_id, checked, num, create_time
+    id, user_id, goods_id, shop_id, checked, num, create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from stf_cart
+    from sft_cart
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from stf_cart
+    delete from sft_cart
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="top.wwf.modules.cart.entity.SFTCart" >
-    insert into stf_cart (id, user_id, goods_id, 
-      checked, num, create_time
-      )
+    insert into sft_cart (id, user_id, goods_id, 
+      shop_id, checked, num, 
+      create_time)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
-      #{checked,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{shopId,jdbcType=VARCHAR}, #{checked,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="top.wwf.modules.cart.entity.SFTCart" >
-    insert into stf_cart
+    insert into sft_cart
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -43,6 +44,9 @@
       </if>
       <if test="goodsId != null" >
         goods_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
       </if>
       <if test="checked != null" >
         checked,
@@ -64,6 +68,9 @@
       <if test="goodsId != null" >
         #{goodsId,jdbcType=VARCHAR},
       </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
       <if test="checked != null" >
         #{checked,jdbcType=INTEGER},
       </if>
@@ -76,13 +83,16 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.cart.entity.SFTCart" >
-    update stf_cart
+    update sft_cart
     <set >
       <if test="userId != null" >
         user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="goodsId != null" >
         goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
       </if>
       <if test="checked != null" >
         checked = #{checked,jdbcType=INTEGER},
@@ -97,9 +107,10 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wwf.modules.cart.entity.SFTCart" >
-    update stf_cart
+    update sft_cart
     set user_id = #{userId,jdbcType=VARCHAR},
       goods_id = #{goodsId,jdbcType=VARCHAR},
+      shop_id = #{shopId,jdbcType=VARCHAR},
       checked = #{checked,jdbcType=INTEGER},
       num = #{num,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}

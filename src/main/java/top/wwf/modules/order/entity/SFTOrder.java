@@ -1,15 +1,21 @@
 package top.wwf.modules.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import top.wwf.common.base.DateYMDHMSJsonSerializer;
+
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTOrder {
+    @JsonIgnore
     private Long id;
 
     private String orderId;
 
     private String cartNum;
-
-    private String userId;
+    @JsonIgnore
+    private String buyerId;
 
     private String shopId;
 
@@ -20,7 +26,7 @@ public class SFTOrder {
     private Integer state;
 
     private String payId;
-
+    @JsonSerialize(using = DateYMDHMSJsonSerializer.class)
     private Date createTime;
 
     private String payTime;
@@ -29,15 +35,19 @@ public class SFTOrder {
 
     private String dealTime;
 
-    private String expressNum;
+    private String receiverPeople;
 
+    private String receiverAddress;
+
+    private String expressNum;
+    @JsonIgnore
     private Date updateTime;
 
-    public SFTOrder(Long id, String orderId, String cartNum, String userId, String shopId, String shopName, Long orderTotalMoney, Integer state, String payId, Date createTime, String payTime, String sendTime, String dealTime, String expressNum, Date updateTime) {
+    public SFTOrder(Long id, String orderId, String cartNum, String buyerId, String shopId, String shopName, Long orderTotalMoney, Integer state, String payId, Date createTime, String payTime, String sendTime, String dealTime, String receiverPeople, String receiverAddress, String expressNum, Date updateTime) {
         this.id = id;
         this.orderId = orderId;
         this.cartNum = cartNum;
-        this.userId = userId;
+        this.buyerId = buyerId;
         this.shopId = shopId;
         this.shopName = shopName;
         this.orderTotalMoney = orderTotalMoney;
@@ -47,6 +57,8 @@ public class SFTOrder {
         this.payTime = payTime;
         this.sendTime = sendTime;
         this.dealTime = dealTime;
+        this.receiverPeople = receiverPeople;
+        this.receiverAddress = receiverAddress;
         this.expressNum = expressNum;
         this.updateTime = updateTime;
     }
@@ -79,12 +91,12 @@ public class SFTOrder {
         this.cartNum = cartNum == null ? null : cartNum.trim();
     }
 
-    public String getUserId() {
-        return userId;
+    public String getBuyerId() {
+        return buyerId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+    public void setBuyerId(String buyerId) {
+        this.buyerId = buyerId == null ? null : buyerId.trim();
     }
 
     public String getShopId() {
@@ -159,6 +171,22 @@ public class SFTOrder {
         this.dealTime = dealTime == null ? null : dealTime.trim();
     }
 
+    public String getReceiverPeople() {
+        return receiverPeople;
+    }
+
+    public void setReceiverPeople(String receiverPeople) {
+        this.receiverPeople = receiverPeople == null ? null : receiverPeople.trim();
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress == null ? null : receiverAddress.trim();
+    }
+
     public String getExpressNum() {
         return expressNum;
     }
@@ -173,22 +201,5 @@ public class SFTOrder {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public void setReceiverPeople(String receiverPeople) {
-
-    }
-    public String getReceiverAddress(){
-        return null;
-    }
-
-
-
-    public void setReceiverAddress(String receiverAddress) {
-
-    }
-
-    public String getReceiverPeople() {
-        return "";
     }
 }

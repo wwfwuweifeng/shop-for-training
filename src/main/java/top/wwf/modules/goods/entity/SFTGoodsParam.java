@@ -1,8 +1,12 @@
 package top.wwf.modules.goods.entity;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.util.Date;
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTGoodsParam {
+    @JsonIgnore
     private Long id;
 
     private String goodsId;
@@ -10,7 +14,7 @@ public class SFTGoodsParam {
     private String paramName;
 
     private String paramValue;
-
+    @JsonIgnore
     private Date createTime;
 
     public SFTGoodsParam(Long id, String goodsId, String paramName, String paramValue, Date createTime) {

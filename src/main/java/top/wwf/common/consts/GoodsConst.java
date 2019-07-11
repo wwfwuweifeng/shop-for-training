@@ -44,7 +44,7 @@ public class GoodsConst {
     }
 
     /**
-     * 商品的状态
+     * 商品的状态，显示字段内容是针对于商家使用的
      */
     public enum STATE {
         ON_SALE(1,"在售中",Const.YES,Const.NO,"在售中"),

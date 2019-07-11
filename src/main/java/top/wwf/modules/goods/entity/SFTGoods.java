@@ -1,9 +1,11 @@
 package top.wwf.modules.goods.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTGoods {
     @JsonIgnore
     private Long id;
@@ -25,7 +27,7 @@ public class SFTGoods {
     private String shopId;
 
     private String shopName;
-
+    @JsonIgnore
     private String shopOwnerId;
 
     private String tag;

@@ -1,5 +1,6 @@
 package top.wwf.modules.order.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
 import top.wwf.common.base.DateYMDHMSJsonSerializer;
 import top.wwf.modules.order.entity.SFTOrder;
@@ -13,6 +14,7 @@ import java.util.List;
 * @Author:         wwf（hitwh_wwf@163.com）
 * @CreateDate:     2019-07-10 15:37
 */
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class OrderInfoVO {
     private String receiverPeople;
     private String receiverAddress;

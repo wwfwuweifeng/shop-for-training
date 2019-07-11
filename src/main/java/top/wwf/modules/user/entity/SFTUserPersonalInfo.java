@@ -1,10 +1,13 @@
 package top.wwf.modules.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTUserPersonalInfo {
+
     @JsonIgnore
     private Long id;
     @JsonIgnore
@@ -23,11 +26,8 @@ public class SFTUserPersonalInfo {
     private String receiverName;
 
     private String receiverTel;
-
     private String receiverAddressSimple;
-
     private String receiverAddressDetail;
-
     private Integer haveReceiverAddress;
     @JsonIgnore
     private Integer isDelete;

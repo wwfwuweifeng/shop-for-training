@@ -1,8 +1,13 @@
 package top.wwf.modules.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTOrderItem {
+    @JsonIgnore
     private Long id;
 
     private String orderId;
@@ -13,6 +18,10 @@ public class SFTOrderItem {
 
     private String goodsCoverImage;
 
+    private String cartNum;
+
+    private String shopId;
+
     private String tag;
 
     private Long buyPrice;
@@ -20,15 +29,17 @@ public class SFTOrderItem {
     private Integer buyNum;
 
     private Long totalMoney;
-
+    @JsonIgnore
     private Date createTime;
 
-    public SFTOrderItem(Long id, String orderId, String goodsId, String goodsName, String goodsCoverImage, String tag, Long buyPrice, Integer buyNum, Long totalMoney, Date createTime) {
+    public SFTOrderItem(Long id, String orderId, String goodsId, String goodsName, String goodsCoverImage, String cartNum, String shopId, String tag, Long buyPrice, Integer buyNum, Long totalMoney, Date createTime) {
         this.id = id;
         this.orderId = orderId;
         this.goodsId = goodsId;
         this.goodsName = goodsName;
         this.goodsCoverImage = goodsCoverImage;
+        this.cartNum = cartNum;
+        this.shopId = shopId;
         this.tag = tag;
         this.buyPrice = buyPrice;
         this.buyNum = buyNum;
@@ -80,6 +91,22 @@ public class SFTOrderItem {
         this.goodsCoverImage = goodsCoverImage == null ? null : goodsCoverImage.trim();
     }
 
+    public String getCartNum() {
+        return cartNum;
+    }
+
+    public void setCartNum(String cartNum) {
+        this.cartNum = cartNum == null ? null : cartNum.trim();
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
+    }
+
     public String getTag() {
         return tag;
     }
@@ -118,13 +145,5 @@ public class SFTOrderItem {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public String getShopId() {
-        return null;
-    }
-
-    public void setCartNum(String cartNum) {
-
     }
 }

@@ -1,9 +1,11 @@
 package top.wwf.modules.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTUserSysInfo {
     @JsonIgnore
     private Long id;
@@ -11,9 +13,9 @@ public class SFTUserSysInfo {
     private String userId;
     @JsonIgnore
     private String openId;
-    @JsonIgnore
+
     private String account;
-    @JsonIgnore
+
     private String password;
     @JsonIgnore
     private String sessionKey;

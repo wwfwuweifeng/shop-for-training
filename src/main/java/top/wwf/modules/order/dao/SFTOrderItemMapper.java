@@ -2,7 +2,7 @@ package top.wwf.modules.order.dao;
 
 import top.wwf.modules.order.entity.SFTOrderItem;
 
-public interface SFTOrderItemsMapper {
+public interface SFTOrderItemMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(SFTOrderItem record);

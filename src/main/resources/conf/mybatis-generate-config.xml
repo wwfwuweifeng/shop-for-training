@@ -69,24 +69,23 @@
 
 
         <!-- 配置表名 -->
-        <!--<table tableName="mmall_product" domainObjectName="Product" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
-            <!--<columnOverride column="detail" jdbcType="VARCHAR" />-->
-            <!--<columnOverride column="sub_images" jdbcType="VARCHAR" />-->
-        <!--</table>-->
+        <table tableName="sft_order_item" domainObjectName="SFTOrderItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false"/>
+
         <!--<table tableName="sft_user_sys_info" domainObjectName="SFTUserSysInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sft_user_personal_info" domainObjectName="SFTUserPersonalInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sft_goods_classify" domainObjectName="SFTGoodsClassify" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sft_goods" domainObjectName="SFTGoods" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
             <!--<columnOverride column="detail" jdbcType="VARCHAR" />-->
         <!--</table>-->
-        <table tableName="sft_goods_operate_log" domainObjectName="SFTGoodsOperateLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <!--<table tableName="sft_goods_operate_log" domainObjectName="SFTGoodsOperateLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sft_goods_param" domainObjectName="SFTGoodsParam" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sft_order" domainObjectName="SFTOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
-        <table tableName="sft_order_operate_log" domainObjectName="SFTOrderOperateLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="sft_order_items" domainObjectName="SFTOrderItems" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <!--<table tableName="sft_order_operate_log" domainObjectName="SFTOrderOperateLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false"/>-->
+        <!--<table tableName="sft_order_items" domainObjectName="SFTOrderItems" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sft_cart" domainObjectName="SFTCart" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
                <!--enableSelectByExample="false" selectByExampleQueryId="false"/>-->
         <!--<table tableName="sft_order_pay" domainObjectName="SFTOrderPay" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->

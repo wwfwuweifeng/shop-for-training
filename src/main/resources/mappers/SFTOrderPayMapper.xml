@@ -9,8 +9,8 @@
       <arg column="cart_num" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="pay_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="order_total_price" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="order_actual_pay" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_total_price" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="order_actual_pay" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
@@ -33,9 +33,9 @@
       cart_num, user_id, pay_type, 
       order_total_price, order_actual_pay, create_time
       )
-    values (#{id,jdbcType=BIGINT}, #{payId,jdbcType=VARCHAR}, #{cartNum,jdbcType=VARCHAR},
+    values (#{id,jdbcType=BIGINT}, #{payId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
       #{cartNum,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
-      #{orderTotalPrice,jdbcType=INTEGER}, #{orderActualPay,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      #{orderTotalPrice,jdbcType=BIGINT}, #{orderActualPay,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
@@ -47,7 +47,7 @@
       <if test="payId != null" >
         pay_id,
       </if>
-      <if test="cartNum != null" >
+      <if test="orderId != null" >
         order_id,
       </if>
       <if test="cartNum != null" >
@@ -76,8 +76,8 @@
       <if test="payId != null" >
         #{payId,jdbcType=VARCHAR},
       </if>
-      <if test="cartNum != null" >
-        #{cartNum,jdbcType=VARCHAR},
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
       </if>
       <if test="cartNum != null" >
         #{cartNum,jdbcType=VARCHAR},
@@ -89,10 +89,10 @@
         #{payType,jdbcType=INTEGER},
       </if>
       <if test="orderTotalPrice != null" >
-        #{orderTotalPrice,jdbcType=INTEGER},
+        #{orderTotalPrice,jdbcType=BIGINT},
       </if>
       <if test="orderActualPay != null" >
-        #{orderActualPay,jdbcType=INTEGER},
+        #{orderActualPay,jdbcType=BIGINT},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -105,8 +105,8 @@
       <if test="payId != null" >
         pay_id = #{payId,jdbcType=VARCHAR},
       </if>
-      <if test="cartNum != null" >
-        order_id = #{cartNum,jdbcType=VARCHAR},
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
       </if>
       <if test="cartNum != null" >
         cart_num = #{cartNum,jdbcType=VARCHAR},
@@ -118,10 +118,10 @@
         pay_type = #{payType,jdbcType=INTEGER},
       </if>
       <if test="orderTotalPrice != null" >
-        order_total_price = #{orderTotalPrice,jdbcType=INTEGER},
+        order_total_price = #{orderTotalPrice,jdbcType=BIGINT},
       </if>
       <if test="orderActualPay != null" >
-        order_actual_pay = #{orderActualPay,jdbcType=INTEGER},
+        order_actual_pay = #{orderActualPay,jdbcType=BIGINT},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -132,12 +132,12 @@
   <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
     update sft_order_pay
     set pay_id = #{payId,jdbcType=VARCHAR},
-      order_id = #{cartNum,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
       cart_num = #{cartNum,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=VARCHAR},
       pay_type = #{payType,jdbcType=INTEGER},
-      order_total_price = #{orderTotalPrice,jdbcType=INTEGER},
-      order_actual_pay = #{orderActualPay,jdbcType=INTEGER},
+      order_total_price = #{orderTotalPrice,jdbcType=BIGINT},
+      order_actual_pay = #{orderActualPay,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>

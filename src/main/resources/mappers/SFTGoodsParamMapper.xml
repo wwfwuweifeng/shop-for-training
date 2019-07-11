@@ -16,21 +16,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from stf_goods_param
+    from sft_goods_param
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from stf_goods_param
+    delete from sft_goods_param
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
-    insert into stf_goods_param (id, goods_id, param_name, 
+    insert into sft_goods_param (id, goods_id, param_name, 
       param_value, create_time)
     values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=VARCHAR}, #{paramName,jdbcType=VARCHAR}, 
       #{paramValue,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
-    insert into stf_goods_param
+    insert into sft_goods_param
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -67,7 +67,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
-    update stf_goods_param
+    update sft_goods_param
     <set >
       <if test="goodsId != null" >
         goods_id = #{goodsId,jdbcType=VARCHAR},
@@ -85,7 +85,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
-    update stf_goods_param
+    update sft_goods_param
     set goods_id = #{goodsId,jdbcType=VARCHAR},
       param_name = #{paramName,jdbcType=VARCHAR},
       param_value = #{paramValue,jdbcType=VARCHAR},

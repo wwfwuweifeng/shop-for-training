@@ -1,9 +1,11 @@
 package top.wwf.modules.goods.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTGoodsClassify {
     private Long id;
 
@@ -12,7 +14,6 @@ public class SFTGoodsClassify {
     private String classifyName;
 
     private String coverImage;
-
     @JsonIgnore
     private Date createTime;
 

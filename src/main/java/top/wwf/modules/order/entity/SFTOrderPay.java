@@ -1,8 +1,14 @@
 package top.wwf.modules.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import top.wwf.common.base.DateYMDHMSJsonSerializer;
+
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTOrderPay {
+    @JsonIgnore
     private Long id;
 
     private String payId;
@@ -10,18 +16,18 @@ public class SFTOrderPay {
     private String orderId;
 
     private String cartNum;
-
+    @JsonIgnore
     private String userId;
 
     private Integer payType;
 
-    private Integer orderTotalPrice;
+    private Long orderTotalPrice;
 
-    private Integer orderActualPay;
-
+    private Long orderActualPay;
+    @JsonSerialize(using = DateYMDHMSJsonSerializer.class)
     private Date createTime;
 
-    public SFTOrderPay(Long id, String payId, String orderId, String cartNum, String userId, Integer payType, Integer orderTotalPrice, Integer orderActualPay, Date createTime) {
+    public SFTOrderPay(Long id, String payId, String orderId, String cartNum, String userId, Integer payType, Long orderTotalPrice, Long orderActualPay, Date createTime) {
         this.id = id;
         this.payId = payId;
         this.orderId = orderId;
@@ -85,19 +91,19 @@ public class SFTOrderPay {
         this.payType = payType;
     }
 
-    public Integer getOrderTotalPrice() {
+    public Long getOrderTotalPrice() {
         return orderTotalPrice;
     }
 
-    public void setOrderTotalPrice(Integer orderTotalPrice) {
+    public void setOrderTotalPrice(Long orderTotalPrice) {
         this.orderTotalPrice = orderTotalPrice;
     }
 
-    public Integer getOrderActualPay() {
+    public Long getOrderActualPay() {
         return orderActualPay;
     }
 
-    public void setOrderActualPay(Integer orderActualPay) {
+    public void setOrderActualPay(Long orderActualPay) {
         this.orderActualPay = orderActualPay;
     }
 

@@ -1,15 +1,18 @@
 package top.wwf.modules.goods.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import top.wwf.common.base.DateYMDHMSJsonSerializer;
 
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTGoodsOperateLog {
+    @JsonIgnore
     private Long id;
 
     private String goodsId;
-
+    @JsonSerialize(using = DateYMDHMSJsonSerializer.class)
     private Date operateTime;
 
     private String operateType;

@@ -91,7 +91,7 @@ public class OrderService {
                 order.setOrderId(IdGenUtils.generateOrderId());
                 order.setOrderTotalMoney(0L);
                 order.setShopId(cart.getShopId());
-                order.setUserId(session.getUserId());
+                order.setBuyerId(session.getUserId());
                 order.setReceiverAddress(receiverAddress);
                 order.setReceiverPeople(receiverPeople);
                 order.setState(OrderConst.STATE_FOR_BUYER.WAIT_PAY.getKey());    //此处统一用买家的State去设置，其实都一样
@@ -175,7 +175,7 @@ public class OrderService {
         goodsDao.updateGoodsByPrimaryKey(goods);
         SFTOrder order=new SFTOrder();
         order.setOrderId(IdGenUtils.generateOrderId());
-        order.setUserId(session.getUserId());
+        order.setBuyerId(session.getUserId());
         order.setState(OrderConst.STATE_FOR_BUYER.WAIT_PAY.getKey());
         order.setOrderTotalMoney(goods.getPrice()*cart.getNum());
         order.setShopId(cart.getShopId());

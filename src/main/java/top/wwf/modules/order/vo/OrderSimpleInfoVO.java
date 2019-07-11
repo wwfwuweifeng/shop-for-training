@@ -1,5 +1,6 @@
 package top.wwf.modules.order.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import top.wwf.modules.order.entity.SFTOrderItem;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 * @Author:         wwf（hitwh_wwf@163.com）
 * @CreateDate:     2019-07-11 09:33
 */
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class OrderSimpleInfoVO {
     private String orderId;
     private String shopName;

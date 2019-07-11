@@ -3,7 +3,6 @@ package top.wwf.modules.goods.service;
 import com.github.pagehelper.PageHelper;
 
 import com.google.common.collect.Lists;
-import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,9 @@ import top.wwf.modules.goods.dao.enhance.GoodsDao;
 import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.entity.SFTGoodsClassify;
 import top.wwf.modules.goods.entity.SFTGoodsOperateLog;
+import top.wwf.modules.goods.entity.SFTGoodsParam;
 import top.wwf.modules.goods.vo.GoodsClassifyVO;
+import top.wwf.modules.goods.vo.GoodsDetailForBuyerVO;
 import top.wwf.modules.goods.vo.GoodsDetailForSellerVO;
 import java.util.List;
 
@@ -55,14 +56,33 @@ public class GoodsService {
         return PageBean.createByPage(goodsList);
     }
 
-    public SFTGoods getGoodsDetailByBuyer(String goodsId) {
+    public GoodsDetailForBuyerVO getGoodsDetailByBuyer(String goodsId) {
         SFTGoods goods=goodsDao.getGoodsByGoodsId(goodsId);
         if (null==goods) {
             throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST,"无效商品编号");
         }
-        return goods;
+        GoodsDetailForBuyerVO goodsDetailForBuyerVO=new GoodsDetailForBuyerVO();
+        GoodsConst.STATE goodsState= GoodsConst.STATE.getStateByKey(goods.getState());
+        goodsDetailForBuyerVO.setAllowBuy(
+                goodsState==GoodsConst.STATE.ON_SALE?Const.YES:Const.NO
+        );
+        goodsDetailForBuyerVO.setMsgForBuyBt(
+                goodsState==GoodsConst.STATE.ON_SALE?"立即购买":"已下架"   //已售完状态也是显示已下架
+        );
+        goodsDetailForBuyerVO.setGoods(goods);
+
+        //获取产品参数
+        List<SFTGoodsParam> goodsParamList=goodsDao.getGoodsParamListByGoodsId(goodsId);
+        goodsDetailForBuyerVO.setParamList(goodsParamList);
+        return goodsDetailForBuyerVO;
     }
 
+    /**
+     * 产品参数信息不返回
+     * @param session
+     * @param goodsId
+     * @return
+     */
     public GoodsDetailForSellerVO getGoodsDetailBySeller(MySession session, String goodsId) {
         if (session.getUserRole()!= Const.USER_ROLE.SELLER){
             throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");

@@ -10,6 +10,7 @@ import top.wwf.modules.goods.dao.SFTGoodsParamMapper;
 import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.entity.SFTGoodsClassify;
 import top.wwf.modules.goods.entity.SFTGoodsOperateLog;
+import top.wwf.modules.goods.entity.SFTGoodsParam;
 
 import java.util.List;
 
@@ -115,6 +116,15 @@ public class GoodsDao {
      * @return
      */
     public List<SFTGoods> getSimpleGoodsInfoListByGoodsIdList(List<String> goodsIdList) {
+        return null;
+    }
+
+    /**
+     * order by createTime
+     * @param goodsId
+     * @return
+     */
+    public List<SFTGoodsParam> getGoodsParamListByGoodsId(String goodsId) {
         return null;
     }
 }

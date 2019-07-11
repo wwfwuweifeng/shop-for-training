@@ -16,21 +16,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from stf_goods_classify
+    from sft_goods_classify
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from stf_goods_classify
+    delete from sft_goods_classify
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
-    insert into stf_goods_classify (id, parent_classify_id, classify_name, 
+    insert into sft_goods_classify (id, parent_classify_id, classify_name, 
       cover_image, create_time)
     values (#{id,jdbcType=BIGINT}, #{parentClassifyId,jdbcType=BIGINT}, #{classifyName,jdbcType=VARCHAR}, 
       #{coverImage,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
-    insert into stf_goods_classify
+    insert into sft_goods_classify
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -67,7 +67,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
-    update stf_goods_classify
+    update sft_goods_classify
     <set >
       <if test="parentClassifyId != null" >
         parent_classify_id = #{parentClassifyId,jdbcType=BIGINT},
@@ -85,7 +85,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
-    update stf_goods_classify
+    update sft_goods_classify
     set parent_classify_id = #{parentClassifyId,jdbcType=BIGINT},
       classify_name = #{classifyName,jdbcType=VARCHAR},
       cover_image = #{coverImage,jdbcType=VARCHAR},

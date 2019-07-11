@@ -1,10 +1,13 @@
 package top.wwf.modules.user.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 /**
 * @Description:    TODO
 * @Author:         wwf（hitwh_wwf@163.com）
 * @CreateDate:     2019-07-08 16:20
 */
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class RegisterUserVO {
     private String userName;
     private String userRole;

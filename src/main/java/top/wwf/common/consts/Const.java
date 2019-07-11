@@ -161,4 +161,13 @@ public class Const {
         }
     }
 
+    /**
+     * 商品属性操作
+     */
+    public interface GOODS_PARAM_OPERATE{
+        int ADD=1;  //添加
+        int UPDATE=2;   //修改
+        int DEL=3;  //删除
+    }
+
 }

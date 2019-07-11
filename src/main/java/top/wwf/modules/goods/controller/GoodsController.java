@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.wwf.common.base.MySession;
 import top.wwf.common.base.ServerResponse;
-import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.page.PageBean;
 import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.service.GoodsService;
 import top.wwf.modules.goods.vo.GoodsClassifyVO;
+import top.wwf.modules.goods.vo.GoodsDetailForBuyerVO;
 import top.wwf.modules.goods.vo.GoodsDetailForSellerVO;
 
 import java.util.List;
@@ -72,7 +72,7 @@ public class GoodsController {
             @RequestParam(value = "goodsId",defaultValue = "") String goodsId
 
     ){
-        SFTGoods result=goodsService.getGoodsDetailByBuyer(goodsId);
+        GoodsDetailForBuyerVO result =goodsService.getGoodsDetailByBuyer(goodsId);
         return ServerResponse.create(result);
     }
 
@@ -166,6 +166,26 @@ public class GoodsController {
     @ResponseBody
     @RequestMapping("/addClassify")
     public ServerResponse addGoodsClassify(Long parentId,String classifyName){
+        return null;
+    }
+
+    /**
+     * 编辑商品参数，含添加、删除、修改
+     * @param operate 操作类型：1 add;2 update;3 del;
+     * @param paramId
+     * @param goodsId
+     * @param paramkey
+     * @param paramValue
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/editParam")
+    public ServerResponse editGoodsParam(
+            @RequestParam(value = "operate",defaultValue = "0") int operate,
+            @RequestParam(value = "paramId",defaultValue = "0") Long paramId,
+            String goodsId,String paramkey,String paramValue
+    ){
+        //未实现
         return null;
     }
 

@@ -1,24 +1,32 @@
 package top.wwf.modules.cart.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.Date;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTCart {
+    @JsonIgnore
     private Long id;
-
+    @JsonIgnore
     private String userId;
 
     private String goodsId;
 
+    private String shopId;
+
     private Integer checked;
 
     private Integer num;
-
+    @JsonIgnore
     private Date createTime;
 
-    public SFTCart(Long id, String userId, String goodsId, Integer checked, Integer num, Date createTime) {
+    public SFTCart(Long id, String userId, String goodsId, String shopId, Integer checked, Integer num, Date createTime) {
         this.id = id;
         this.userId = userId;
         this.goodsId = goodsId;
+        this.shopId = shopId;
         this.checked = checked;
         this.num = num;
         this.createTime = createTime;
@@ -52,6 +60,14 @@ public class SFTCart {
         this.goodsId = goodsId == null ? null : goodsId.trim();
     }
 
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
+    }
+
     public Integer getChecked() {
         return checked;
     }
@@ -74,10 +90,5 @@ public class SFTCart {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public String getShopId() {
-
-        return null;
     }
 }

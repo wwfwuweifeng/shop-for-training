@@ -1,5 +1,6 @@
 package top.wwf.modules.goods.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import top.wwf.modules.goods.entity.SFTGoodsClassify;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 * @Author:         wwf（hitwh_wwf@163.com）
 * @CreateDate:     2019-07-09 21:38
 */
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class GoodsClassifyVO {
     private Long firstId;
     private String firstClassifyName;
