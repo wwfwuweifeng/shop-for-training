@@ -1,5 +1,6 @@
 package top.wwf.modules.order.service;
 
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,7 @@ import top.wwf.common.consts.GoodsConst;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.consts.OrderConst;
 import top.wwf.common.exception.MyException;
+import top.wwf.common.page.PageBean;
 import top.wwf.common.utils.IdGenUtils;
 import top.wwf.modules.cart.dao.enhance.CartDao;
 import top.wwf.modules.cart.entity.SFTCart;
@@ -25,6 +27,7 @@ import top.wwf.modules.order.entity.SFTOrder;
 import top.wwf.modules.order.entity.SFTOrderItem;
 import top.wwf.modules.order.entity.SFTOrderOperateLog;
 import top.wwf.modules.order.vo.OrderInfoVO;
+import top.wwf.modules.order.vo.OrderSimpleInfoVO;
 import top.wwf.modules.order.vo.SubmitOrderVO;
 
 import java.util.Date;
@@ -387,5 +390,23 @@ public class OrderService {
         orderDao.updateOrderByPrimaryKey(order);
         //添加操作记录
         orderDao.addOrderOperateLog(orderOperateLog);
+    }
+
+    public PageBean getOrderListByBuyer(MySession session, int state, String keyWord, int pageNum, int pageSize) {
+        if (state!=0){
+            OrderConst.STATE_FOR_BUYER.getStateByKey(state);    //检查state参数值是否合法
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<OrderSimpleInfoVO> orderSimpleInfoVOList=orderDao.getOrderListByBuyerWithCondition(session.getUserId(),state,keyWord);
+        return PageBean.createByPage(orderSimpleInfoVOList);
+    }
+
+    public PageBean getOrderListBySeller(MySession session, int state, String keyWord, int pageNum, int pageSize) {
+        if (state!=0){
+            OrderConst.STATE_FOR_SELLER.getStateByKey(state);    //检查state参数值是否合法
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<OrderSimpleInfoVO> orderSimpleInfoVOList=orderDao.getOrderListBySellerWithCondition(session.getUserId(),state,keyWord);
+        return PageBean.createByPage(orderSimpleInfoVOList);
     }
 }

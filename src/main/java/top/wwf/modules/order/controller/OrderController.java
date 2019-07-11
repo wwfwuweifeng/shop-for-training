@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import top.wwf.common.base.MySession;
 import top.wwf.common.base.ServerResponse;
 import top.wwf.common.consts.Const;
-import top.wwf.modules.cart.entity.SFTCart;
+import top.wwf.common.page.PageBean;
 import top.wwf.modules.order.dto.SubmitOrderDTO;
 import top.wwf.modules.order.service.OrderService;
 import top.wwf.modules.order.vo.OrderInfoVO;
 import top.wwf.modules.order.vo.SubmitOrderVO;
+
 
 /**
 * @Description:    TODO
@@ -140,8 +141,9 @@ public class OrderController {
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
     ){
-
-        return null;
+        MySession session               =MySession.getInstance();
+        PageBean  orderSimpleInfoVOList =orderService.getOrderListByBuyer(session, state, keyWord, pageNum, pageSize);
+        return ServerResponse.create(orderSimpleInfoVOList);
     }
 
     /**
@@ -156,7 +158,9 @@ public class OrderController {
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
     ){
-        return null;
+        MySession session               =MySession.getInstance();
+        PageBean  orderSimpleInfoVOList =orderService.getOrderListBySeller(session, state, keyWord, pageNum, pageSize);
+        return ServerResponse.create(orderSimpleInfoVOList);
     }
 
     /**

@@ -7,6 +7,7 @@ import top.wwf.modules.order.dao.SFTOrderPayMapper;
 import top.wwf.modules.order.entity.SFTOrder;
 import top.wwf.modules.order.entity.SFTOrderItem;
 import top.wwf.modules.order.entity.SFTOrderOperateLog;
+import top.wwf.modules.order.vo.OrderSimpleInfoVO;
 
 import java.util.List;
 
@@ -89,6 +90,15 @@ public class OrderDao {
     }
 
     public SFTOrder getOrderByOrderId(String orderId) {
+        return null;
+    }
+
+    public List<OrderSimpleInfoVO> getOrderListByBuyerWithCondition(String userId, int state, String keyWord) {
+        return null;
+    }
+
+    public List<OrderSimpleInfoVO> getOrderListBySellerWithCondition(String userId, int state, String keyWord) {
+
         return null;
     }
 }
