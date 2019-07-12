@@ -95,8 +95,8 @@ public class UserService {
             if (null==userSysInfo || userSysInfo.getUserRole()!=Const.USER_ROLE.MANAGER.getKey()){
                 throw new MyException(HttpResponseEnum.UNAUTHORIZED);   //只有管理员能使用此方式登录
             }
-
             JedisUtils.setex(token,Const.SESSION_TIMEOUT,userSysInfo.getUserId());
+            saveUserSysInfoToCache(userSysInfo);
             userInfoVO.setUserName(userSysInfo.getUserName());
             userInfoVO.setToken(token);
         }else {throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST);}
@@ -111,7 +111,9 @@ public class UserService {
     private void saveUserSysInfoToCache(SFTUserSysInfo userSysInfo){
 //        JedisUtils.hset(userSysInfo.getUserId(),"userId",userSysInfo.getUserId());
         JedisUtils.hset(userSysInfo.getUserId(),"role",userSysInfo.getUserRole());
-        JedisUtils.hset(userSysInfo.getUserId(),"shopId",userSysInfo.getShopId());
+        if (userSysInfo.getUserRole()== Const.USER_ROLE.SELLER.getKey()) {
+            JedisUtils.hset(userSysInfo.getUserId(), "shopId", userSysInfo.getShopId());
+        }
 //        JedisUtils.hset(userSysInfo.getUserId(),"shopName",userSysInfo.getShopName());
         JedisUtils.expire(userSysInfo.getUserId(),Const.SESSION_TIMEOUT);
     }

@@ -2,8 +2,12 @@ package top.wwf.modules.goods.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTGoods {
@@ -31,6 +35,9 @@ public class SFTGoods {
     private String shopOwnerId;
 
     private String tag;
+
+    //此字段不对应数据库中的字段
+    private List<String> tagList;
 
     private String detail;
 
@@ -222,5 +229,13 @@ public class SFTGoods {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<String> getTagList() {
+        if (StringUtils.isBlank(this.tag)){
+            return Lists.newLinkedList();
+        }else {
+            return Arrays.asList(tag.split("&"));
+        }
     }
 }

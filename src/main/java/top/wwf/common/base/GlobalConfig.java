@@ -1,7 +1,11 @@
 package top.wwf.common.base;
 
 
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,7 +25,7 @@ public class GlobalConfig {
      *  图片服务器域名
      */
     public static final String IMAGE_SERVER_HOST =getConfig("image.server.host");
-
+    public static final List<String> RECOMMEND_IMAGES=getRecommendImages();
     /**
      * web服务器域名
      */
@@ -60,4 +64,14 @@ public class GlobalConfig {
         configMap.put(key,value);
     }
 
+    private static List<String> getRecommendImages(){
+        String imageNames=getConfig("recommend.images");
+        List<String> imageUrlList=Lists.newLinkedList();
+        if (StringUtils.isNotBlank(imageNames)){
+            for (String imageName:imageNames.split(",")){
+                imageUrlList.add(IMAGE_SERVER_HOST+imageName);
+            }
+        }
+        return imageUrlList;
+    }
 }

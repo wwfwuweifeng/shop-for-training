@@ -13,6 +13,7 @@ import top.wwf.modules.goods.service.GoodsService;
 import top.wwf.modules.goods.vo.GoodsClassifyVO;
 import top.wwf.modules.goods.vo.GoodsDetailForBuyerVO;
 import top.wwf.modules.goods.vo.GoodsDetailForSellerVO;
+import top.wwf.modules.goods.vo.RecommendInfoVO;
 
 import java.util.List;
 
@@ -36,12 +37,13 @@ public class GoodsController {
     @RequestMapping("/goodsListByBuyer")
     public ServerResponse getGoodsListByBuyer(
             @RequestParam(value = "classifyId",defaultValue = "0") Long classifyId,
+            @RequestParam(value = "shopId",defaultValue = "")String shopId,
             @RequestParam(value = "keyWord",defaultValue ="") String keyWord,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
             ){
         MySession session=MySession.getInstance();
-        PageBean<SFTGoods> result=goodsService.getGoodsListByBuyer(session,classifyId,keyWord,pageNum,pageSize);
+        PageBean<SFTGoods> result=goodsService.getGoodsListByBuyer(session,classifyId,shopId,keyWord,pageNum,pageSize);
         return ServerResponse.create(result);
     }
 
@@ -187,6 +189,17 @@ public class GoodsController {
     ){
         //未实现
         return null;
+    }
+
+    /**
+     * 获取推荐首页的内容
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/recommend")
+    public ServerResponse getRecommendInfo(){
+        RecommendInfoVO result =goodsService.getRecommendInfo();
+        return ServerResponse.create(result);
     }
 
 }

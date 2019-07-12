@@ -30,13 +30,13 @@ public class UserController {
      * 登录服务器，三种角色均通过此接口登录
      * @param code 微信小程序登录的使用此字段
      * @param account 网页版登录的使用userName和passWord字段
-     * @param passWord
+     * @param password
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/login")
-    public ServerResponse login(String code,String account,String passWord){
-        UserInfoVO result =userService.loginServer(code, account, passWord);
+    public ServerResponse login(String code,String account,String password){
+        UserInfoVO result =userService.loginServer(code, account, password);
         return ServerResponse.create(result);
     }
 
@@ -78,7 +78,7 @@ public class UserController {
     @RequestMapping("/addUserByManager")
     public ServerResponse addUserByManager(
             @RequestParam(value = "role",defaultValue = "0") int role,
-            @RequestParam(value = "account",defaultValue = "") String userName
+            @RequestParam(value = "userName",defaultValue = "") String userName
     ){
         MySession      session =MySession.getInstance();
         RegisterUserVO result  =userService.addUserByManager(session, role, userName);

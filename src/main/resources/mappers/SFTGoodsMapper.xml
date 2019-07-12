@@ -228,16 +228,17 @@
           #{item}
         </foreach>
   </select>
-  <select id="selectListByStateAndClassifyIdAndKeyword" resultType="top.wwf.modules.goods.entity.SFTGoods">
+  <select id="selectListByStateAndClassifyIdAndShopIdAndKeyword" resultType="top.wwf.modules.goods.entity.SFTGoods">
     select <include refid="Base_Column_List"/>
     from sft_goods where state=#{param1}
     <if test="param2 != 0"> and classify_id=#{param2}</if>
-     <if test="param3 != null">
+    <if test="param3 != null"> and shop_id=#{param3}</if>
+     <if test="param4 != null">
        and (
-       name like "%"#{param3}"%" or
-       classify_name like "%"#{param3}"%" or
-       shop_name like "%"#{param3}"%" or
-       tag like "%"#{param3}"%"
+       name like "%"#{param4}"%" or
+       classify_name like "%"#{param4}"%" or
+       shop_name like "%"#{param4}"%" or
+       tag like "%"#{param4}"%"
        )
      </if>
      order by sell_num desc
@@ -262,8 +263,17 @@
             #{item}
         </foreach>
     </select>
+    <select id="selectNewGoodsListByListSize" resultType="top.wwf.modules.goods.entity.SFTGoods">
+      <!--select <include refid="Base_Column_List"/>-->
+      <!--from sft_goods order by create_time desc limit #{listSize}-->
 
-    <update id="updateStateByShopId">
+    </select>
+  <select id="selectHotSellGoodsListByListSize" resultType="top.wwf.modules.goods.entity.SFTGoods">
+    select <include refid="Base_Column_List"/>
+    from sft_goods order by sell_num desc limit #{listSize}
+  </select>
+
+  <update id="updateStateByShopId">
         update sft_goods set state=#{param1} where shop_id=#{param2}
     </update>
 </mapper>

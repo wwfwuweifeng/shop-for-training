@@ -19,11 +19,15 @@ public interface SFTGoodsMapper {
 
     List<SFTGoods> selectByGoodsIdListAndState(@Param("goodsIds")List<String> goodsIdList, @Param("state") int state);
 
-    List<SFTGoods> selectListByStateAndClassifyIdAndKeyword(int state, Long classifyId, String keyword);
+    List<SFTGoods> selectListByStateAndClassifyIdAndShopIdAndKeyword(int state, Long classifyId, String shopId,String keyword);
 
     List<SFTGoods> selectListByStateAndShopIdAndKeyword(int state, String shopId, String keyword);
 
     void updateStateByShopId(int state, String shopId);
 
     List<SFTGoods> selectSimpleInfoListByGoodsIdList(List<String> goodsIdList);
+
+    List<SFTGoods> selectNewGoodsListByListSize(int listSize);
+
+    List<SFTGoods> selectHotSellGoodsListByListSize(int listSize);
 }

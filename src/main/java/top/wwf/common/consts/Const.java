@@ -7,6 +7,7 @@ import top.wwf.common.base.MySession;
 import top.wwf.common.exception.MyException;
 import top.wwf.common.utils.MyFileUtils;
 import java.io.File;
+import java.util.List;
 
 /**
 * @Description:    TODO
@@ -21,6 +22,8 @@ public class Const {
     public static final String WEB_SERVER_START_URL=GlobalConfig.WEB_SERVER_HOST+"/shop-for-training/view/";
     //session的有效时间,单位秒
     public static final int SESSION_TIMEOUT=GlobalConfig.SESSION_TIMEOUT;
+    //recommend页的内容
+    public static final List<String> RECOMMEND_IMAGES=GlobalConfig.RECOMMEND_IMAGES;
 
     //用户sys表中最大的id值
     public static final String USER_MAX_ID_KEY="user_sys_max_id";
@@ -30,7 +33,7 @@ public class Const {
 
     //最长等待锁时间
     public static final int MAX_WAIT_LOCK_TIME=10000;
-
+    public static final int LIST_SIZE=4;
     public static final int YES                         =1;
     public static final int NO                          =0;
     //微信appid
@@ -49,7 +52,7 @@ public class Const {
     //response 返回数据编码
     public static final String CHARACTER_ENCODING                   = "UTF-8";
     //token的redis的key的前缀
-    public static final String TOKEN_PREFIX_KEY                     ="token_";
+//    public static final String TOKEN_PREFIX_KEY                     ="token_";
     //用于获取该线程处理请求中的mySession的threadLocal
     public static final ThreadLocal<MySession> SESSION_THREAD_LOCAL =new ThreadLocal<>();
     //时间格式

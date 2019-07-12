@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import top.wwf.common.base.GlobalConfig;
 import top.wwf.common.base.MySession;
 import top.wwf.common.base.ServerResponse;
 import top.wwf.common.consts.Const;
@@ -25,8 +24,6 @@ import java.io.PrintWriter;
 */
 public class LoginInteceptor implements HandlerInterceptor {
 
-    @Autowired
-    private UserDao userDao;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -71,7 +68,7 @@ public class LoginInteceptor implements HandlerInterceptor {
     }
 
     private MySession getSession(String token){
-        String userId=JedisUtils.get(Const.TOKEN_PREFIX_KEY+token);
+        String userId=JedisUtils.get(token);
         MySession session=new MySession();
         session.setToken(token);
         if (StringUtils.isBlank(userId)){
@@ -79,7 +76,8 @@ public class LoginInteceptor implements HandlerInterceptor {
         }
         session.setUserId(userId);
 //        JedisUtils.expire(Const.TOKEN_PREFIX_KEY+token,GlobalConfig.SESSION_TIMEOUT*60);
-        JedisUtils.setex(Const.TOKEN_PREFIX_KEY+token, GlobalConfig.SESSION_TIMEOUT*60,userId);
+        JedisUtils.expire(token, Const.SESSION_TIMEOUT);
+        JedisUtils.expire(userId,Const.SESSION_TIMEOUT);
         return session;
     }
 }

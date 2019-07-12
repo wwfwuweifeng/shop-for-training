@@ -35,6 +35,7 @@ public class PropertiesLoader {
         String value=System.getProperty(key);
         if (value==null){
             value=properties.getProperty(key);
+
         }
         if (value==null){
             logger.debug("属性："+key+" 不存在");

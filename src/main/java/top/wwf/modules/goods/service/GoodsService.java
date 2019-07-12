@@ -20,6 +20,8 @@ import top.wwf.modules.goods.entity.SFTGoodsParam;
 import top.wwf.modules.goods.vo.GoodsClassifyVO;
 import top.wwf.modules.goods.vo.GoodsDetailForBuyerVO;
 import top.wwf.modules.goods.vo.GoodsDetailForSellerVO;
+import top.wwf.modules.goods.vo.RecommendInfoVO;
+
 import java.util.List;
 
 /**
@@ -42,9 +44,9 @@ public class GoodsService {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public PageBean<SFTGoods> getGoodsListByBuyer(MySession session, Long classifyId, String keyWord, int pageNum, int pageSize) {
+    public PageBean<SFTGoods> getGoodsListByBuyer(MySession session, Long classifyId,String shopId, String keyWord, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<SFTGoods> goodsList=goodsDao.getGoodsListForBuyer(classifyId, keyWord, session.getUserId(), GoodsConst.STATE.ON_SALE.getKey());
+        List<SFTGoods> goodsList=goodsDao.getGoodsListForBuyer(classifyId,shopId,keyWord, session.getUserId(), GoodsConst.STATE.ON_SALE.getKey());
         //如果为空，生成的page好像不会是0，如果不会，再自己改下吧
         return PageBean.createByPage(goodsList);
     }
@@ -232,5 +234,20 @@ public class GoodsService {
             goodsClassifyVOList.add(goodsClassifyVO);
         }
         return goodsClassifyVOList;
+    }
+
+    public RecommendInfoVO getRecommendInfo() {
+        RecommendInfoVO recommendInfoVO =new RecommendInfoVO();
+        recommendInfoVO.setRecommendImages(Const.RECOMMEND_IMAGES);
+        List<SFTGoods> goodsList;
+        goodsList=goodsDao.getNewGoodsList(Const.LIST_SIZE);
+        recommendInfoVO.setNewGoodsList(
+                null==goodsList?Lists.newArrayList():goodsList
+        );
+        goodsList=goodsDao.getHotSellGoodsList(Const.LIST_SIZE);
+        recommendInfoVO.setHotSellGoodsList(
+                null==goodsList?Lists.newArrayList():goodsList
+        );
+        return recommendInfoVO;
     }
 }
