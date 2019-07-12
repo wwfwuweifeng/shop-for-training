@@ -70,21 +70,16 @@ public class LoginInteceptor implements HandlerInterceptor {
         }
     }
 
-    public MySession getSession(String token){
-        String userOpenId=JedisUtils.get(Const.TOKEN_PREFIX_KEY+token);
+    private MySession getSession(String token){
+        String userId=JedisUtils.get(Const.TOKEN_PREFIX_KEY+token);
         MySession session=new MySession();
         session.setToken(token);
-        if (StringUtils.isBlank(userOpenId)){
-            VPRUser user =userDao.getUserByToken(token);
-            if (null==user){
-                return null;
-            }else {
-                userOpenId = user.getOpenId();
-            }
+        if (StringUtils.isBlank(userId)){
+            return null;
         }
-        session.setUserId(userOpenId);
+        session.setUserId(userId);
 //        JedisUtils.expire(Const.TOKEN_PREFIX_KEY+token,GlobalConfig.SESSION_TIMEOUT*60);
-        JedisUtils.setex(Const.TOKEN_PREFIX_KEY+token, GlobalConfig.SESSION_TIMEOUT*60,userOpenId);
+        JedisUtils.setex(Const.TOKEN_PREFIX_KEY+token, GlobalConfig.SESSION_TIMEOUT*60,userId);
         return session;
     }
 }

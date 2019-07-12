@@ -182,4 +182,7 @@
     select <include refid="Base_Column_List"/>
     from sft_user_sys_info where user_role!=#{managerRole} and is_delete=0
   </select>
+    <select id="selectMaxId" resultType="java.lang.Long">
+      select max(id) from sft_user_sys_info
+    </select>
 </mapper>

@@ -58,51 +58,13 @@ public class MyFileUtils {
      * @param fileName
      * @param data
      */
-    public static void writeBytesToFileWithEncrypt(String fileName,byte[] data){
-        if (GlobalConfig.OPEN_ECP_AND_DCP==1){  //开启
-            EncryptionUtils.encryptBEP(data);
-        }
-        writeBytesToFile(fileName,data);
-    }
-
-    /**
-     * 解密的将字节数组从文件中读出
-     * @param fileName
-     * @return
-     */
-    public static byte[] readBytesFromFileWithDecrypt(String fileName){
-        byte[] result=readBytesFromFile(fileName);
-        if (GlobalConfig.OPEN_ECP_AND_DCP==1){  //开启
-            EncryptionUtils.decryptBEP(result);
-        }
-        return result;
-    }
 
 
-    /**
-     * 对文件进行解密，并保存至原文件
-     * @param fileName 待解密的文件名
-     */
-    public static void decryptFile(String fileName){
-        if (GlobalConfig.OPEN_ECP_AND_DCP!=1){  //未开启
-            return;
-        }
-        byte[] fileBytes=readBytesFromFileWithDecrypt(fileName);
-        writeBytesToFile(fileName,fileBytes);
-    }
 
-    /**
-     * 对文件进行加密，并保存至原文件
-     * @param fileName
-     */
-    public static void encryptFile(String fileName){
-        if (GlobalConfig.OPEN_ECP_AND_DCP!=1){  //未开启
-            return;
-        }
-        byte[] fileBytes=readBytesFromFile(fileName);
-        writeBytesToFileWithEncrypt(fileName,fileBytes);
 
-    }
+
+
+
 
 
     /**
@@ -212,7 +174,7 @@ public class MyFileUtils {
     }
 
     private static void responseFile(HttpServletResponse response,String filePath,boolean isDecrypt){
-        byte[] data=isDecrypt?readBytesFromFileWithDecrypt(filePath):readBytesFromFile(filePath);
+        byte[] data=null;
         OutputStream outputStream=null;
         try {
             response.addHeader("Content-Length", "" + data.length);

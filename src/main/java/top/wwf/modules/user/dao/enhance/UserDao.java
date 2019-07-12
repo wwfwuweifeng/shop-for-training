@@ -63,4 +63,8 @@ public class UserDao {
     public List<SFTUserSysInfo> getUserListWithoutManager(int managerRole) {
         return userSysInfoMapper.selectUserListWithoutManager(managerRole);
     }
+
+    public Long getUserSysInfoNowMaxId() {
+        return userSysInfoMapper.selectMaxId();
+    }
 }

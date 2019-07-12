@@ -110,4 +110,8 @@ public class OrderDao {
         if (StringUtils.isBlank(keyword)){keyword=null;}
         return orderMapper.selectListByBuyerIdAndStateAndKeyword(buyerId,state,keyword);
     }
+
+    public Long getOrderNowMaxId() {
+        return orderMapper.selectMaxId();
+    }
 }

@@ -22,8 +22,8 @@ public class Const {
     //session的有效时间,单位秒
     public static final int SESSION_TIMEOUT=GlobalConfig.SESSION_TIMEOUT;
 
-    //应用统一编码
-//    public static final String ENCODE                      ="utf-8";
+    //用户sys表中最大的id值
+    public static final String USER_MAX_ID_KEY="user_sys_max_id";
 
     //上传的文件的临时保存路径
     public static final String UPLOAD_FILE_TEMP_PATH=GlobalConfig.FILE_PARENT_PATH+"uploadFiles"+File.separator;
@@ -45,15 +45,18 @@ public class Const {
     //response 返回头类型名
     public static final String CONTENT_TYPE_NAME = "Content-type";
     //response 返回头类型值
-    public static final String CONTENT_TYPE_VALUE = "text/html;charset=UTF-8";
+    public static final String CONTENT_TYPE_VALUE                   = "text/html;charset=UTF-8";
     //response 返回数据编码
-    public static final String CHARACTER_ENCODING = "UTF-8";
+    public static final String CHARACTER_ENCODING                   = "UTF-8";
     //token的redis的key的前缀
-    public static final String TOKEN_PREFIX_KEY="token_";
+    public static final String TOKEN_PREFIX_KEY                     ="token_";
     //用于获取该线程处理请求中的mySession的threadLocal
-    public static final ThreadLocal<MySession> SESSION_THREAD_LOCAL=new ThreadLocal<>();
+    public static final ThreadLocal<MySession> SESSION_THREAD_LOCAL =new ThreadLocal<>();
     //时间格式
-    public static final String DATE_FORMAT="yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT                          ="yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT_TO_NUM                          ="yyyyMMddHHmmss";
+    public static final String ORDER_MAX_ID                         = "order_max_id";
+
     static {
         MyFileUtils.createDirectory(Const.UPLOAD_FILE_TEMP_PATH);
     }

@@ -18,6 +18,7 @@ import top.wwf.common.consts.OrderConst;
 import top.wwf.common.exception.MyException;
 import top.wwf.common.page.PageBean;
 import top.wwf.common.utils.IdGenUtils;
+import top.wwf.common.utils.JedisUtils;
 import top.wwf.modules.cart.dao.enhance.CartDao;
 import top.wwf.modules.cart.entity.SFTCart;
 import top.wwf.modules.goods.dao.enhance.GoodsDao;
@@ -30,6 +31,7 @@ import top.wwf.modules.order.vo.OrderInfoVO;
 import top.wwf.modules.order.vo.OrderSimpleInfoVO;
 import top.wwf.modules.order.vo.SubmitOrderVO;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +49,18 @@ public class OrderService {
     private GoodsDao goodsDao;
     @Autowired
     private CartDao cartDao;
+
+
+    /**
+     * 当该bean初始化时，自动执行
+     * 从数据库当中读取order表中Id的最大值，存入redis当中
+     */
+    @PostConstruct
+    private void initOrderMaxIdToRedis(){
+        Long nowMaxId=orderDao.getOrderNowMaxId();
+        nowMaxId = null==nowMaxId?0:nowMaxId;
+        JedisUtils.set(Const.ORDER_MAX_ID, nowMaxId.toString());
+    }
 
     /**
      * 权限检查（含是否是自卖自买的行为检查）--->查询最新商品数据，并锁住相应的商品行--->货物剩余库存检查---
@@ -409,12 +423,15 @@ public class OrderService {
         List<OrderSimpleInfoVO> orderSimpleInfoVOList=Lists.newLinkedList();
         List<SFTOrder> orderList=orderDao.getOrderListByBuyerIdAndStateAndKeyword(session.getUserId(), state, keyword);
         OrderSimpleInfoVO orderSimpleInfoVO;
+        StringBuilder orderTotalMoney;  //用于将金额转化为string类型
         for (SFTOrder order:orderList){
             orderSimpleInfoVO=new OrderSimpleInfoVO();
             orderSimpleInfoVO.setOrderId(order.getOrderId());
             orderSimpleInfoVO.setOrderState(order.getState());
             orderSimpleInfoVO.setOrderStateDesc(OrderConst.STATE_FOR_BUYER.getStateByKey(order.getState()).getDesc());
-            orderSimpleInfoVO.setOrderTotalMoney(order.getOrderTotalMoney()/100+"."+order.getOrderTotalMoney()%100);
+            orderTotalMoney=new StringBuilder();
+            orderTotalMoney.append(order.getOrderTotalMoney()/100).append(".").append(order.getOrderTotalMoney()%100);
+            orderSimpleInfoVO.setOrderTotalMoney(orderTotalMoney.toString());
             orderSimpleInfoVO.setShopName(order.getShopName());
             orderSimpleInfoVO.setOrderItemList(orderDao.getOrderItemListByOrderId(order.getOrderId()));
             orderSimpleInfoVOList.add(orderSimpleInfoVO);
@@ -433,12 +450,15 @@ public class OrderService {
         List<OrderSimpleInfoVO> orderSimpleInfoVOList=Lists.newLinkedList();
         List<SFTOrder> orderList=orderDao.getOrderListByShopIdAndStateAndKeyword(session.getShopId(), state, keyword);
         OrderSimpleInfoVO orderSimpleInfoVO;
+        StringBuilder orderTotalMoney;
         for (SFTOrder order:orderList){
             orderSimpleInfoVO=new OrderSimpleInfoVO();
             orderSimpleInfoVO.setOrderId(order.getOrderId());
             orderSimpleInfoVO.setOrderState(order.getState());
             orderSimpleInfoVO.setOrderStateDesc(OrderConst.STATE_FOR_SELLER.getStateByKey(order.getState()).getDesc());
-            orderSimpleInfoVO.setOrderTotalMoney(order.getOrderTotalMoney()/100+"."+order.getOrderTotalMoney()%100);
+            orderTotalMoney=new StringBuilder();
+            orderTotalMoney.append(order.getOrderTotalMoney()/100).append(".").append(order.getOrderTotalMoney()%100);
+            orderSimpleInfoVO.setOrderTotalMoney(orderTotalMoney.toString());
             orderSimpleInfoVO.setShopName(order.getShopName());
             orderSimpleInfoVO.setOrderItemList(orderDao.getOrderItemListByOrderId(order.getOrderId()));
             orderSimpleInfoVOList.add(orderSimpleInfoVO);

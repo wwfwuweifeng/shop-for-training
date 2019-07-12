@@ -279,5 +279,8 @@
     </if>
     order by update_time desc
   </select>
+    <select id="selectMaxId" resultType="java.lang.Long">
+      select max(id) from sft_order
+    </select>
 
 </mapper>

@@ -28,4 +28,7 @@ public interface SFTOrderMapper {
     List<SFTOrder> selectListByShopIdAndStateAndKeyword(String shopId, int state, String keyword);
 
     List<SFTOrder> selectListByBuyerIdAndStateAndKeyword(String buyerId, int state, String keyword);
+
+    Long selectMaxId();
+
 }

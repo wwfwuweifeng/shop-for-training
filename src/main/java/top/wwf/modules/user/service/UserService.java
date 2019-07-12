@@ -29,6 +29,7 @@ import top.wwf.modules.user.entity.SFTUserSysInfo;
 import top.wwf.modules.user.vo.RegisterUserVO;
 import top.wwf.modules.user.vo.UserInfoVO;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +47,18 @@ public class UserService {
     private OrderDao orderDao;
     @Autowired
     private GoodsDao goodsDao;
+
+
+    /**
+     * 当该bean初始化时，自动执行
+     * 从数据库当中读取userSys表中Id的最大值，存入redis当中
+     */
+    @PostConstruct
+    private void initUserMaxIdToRedis(){
+        Long nowMaxId=userDao.getUserSysInfoNowMaxId();
+        nowMaxId = null==nowMaxId?0:nowMaxId;
+        JedisUtils.set(Const.USER_MAX_ID_KEY, nowMaxId.toString());
+    }
 
     /**
      * 当前的登录逻辑，允许一个账号，多处同时登录（一个userId可能同时对应多个token）

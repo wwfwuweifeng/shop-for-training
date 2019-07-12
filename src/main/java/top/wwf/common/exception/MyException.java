@@ -1,6 +1,5 @@
 package top.wwf.common.exception;
 
-import top.wwf.common.consts.ContractStatusEnum;
 import top.wwf.common.consts.HttpResponseEnum;
 
 public class MyException extends RuntimeException {

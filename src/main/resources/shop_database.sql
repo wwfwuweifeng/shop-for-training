@@ -8,7 +8,7 @@ create table if not exists sft_user_sys_info(
   account varchar(20) comment '账号，只有管理员才拥有的字段，且管理员登录只能使用账号密码登录',
   password varchar(50) comment '密码，具体作用同上',
   session_key varchar(50) comment '微信服务器返回的临时session_key，暂时不存储、不使用',
-  register_code varchar(12) not null comment '10位注册码，一个注册码只能绑定一个用户和用户身份',
+  register_code varchar(13) not null comment '11位注册码，一个注册码只能绑定一个用户和用户身份',
   user_role int not null comment '用户身份：买方、卖方、管理员',
   user_name varchar(50) not null comment '用户姓名，管理员分配注册码是设定，用户无法修改',
   code_used_time varchar(50) default '尚未使用' comment '注册码被使用的时间',
@@ -76,7 +76,7 @@ create table if not exists sft_goods_param(
 
 create table if not exists sft_order(
   id bigint(20) unsigned auto_increment primary key ,
-  order_id varchar(20) not null comment '订单编号,长度为16位',
+  order_id varchar(22) unique not null comment '订单编号,长度为20位',
   cart_num varchar(50) default '' comment '通过购物车提交的订单，才拥有的字段，表示同一批次购物车编号',
   buyer_id varchar(50) not null comment '买家的用户id',
   shop_id varchar(50) not null ,
@@ -96,7 +96,7 @@ create table if not exists sft_order(
 
 create table if not exists sft_order_item(
   id bigint(20) unsigned auto_increment primary key ,
-  order_id varchar(20) not null ,
+  order_id varchar(22) not null ,
   goods_id varchar(50) not null ,
   goods_name varchar(60) not null comment '购买时的商品名称',
   goods_cover_image varchar(255) not null comment '购买时的商品封面图',
@@ -111,7 +111,7 @@ create table if not exists sft_order_item(
 
 create table if not exists sft_order_operate_log(
   id bigint(20) unsigned auto_increment primary key ,
-  order_id varchar(20)not null ,
+  order_id varchar(22)not null ,
   operate_time timestamp not null default current_timestamp,
   operate_type varchar(255) not null comment '操作类型'
 );
@@ -129,7 +129,7 @@ create table if not exists sft_cart(
 create table if not exists sft_order_pay(
   id bigint(20) unsigned auto_increment primary key ,
   pay_id varchar(50) not null comment '付款编号，一个订单对应一个付款编号',
-  order_id varchar(20) not null comment '订单编号,长度为15位',
+  order_id varchar(22) not null comment '订单编号,长度为20位',
   cart_num varchar(50) default '' comment '通过购物车提交的订单，才拥有的字段，表示同一批次购物车编号',
   user_id varchar(50) not null ,
   pay_type int default 0 comment '付款方式，该字段暂不使用，有时间再考虑',

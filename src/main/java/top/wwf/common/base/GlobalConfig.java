@@ -26,10 +26,7 @@ public class GlobalConfig {
      * web服务器域名
      */
     public static final String WEB_SERVER_HOST=getConfig("web.server.host");
-    /**
-     * 是否开启文件加解密
-     */
-    public static final int    OPEN_ECP_AND_DCP  =Integer.parseInt(getConfig("file.open_ecp_and_dcp"));
+
     /**
      * session过期时间
      */
