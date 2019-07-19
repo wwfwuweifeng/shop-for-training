@@ -17,7 +17,6 @@ public class SFTCart {
     private String shopId;
 
     private Integer checked;
-
     private Integer num;
     @JsonIgnore
     private Date createTime;
@@ -91,4 +90,5 @@ public class SFTCart {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
 }

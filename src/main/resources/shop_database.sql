@@ -83,7 +83,7 @@ create table if not exists sft_order(
   shop_name varchar(50) not null ,
   order_total_money bigint(20) unsigned default 0 not null comment '订单总额，单位分',
   state int not null comment '订单状态',
-  pay_id varchar(50) not null comment '付款编号，一个订单对应一个付款编号',
+  pay_id varchar(50)  comment '付款编号，一个订单对应一个付款编号',
   create_time timestamp not null default current_timestamp,
   pay_time varchar(50) default '暂无数据' not null comment '付款时间',
   send_time varchar(50) default '暂无数据' not null comment '发货时间',

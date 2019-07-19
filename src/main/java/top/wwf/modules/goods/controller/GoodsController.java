@@ -10,10 +10,7 @@ import top.wwf.common.base.ServerResponse;
 import top.wwf.common.page.PageBean;
 import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.service.GoodsService;
-import top.wwf.modules.goods.vo.GoodsClassifyVO;
-import top.wwf.modules.goods.vo.GoodsDetailForBuyerVO;
-import top.wwf.modules.goods.vo.GoodsDetailForSellerVO;
-import top.wwf.modules.goods.vo.RecommendInfoVO;
+import top.wwf.modules.goods.vo.*;
 
 import java.util.List;
 
@@ -38,7 +35,7 @@ public class GoodsController {
     public ServerResponse getGoodsListByBuyer(
             @RequestParam(value = "classifyId",defaultValue = "0") Long classifyId,
             @RequestParam(value = "shopId",defaultValue = "")String shopId,
-            @RequestParam(value = "keyWord",defaultValue ="") String keyWord,
+            @RequestParam(value = "keyword",defaultValue ="") String keyWord,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
             ){
@@ -202,4 +199,17 @@ public class GoodsController {
         return ServerResponse.create(result);
     }
 
+    /**
+     * 该接口只进行登录状态检验，不进行权限检验
+     * 暂时废弃该接口
+     * @param goodsIdList
+     * @return
+     */
+//    @ResponseBody
+//    @RequestMapping("/groupByShop")
+//    public ServerResponse getGoodsListGroupByShop(List<String> goodsIdList){
+//        MySession                    session =MySession.getInstance();
+//        List<GoodsListGroupByShopVO> result  =goodsService.getGoodsListBygoodsIdList(goodsIdList);
+//        return ServerResponse.create(result);
+//    }
 }

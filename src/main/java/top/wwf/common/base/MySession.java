@@ -1,5 +1,6 @@
 package top.wwf.common.base;
 
+import org.apache.commons.lang3.StringUtils;
 import top.wwf.common.consts.Const;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.exception.MyException;
@@ -36,6 +37,20 @@ public class MySession {
             throw new MyException(HttpResponseEnum.UNAUTHORIZED);
         }
         Const.SESSION_THREAD_LOCAL.remove();    //获取到值后就立刻移除掉
+        return session;
+    }
+
+    public static MySession getInstanceByToken(String token){
+        String userId=JedisUtils.get(token);
+        MySession session=new MySession();
+        session.setToken(token);
+        if (StringUtils.isBlank(userId)){
+            return null;
+        }
+        session.setUserId(userId);
+        //        JedisUtils.expire(Const.TOKEN_PREFIX_KEY+token,GlobalConfig.SESSION_TIMEOUT*60);
+        JedisUtils.expire(token, Const.SESSION_TIMEOUT);
+        JedisUtils.expire(userId,Const.SESSION_TIMEOUT);
         return session;
     }
 

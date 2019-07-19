@@ -208,27 +208,19 @@
   </select>
 
   <insert id="insertOrders">
-    insert into sft_order(id,order_id,cart_num,buyer_id,shop_id,shop_name,order_total_money,
-    state,pay_id,create_time,pay_time,send_time,deal_time,receiver_people,receiver_address,express_num,update_time) values
+    insert into sft_order(order_id,cart_num,buyer_id,shop_id,shop_name,order_total_money,
+    state,receiver_people,receiver_address) values
     <!--item就是List里每一项的对象名，要用","分割每一条数据，最后要";"结尾-->
     <foreach collection="list" item="order" separator="," close=";">
-      (<if test="order.id != null" >#{order.id},</if>
-      <if test="order.orderId != null" >#{order.orderId},</if>
+      (<if test="order.orderId != null" >#{order.orderId},</if>
       <if test="order.cartNum != null" >#{order.cartNum},</if>
       <if test="order.buyerId != null" >#{order.buyerId},</if>
       <if test="order.shopId != null" >#{order.shopId},</if>
       <if test="order.shopName != null">#{order.shopName},</if>
       <if test="order.orderTotalMoney != null" >#{order.orderTotalMoney},</if>
       <if test="order.state != null" >#{order.state},</if>
-      <if test="order.payId != null" >#{order.payId},</if>
-      <if test="order.createTime != null" >#{order.createTime},</if>
-      <if test="order.payTime != null" >#{order.payTime},</if>
-      <if test="order.sendTime != null" >#{order.sendTime},</if>
-      <if test="order.dealTime != null" >#{order.dealTime},</if>
       <if test="order.receiverPeople != null" >#{order.receiverPeople},</if>
-      <if test="order.receiverAddress != null" >#{order.receiverAddress},</if>
-      <if test="order.expressNum != null" >#{order.expressNum},</if>
-      <if test="order.updateTime != null" >#{order.updateTime},</if>)
+      <if test="order.receiverAddress != null" >#{order.receiverAddress}</if>)
     </foreach>
   </insert>
 

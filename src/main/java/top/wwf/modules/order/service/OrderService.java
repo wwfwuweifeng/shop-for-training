@@ -114,10 +114,10 @@ public class OrderService {
             }else{
                 order=orderMap.get(cart.getShopId());
             }
-
             orderItem.setBuyNum(cart.getNum());
             orderItem.setGoodsId(cart.getGoodsId());
             orderItem.setCartNum(order.getCartNum());
+            orderItem.setShopId(order.getShopId());
             orderItem.setOrderId(order.getOrderId());
             orderItemMap.put(cart.getGoodsId(),orderItem);
         }
@@ -128,7 +128,6 @@ public class OrderService {
             //部分商品已下架
             throw new MyException(HttpResponseEnum.PROHIBIT,"部分商品无法购买，请重新选择");
         }
-
         //货物剩余库存检查
         for (SFTGoods goods:onSellGoodsList){
             orderItem=orderItemMap.get(goods.getGoodsId());
@@ -151,13 +150,23 @@ public class OrderService {
 
             order=orderMap.get(goods.getShopId());
             order.setOrderTotalMoney(order.getOrderTotalMoney()+orderItem.getTotalMoney());
-
+            if (StringUtils.isBlank(order.getShopName())){
+                order.setShopName(goods.getShopName()); //只需设置一次
+            }
             submitOrderVO.setTotalMoney(submitOrderVO.getTotalMoney()+order.getOrderTotalMoney());
         }
 
         //保存订单和订单项
-        orderDao.addOrders((List<SFTOrder>) orderMap.values());
-        orderDao.addOrderItems((List<SFTOrderItem>) orderItemMap.values());
+        List<SFTOrder> orderList=Lists.newLinkedList();
+        for (SFTOrder itemOrder:orderMap.values()){
+            orderList.add(itemOrder);
+        }
+        orderDao.addOrders(orderList);
+        List<SFTOrderItem> orderItemList=Lists.newLinkedList();
+        for (SFTOrderItem item:orderItemMap.values()){
+            orderItemList.add(item);
+        }
+        orderDao.addOrderItems(orderItemList);
 
         //删除购物车中的对应项
         cartDao.delGoodsFromCartByUserIdAndGoodsIdList(session.getUserId(),orderGoodsIdList);
@@ -178,7 +187,7 @@ public class OrderService {
             throw new MyException(HttpResponseEnum.PROHIBIT,"无法购买自己销售的商品");
         }else if (goods.getState()!= GoodsConst.STATE.ON_SALE.getKey()){
             throw new MyException(HttpResponseEnum.PROHIBIT,"当前商品暂不销售");
-        }else if (goods.getRemainNum()<=cart.getNum()){
+        }else if (goods.getRemainNum()<cart.getNum()){
             throw new MyException(HttpResponseEnum.PROHIBIT,"商品剩余库存不足");
         }
         goods.setRemainNum(goods.getRemainNum()-cart.getNum());
@@ -200,6 +209,7 @@ public class OrderService {
         addOrderOperateLog(order.getOrderId(),OrderConst.OPERATE.CREATE_ORDER);
 
         SFTOrderItem orderItem=new SFTOrderItem();
+        orderItem.setShopId(goods.getShopId());
         orderItem.setTag(goods.getTag());
         orderItem.setGoodsName(goods.getName());
         orderItem.setGoodsCoverImage(goods.getCoverImage());
@@ -352,19 +362,19 @@ public class OrderService {
      * @param orderId
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void cancelOrder(MySession session, String orderId) {
-        Const.USER_ROLE userRole=session.getUserRole();
+    public void cancelOrder(MySession session,int role, String orderId) {
+        Const.USER_ROLE operateRole= Const.USER_ROLE.getRoleByKey(role);
         SFTOrder order;
         SFTOrderOperateLog orderOperateLog=new SFTOrderOperateLog();
         orderOperateLog.setOrderId(orderId);
-        if (userRole== Const.USER_ROLE.BUYER){//买家
+        if (operateRole== Const.USER_ROLE.BUYER){//买家
             order=orderDao.getOrderByOrderIdAndBuyerId(orderId,session.getUserId());
             OrderConst.STATE_FOR_BUYER orderState=OrderConst.STATE_FOR_BUYER.getStateByKey(order.getState());
             if (orderState.getAllowCancel()!=Const.YES){
                 throw new MyException(HttpResponseEnum.PROHIBIT);
             }
             orderOperateLog.setOperateType(OrderConst.OPERATE.CANCEL_BY_BUYER);
-        }else if (userRole== Const.USER_ROLE.SELLER){//卖家
+        }else if (operateRole== Const.USER_ROLE.SELLER){//卖家
             order=orderDao.getOrderByOrderIdAndShopId(orderId,session.getShopId());
             OrderConst.STATE_FOR_SELLER orderState=OrderConst.STATE_FOR_SELLER.getStateByKey(order.getState());
             if (orderState.getAllowCancel()!=Const.YES){
@@ -436,7 +446,10 @@ public class OrderService {
             orderSimpleInfoVO.setOrderItemList(orderDao.getOrderItemListByOrderId(order.getOrderId()));
             orderSimpleInfoVOList.add(orderSimpleInfoVO);
         }
-        return PageBean.createByPage(orderSimpleInfoVOList);
+
+        PageBean pageBean=PageBean.createByPage(orderList);
+        pageBean.setList(orderSimpleInfoVOList);
+        return pageBean;
     }
 
     /**

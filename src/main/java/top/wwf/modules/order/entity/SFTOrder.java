@@ -136,7 +136,7 @@ public class SFTOrder {
     }
 
     public void setPayId(String payId) {
-        this.payId = payId == null ? null : payId.trim();
+        this.payId = payId ;
     }
 
     public Date getCreateTime() {

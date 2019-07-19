@@ -257,16 +257,15 @@
         order by update_time desc
     </select>
     <select id="selectSimpleInfoListByGoodsIdList" resultType="top.wwf.modules.goods.entity.SFTGoods">
-        select id,state,shop_name,price,remain_num,sell_num,goods_id,"name",cover_image,tag
+        select id,state,shop_name,price,remain_num,sell_num,goods_id,"name",cover_image,tag,shop_id
         from sft_goods where goods_id in
         <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
     <select id="selectNewGoodsListByListSize" resultType="top.wwf.modules.goods.entity.SFTGoods">
-      <!--select <include refid="Base_Column_List"/>-->
-      <!--from sft_goods order by create_time desc limit #{listSize}-->
-
+      select <include refid="Base_Column_List"/>
+      from sft_goods order by create_time desc limit #{listSize}
     </select>
   <select id="selectHotSellGoodsListByListSize" resultType="top.wwf.modules.goods.entity.SFTGoods">
     select <include refid="Base_Column_List"/>

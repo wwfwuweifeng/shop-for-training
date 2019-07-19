@@ -17,6 +17,9 @@ public class UserInfoDTO {
     private String receiverAddressDetail;
     private int isEditReceiverAddress;
 
+    public UserInfoDTO() {
+    }
+
     public UserInfoDTO(String userSex, String telNum, String email, String shopName, String receiverName, String receiverTel, String receiverAddressSimple,
             String receiverAddressDetail, int isEditReceiverAddress) {
         this.userSex = userSex;

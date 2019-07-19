@@ -10,10 +10,19 @@ import java.util.List;
 * @CreateDate:     2019-07-10 15:46
 */
 public class SubmitOrderDTO {
+    private String token;
     private String receiverPeople;
     private String receiverAddress;
     private List<SFTCart> cartList; //用于购物车提交订单的
     private SFTCart cart;   //用于购买单件商品的
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getReceiverPeople() {
         return receiverPeople;

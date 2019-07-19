@@ -33,8 +33,8 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/submitOrderByCart")
-    public ServerResponse submitOrderByCart(@RequestBody SubmitOrderDTO submitOrderDTO){
-        MySession     session =MySession.getInstance();
+    public ServerResponse submitOrderByCart( @RequestBody SubmitOrderDTO submitOrderDTO){
+        MySession session=MySession.getInstanceByToken(submitOrderDTO.getToken());
         SubmitOrderVO result  =orderService.submitOrderByCart(session,submitOrderDTO.getCartList(),
                                                               submitOrderDTO.getReceiverPeople(),submitOrderDTO.getReceiverAddress());
         return ServerResponse.create(result);
@@ -47,7 +47,7 @@ public class OrderController {
     @ResponseBody
     @RequestMapping("/submitOrderByBuy")
     public ServerResponse submitOrderByBuy(@RequestBody SubmitOrderDTO submitOrderDTO){   //还是将提交的参数封装成一个购物车项
-        MySession session=MySession.getInstance();
+        MySession session=MySession.getInstanceByToken(submitOrderDTO.getToken());
         SubmitOrderVO result=orderService.submitOrderByBuy(session,submitOrderDTO.getCart(),
                                                            submitOrderDTO.getReceiverPeople(),submitOrderDTO.getReceiverAddress());
         return ServerResponse.create(result);
@@ -124,7 +124,7 @@ public class OrderController {
             @RequestParam(value = "role",defaultValue = "0") int role
     ){
         MySession session=MySession.getInstance();
-        orderService.cancelOrder(session,orderId);
+        orderService.cancelOrder(session,role,orderId);
         OrderInfoVO result=orderService.getOrderDetail(session, orderId,role);
         return ServerResponse.create(result);
     }

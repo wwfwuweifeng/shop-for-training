@@ -3,6 +3,7 @@ package top.wwf.modules.goods.service;
 import com.github.pagehelper.PageHelper;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +18,10 @@ import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.entity.SFTGoodsClassify;
 import top.wwf.modules.goods.entity.SFTGoodsOperateLog;
 import top.wwf.modules.goods.entity.SFTGoodsParam;
-import top.wwf.modules.goods.vo.GoodsClassifyVO;
-import top.wwf.modules.goods.vo.GoodsDetailForBuyerVO;
-import top.wwf.modules.goods.vo.GoodsDetailForSellerVO;
-import top.wwf.modules.goods.vo.RecommendInfoVO;
+import top.wwf.modules.goods.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description:    TODO
@@ -250,4 +249,26 @@ public class GoodsService {
         );
         return recommendInfoVO;
     }
+
+//    public List<GoodsListGroupByShopVO> getGoodsListBygoodsIdList(List<String> goodsIdList) {
+//        if (null==goodsIdList||goodsIdList.size()==0) return Lists.newArrayList();
+//        else {
+//            List<SFTGoods>                     goodsList                 =goodsDao.getSimpleGoodsInfoListByGoodsIdList(goodsIdList);
+//            Map<String,GoodsListGroupByShopVO> goodsListGroupByShopVOMap = Maps.newHashMap();    //key为shopId
+//            GoodsListGroupByShopVO             goodsListGroupByShopVO;
+//            for (SFTGoods goods:goodsList){
+//                if (!goodsListGroupByShopVOMap.containsKey(goods.getShopId())){
+//                    goodsListGroupByShopVO=new GoodsListGroupByShopVO();
+//                    goodsListGroupByShopVO.setShopId(goods.getShopId());
+//                    goodsListGroupByShopVO.setShopName(goods.getShopName());
+//                    goodsListGroupByShopVO.setList(Lists.newLinkedList());
+//                    goodsListGroupByShopVO.getList().add(goods);
+//                    goodsListGroupByShopVOMap.put(goods.getShopId(),goodsListGroupByShopVO);
+//                }else {
+//                    goodsListGroupByShopVOMap.get(goods.getShopId()).getList().add(goods);
+//                }
+//            }
+//            return (List<GoodsListGroupByShopVO>) goodsListGroupByShopVOMap.values();
+//        }
+//    }
 }

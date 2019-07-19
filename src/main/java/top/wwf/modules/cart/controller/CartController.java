@@ -11,6 +11,7 @@ import top.wwf.common.base.ServerResponse;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.modules.cart.service.CartService;
 import top.wwf.modules.goods.entity.SFTGoods;
+import top.wwf.modules.goods.vo.GoodsListGroupByShopVO;
 
 import java.util.List;
 
@@ -49,8 +50,9 @@ public class CartController {
     public ServerResponse delGoodsFromCart(
             @RequestParam(value = "goodsId",defaultValue = "") String goodsId){
         MySession session= MySession.getInstance();
-        List<SFTGoods> result=cartService.delGoodsFromCart(session,goodsId);
-        return ServerResponse.create(result);
+        cartService.delGoodsFromCart(session,goodsId);
+//        List<GoodsListGroupByShopVO> result  =cartService.getGoodsListByCart(session);
+        return ServerResponse.create();
     }
 
     /**
@@ -60,8 +62,8 @@ public class CartController {
     @ResponseBody
     @RequestMapping("/goodsListByCart")
     public ServerResponse getGoodsListByCart(){
-        MySession session=MySession.getInstance();
-        List<SFTGoods> result=cartService.getGoodsListByCart(session);
+        MySession                    session =MySession.getInstance();
+        List<GoodsListGroupByShopVO> result  =cartService.getGoodsListByCart(session);
         return ServerResponse.create(result);
     }
 

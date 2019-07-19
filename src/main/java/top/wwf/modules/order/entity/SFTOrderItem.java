@@ -2,8 +2,12 @@ package top.wwf.modules.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class SFTOrderItem {
@@ -25,6 +29,9 @@ public class SFTOrderItem {
     private String tag;
 
     private Long buyPrice;
+
+    //此字段不对应数据库中的字段
+    private List<String> tagList;
 
     private Integer buyNum;
 
@@ -145,5 +152,13 @@ public class SFTOrderItem {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public List<String> getTagList() {
+        if (StringUtils.isBlank(this.tag)){
+            return Lists.newLinkedList();
+        }else {
+            return Arrays.asList(tag.split("&"));
+        }
     }
 }
