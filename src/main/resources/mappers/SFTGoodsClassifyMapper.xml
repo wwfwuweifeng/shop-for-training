@@ -88,5 +88,8 @@
     select <include refid="Base_Column_List"/>
     from sft_goods_classify where parent_classify_id=#{parentClassifyId} order by create_time
   </select>
+    <select id="selectByClassifyName" resultType="top.wwf.modules.goods.entity.SFTGoodsClassify">
+      select <include refid="Base_Column_List"/> from sft_goods_classify where classify_name=#{classifyName}
+    </select>
 
 </mapper>

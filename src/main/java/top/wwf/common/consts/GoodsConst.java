@@ -48,8 +48,8 @@ public class GoodsConst {
      */
     public enum STATE {
         ON_SALE(1,"在售中",Const.YES,Const.NO,"在售中"),
-        SELL_OUT(2,"已售完",Const.NO,Const.NO,"已售完"),  //该状态暂时不使用
-        LOWER_SHELF(3,"已下架",Const.NO,Const.YES,"申请上架"),
+        SELL_OUT(2,"已售完",Const.NO,Const.NO,"已售完"),  //该状态已使用
+        LOWER_SHELF(3,"已下架",Const.NO,Const.YES,"申请上架"),//新添加的商品自动处于此状态
         WAIT_APPROVE(4,"待审批",Const.YES,Const.NO,"审批中"),
         APPROVE_FAIL(5,"审批失败",Const.NO,Const.YES,"申请上架");
 

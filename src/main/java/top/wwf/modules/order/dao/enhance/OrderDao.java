@@ -10,6 +10,7 @@ import top.wwf.modules.order.dao.SFTOrderPayMapper;
 import top.wwf.modules.order.entity.SFTOrder;
 import top.wwf.modules.order.entity.SFTOrderItem;
 import top.wwf.modules.order.entity.SFTOrderOperateLog;
+import top.wwf.modules.order.entity.SFTOrderPay;
 import top.wwf.modules.order.vo.OrderSimpleInfoVO;
 
 import java.util.List;
@@ -113,5 +114,13 @@ public class OrderDao {
 
     public Long getOrderNowMaxId() {
         return orderMapper.selectMaxId();
+    }
+
+    public void addOrderPay(SFTOrderPay orderPay) {
+        orderPayMapper.insertSelective(orderPay);
+    }
+
+    public List<SFTOrder> getOrderListByCartNumAndBuyerId(String cartNum, String userId) {
+        return orderMapper.selectListByCartNumAndBuyerId(cartNum,userId);
     }
 }

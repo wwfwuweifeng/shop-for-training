@@ -29,6 +29,7 @@ public class SFTGoods {
     private Integer sellNum;
 
     private String shopId;
+    private String strPrice;
 
     private String shopName;
     @JsonIgnore
@@ -237,5 +238,8 @@ public class SFTGoods {
         }else {
             return Arrays.asList(tag.split("&"));
         }
+    }
+    public String getStrPrice(){
+        return String.format("%10.2f", price/100.0);
     }
 }

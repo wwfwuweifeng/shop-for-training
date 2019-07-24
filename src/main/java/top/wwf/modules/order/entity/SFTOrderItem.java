@@ -29,6 +29,7 @@ public class SFTOrderItem {
     private String tag;
 
     private Long buyPrice;
+    private String strBuyPrice;
 
     //此字段不对应数据库中的字段
     private List<String> tagList;
@@ -160,5 +161,8 @@ public class SFTOrderItem {
         }else {
             return Arrays.asList(tag.split("&"));
         }
+    }
+    public String getStrBuyPrice(){
+        return String.format("%10.2f", buyPrice/100.0);
     }
 }

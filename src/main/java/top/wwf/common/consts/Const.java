@@ -36,6 +36,8 @@ public class Const {
     public static final int LIST_SIZE=4;
     public static final int YES                         =1;
     public static final int NO                          =0;
+
+    public static final String IMAGE_DIR=GlobalConfig.getConfig("file.imagePath")+File.separator;
     //微信appid
     public static final String WEIXIN_APPID_OPENID = GlobalConfig.getConfig("weixin.appid");
     //微信secret
@@ -176,4 +178,42 @@ public class Const {
         int DEL=3;  //删除
     }
 
+    public enum PAY_TYPE{
+        YL(1,"银联"),
+        ALP(2,"支付宝"),
+        WX(3,"微信");
+
+        private int key;
+        private String desc;
+
+        PAY_TYPE(int key, String desc) {
+            this.key = key;
+            this.desc = desc;
+        }
+        public static String getDescByKey(int key){
+            for (PAY_TYPE payType: PAY_TYPE.values()){
+                if (key==payType.getKey()){
+                    return payType.getDesc();
+                }
+            }
+            throw new MyException(HttpResponseEnum.PROHIBIT,"参数非法");
+        }
+
+        public static PAY_TYPE getPayTypeByKey(int key){
+            for (PAY_TYPE payType: PAY_TYPE.values()){
+                if (payType.getKey()==key){
+                    return payType;
+                }
+            }
+            throw new MyException(HttpResponseEnum.PROHIBIT,"参数非法");
+        }
+
+        public int getKey() {
+            return key;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
 }

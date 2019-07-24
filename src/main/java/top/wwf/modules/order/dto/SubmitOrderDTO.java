@@ -15,6 +15,7 @@ public class SubmitOrderDTO {
     private String receiverAddress;
     private List<SFTCart> cartList; //用于购物车提交订单的
     private SFTCart cart;   //用于购买单件商品的
+    private Long totalMoney;
 
     public String getToken() {
         return token;
@@ -54,5 +55,13 @@ public class SubmitOrderDTO {
 
     public void setCart(SFTCart cart) {
         this.cart = cart;
+    }
+
+    public Long getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(Long totalMoney) {
+        this.totalMoney = totalMoney;
     }
 }

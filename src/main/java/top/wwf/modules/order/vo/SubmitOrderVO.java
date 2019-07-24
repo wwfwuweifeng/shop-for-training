@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class SubmitOrderVO {
     private String cartNum;    //只有通过购物车提交订单的返回结果才有值
     private String orderId;     //购买单件商品提交订单的返回结果
-    private Long   totalMoney;
+    private Long   totalMoney;  //单位分
+    private String strTotalMoney;
 
 
     public Long getTotalMoney() {
@@ -36,5 +37,8 @@ public class SubmitOrderVO {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+    public String getStrTotalMoney(){
+        return String.format("%10.2f", totalMoney/100.0);
     }
 }

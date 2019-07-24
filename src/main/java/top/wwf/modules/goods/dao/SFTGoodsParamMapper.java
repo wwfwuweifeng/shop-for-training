@@ -15,4 +15,8 @@ public interface SFTGoodsParamMapper {
     int updateByPrimaryKeySelective(SFTGoodsParam record);
 
     List<SFTGoodsParam> selectListByGoodsId(String goodsId);
+
+    void deleteByGoodsId(String goodsId);
+
+    void insertGoodsParams(List<SFTGoodsParam> paramList);
 }

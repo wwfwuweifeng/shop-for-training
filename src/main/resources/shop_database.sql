@@ -12,7 +12,7 @@ create table if not exists sft_user_sys_info(
   user_role int not null comment '用户身份：买方、卖方、管理员',
   user_name varchar(50) not null comment '用户姓名，管理员分配注册码是设定，用户无法修改',
   code_used_time varchar(50) default '尚未使用' comment '注册码被使用的时间',
-  shop_id varchar(50) comment '商店id，当被分配有出售权限时，就直接分配',
+  shop_id varchar(50) default '' comment '商店id，当被分配有出售权限时，就直接分配',
   is_delete int default 0 comment '标识位，系统删除用户使用逻辑删除',
   create_time timestamp not null default current_timestamp,
   update_time timestamp not null default current_timestamp on update current_timestamp
@@ -139,7 +139,7 @@ create table if not exists sft_order_pay(
 );
 create table if not exists sft_goods_operate_log(
   id bigint(20) unsigned auto_increment primary key ,
-  goods_id varchar(20)not null ,
+  goods_id varchar(50)not null ,
   operate_time timestamp not null default current_timestamp,
   operate_type varchar(255) not null comment '操作类型'
 );

@@ -22,7 +22,7 @@ public class SFTOrder {
     private String shopName;
 
     private Long orderTotalMoney;
-
+    private String strOrderTotalMoney;
     private Integer state;
 
     private String payId;
@@ -201,5 +201,8 @@ public class SFTOrder {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+    public String getStrOrderTotalMoney(){
+        return String.format("%10.2f", orderTotalMoney/100.0);
     }
 }

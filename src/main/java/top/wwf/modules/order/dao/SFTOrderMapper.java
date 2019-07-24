@@ -31,4 +31,5 @@ public interface SFTOrderMapper {
 
     Long selectMaxId();
 
+    List<SFTOrder> selectListByCartNumAndBuyerId(String cartNum, String userId);
 }

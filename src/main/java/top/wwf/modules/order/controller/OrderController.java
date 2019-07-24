@@ -35,7 +35,7 @@ public class OrderController {
     @RequestMapping("/submitOrderByCart")
     public ServerResponse submitOrderByCart( @RequestBody SubmitOrderDTO submitOrderDTO){
         MySession session=MySession.getInstanceByToken(submitOrderDTO.getToken());
-        SubmitOrderVO result  =orderService.submitOrderByCart(session,submitOrderDTO.getCartList(),
+        SubmitOrderVO result  =orderService.submitOrderByCart(session,submitOrderDTO.getCartList(),submitOrderDTO.getTotalMoney(),
                                                               submitOrderDTO.getReceiverPeople(),submitOrderDTO.getReceiverAddress());
         return ServerResponse.create(result);
     }
@@ -48,19 +48,22 @@ public class OrderController {
     @RequestMapping("/submitOrderByBuy")
     public ServerResponse submitOrderByBuy(@RequestBody SubmitOrderDTO submitOrderDTO){   //还是将提交的参数封装成一个购物车项
         MySession session=MySession.getInstanceByToken(submitOrderDTO.getToken());
-        SubmitOrderVO result=orderService.submitOrderByBuy(session,submitOrderDTO.getCart(),
+        SubmitOrderVO result=orderService.submitOrderByBuy(session,submitOrderDTO.getCart(),submitOrderDTO.getTotalMoney(),
                                                            submitOrderDTO.getReceiverPeople(),submitOrderDTO.getReceiverAddress());
         return ServerResponse.create(result);
     }
 
     /**
+     * 有时间使用微信支付进行接入
      * 通过订单付款，即为一个订单进行付款，此部分先预留，看后面是否接入微信支付
      * @return
      */
     @ResponseBody
     @RequestMapping("/payByOrder")
-    public ServerResponse payByOrder(String orderId){
-     return null;
+    public ServerResponse payByOrder(String orderId,Long totalMoney,int payType){
+        MySession session=MySession.getInstance();
+        orderService.payByOrder(session,orderId,totalMoney,payType);
+        return ServerResponse.create();
     }
 
     /**
@@ -69,8 +72,10 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/payByCart")
-    public ServerResponse payByCart(){
-        return null;
+    public ServerResponse payByCart(String cartNum,Long totalMoney,int payType){
+        MySession session=MySession.getInstance();
+        orderService.payByCart(session,cartNum,totalMoney,payType);
+        return ServerResponse.create();
     }
 
     /**
@@ -138,7 +143,7 @@ public class OrderController {
     @RequestMapping("/orderListByBuyer")
     public ServerResponse getOrderListByBuyer(
             @RequestParam(value = "state", defaultValue = "0") int state,   //订单状态，默认获取全部
-            @RequestParam(value = "keyWord",defaultValue ="") String keyWord,
+            @RequestParam(value = "keyword",defaultValue ="") String keyWord,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
     ){
@@ -156,12 +161,12 @@ public class OrderController {
     @RequestMapping("/orderListBySeller")
     public ServerResponse getOrderListBySeller(
             @RequestParam(value = "state",defaultValue = "0") int state,   //该字段暂不使用
-            @RequestParam(value = "keyWord",defaultValue ="") String keyWord,
+            @RequestParam(value = "keyword",defaultValue ="") String keyword,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
     ){
         MySession session               =MySession.getInstance();
-        PageBean  orderSimpleInfoVOList =orderService.getOrderListBySeller(session, state, keyWord, pageNum, pageSize);
+        PageBean  orderSimpleInfoVOList =orderService.getOrderListBySeller(session, state, keyword, pageNum, pageSize);
         return ServerResponse.create(orderSimpleInfoVOList);
     }
 

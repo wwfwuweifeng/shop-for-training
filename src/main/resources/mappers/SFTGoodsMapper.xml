@@ -257,7 +257,7 @@
         order by update_time desc
     </select>
     <select id="selectSimpleInfoListByGoodsIdList" resultType="top.wwf.modules.goods.entity.SFTGoods">
-        select id,state,shop_name,price,remain_num,sell_num,goods_id,"name",cover_image,tag,shop_id
+        select id,state,shop_name,price,remain_num,sell_num,goods_id,name,cover_image,tag,shop_id
         from sft_goods where goods_id in
         <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
             #{item}
@@ -271,8 +271,11 @@
     select <include refid="Base_Column_List"/>
     from sft_goods order by sell_num desc limit #{listSize}
   </select>
+    <select id="selectByGoodsIdAndShopOwnerId" resultType="top.wwf.modules.goods.entity.SFTGoods">
+      select <include refid="Base_Column_List"/> from sft_goods where goods_id=#{param1} and shop_owner_id=#{param2}
+    </select>
 
-  <update id="updateStateByShopId">
+    <update id="updateStateByShopId">
         update sft_goods set state=#{param1} where shop_id=#{param2}
     </update>
 </mapper>

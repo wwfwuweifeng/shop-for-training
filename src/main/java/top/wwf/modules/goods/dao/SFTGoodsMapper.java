@@ -30,4 +30,6 @@ public interface SFTGoodsMapper {
     List<SFTGoods> selectNewGoodsListByListSize(int listSize);
 
     List<SFTGoods> selectHotSellGoodsListByListSize(int listSize);
+
+    SFTGoods selectByGoodsIdAndShopOwnerId(String goodsId, String shopOwnerId);
 }

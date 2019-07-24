@@ -184,13 +184,13 @@ public class JedisUtils {
             result=jedis.expire(completeKey,seconds);
         }catch (Exception e){
             logger.error("设置key：{} 的过期时间失败，失败原因：",key,e);
-            throw new MyException(HttpResponseEnum.INTERNAL_SERVER_ERROR,"获取邀请码失败，请重试");
+            throw new MyException(HttpResponseEnum.INTERNAL_SERVER_ERROR);
         }finally {
             returnResource(jedis);
         }
         if (result!=1){
-            logger.error("设置key：{} 的过期时间失败",key);
-            throw new MyException(HttpResponseEnum.INTERNAL_SERVER_ERROR,"获取邀请码失败，请重试");
+            logger.error("设置key：{} 已经有过期时间",key);
+//            throw new MyException(HttpResponseEnum.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,18 +1,26 @@
 package top.wwf.modules.goods.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import top.wwf.common.base.MySession;
 import top.wwf.common.base.ServerResponse;
 import top.wwf.common.page.PageBean;
+import top.wwf.common.utils.JsonUtils;
+import top.wwf.modules.goods.dto.EditGoodsDTO;
 import top.wwf.modules.goods.entity.SFTGoods;
+import top.wwf.modules.goods.entity.SFTGoodsParam;
 import top.wwf.modules.goods.service.GoodsService;
 import top.wwf.modules.goods.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description:    TODO
@@ -51,13 +59,13 @@ public class GoodsController {
     @ResponseBody
     @RequestMapping("/goodsListBySeller")
     public ServerResponse getGoodsListBySeller(
-            @RequestParam(value = "classifyId",defaultValue = "0") int state,   //该字段暂不使用
-            @RequestParam(value = "keyWord",defaultValue ="") String keyWord,
+            @RequestParam(value = "state",defaultValue = "0") int state,   //该字段暂不使用
+            @RequestParam(value = "keyword",defaultValue ="") String keyword,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
     ){
         MySession session=MySession.getInstance();
-        PageBean<SFTGoods> result=goodsService.getGoodsListBySeller(session,state,keyWord,pageNum,pageSize);
+        PageBean<SFTGoods> result=goodsService.getGoodsListBySeller(session,state,keyword,pageNum,pageSize);
         return ServerResponse.create(result);
     }
 
@@ -91,6 +99,7 @@ public class GoodsController {
 
     /**
      * 卖家添加商品，预留，看是使用小程序端，还是web端来实现
+     * 已废弃
      * @return
      */
     @ResponseBody
@@ -101,17 +110,45 @@ public class GoodsController {
     }
 
     /**
-     * 预留，看是使用小程序还是web端实现
      * 卖家修改商品的详细信息：含修改数量，修改描述等，不含修改状态；
      * 目前为覆盖修改，有时间再考虑新增记录，然后使用版本记录！！！
      * @return
      */
     @ResponseBody
-    @RequestMapping("/editGoodsDetailBySeller")
-    public ServerResponse editGoodsBySeller(){
-        return null;
+    @RequestMapping("/editGoodsDetailBySellerWithImage")
+    public ServerResponse editGoodsBySellerWithImage(MultipartFile imageFile,String name,String strPrice,String detail,
+    String goodsId,String tag,int remainNum,String classifyName,String goodsParamList){
+        MySession session=MySession.getInstance();
+        SFTGoods goods=new SFTGoods();
+        goods.setGoodsId(goodsId);
+        goods.setName(name);
+        goods.setRemainNum(remainNum);
+        goods.setPrice((new Double(Double.parseDouble(strPrice)*100)).longValue());
+        goods.setClassifyName(classifyName);
+        goods.setTag(tag);
+        goods.setDetail(detail);
+        List<SFTGoodsParam> paramList = JSONObject.parseArray(goodsParamList, SFTGoodsParam.class);
+        SFTGoods result=goodsService.editGoodsBySellerWithImage(session,goods,imageFile,paramList);
+        return ServerResponse.create(result);
     }
 
+    @ResponseBody
+    @RequestMapping("/editGoodsDetailBySellerWithOutImage")
+    public ServerResponse editGoodsBySellerWithOutImage(String name,String strPrice,String detail,
+            String goodsId,String tag,int remainNum,String classifyName,String goodsParamList){
+        MySession session=MySession.getInstance();
+        SFTGoods goods=new SFTGoods();
+        goods.setGoodsId(goodsId);
+        goods.setName(name);
+        goods.setRemainNum(remainNum);
+        goods.setPrice((new Double(Double.parseDouble(strPrice)*100)).longValue());
+        goods.setClassifyName(classifyName);
+        goods.setTag(tag);
+        goods.setDetail(detail);
+        List<SFTGoodsParam> paramList = JSONObject.parseArray(goodsParamList, SFTGoodsParam.class);
+        SFTGoods result=goodsService.editGoodsBySellerWithOutImage(session,goods,paramList);
+        return ServerResponse.create(result);
+    }
     /**
      * 管理员编辑商品状态
      * @param operate 操作行为，将对应至一个枚举类

@@ -1,25 +1,35 @@
 package top.wwf.modules.goods.service;
 
+import com.alibaba.druid.sql.visitor.functions.If;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import top.wwf.common.base.MySession;
 import top.wwf.common.consts.Const;
 import top.wwf.common.consts.GoodsConst;
 import top.wwf.common.consts.HttpResponseEnum;
 import top.wwf.common.exception.MyException;
 import top.wwf.common.page.PageBean;
+import top.wwf.common.utils.IdGenUtils;
+import top.wwf.common.utils.MyFileUtils;
 import top.wwf.modules.goods.dao.enhance.GoodsDao;
 import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.entity.SFTGoodsClassify;
 import top.wwf.modules.goods.entity.SFTGoodsOperateLog;
 import top.wwf.modules.goods.entity.SFTGoodsParam;
 import top.wwf.modules.goods.vo.*;
+import top.wwf.modules.user.dao.enhance.UserDao;
+import top.wwf.modules.user.entity.SFTUserPersonalInfo;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +42,8 @@ import java.util.Map;
 public class GoodsService {
     @Autowired
     private GoodsDao goodsDao;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 当前的模糊搜索较简单，仅依靠数据库的模糊查询实现
@@ -54,15 +66,15 @@ public class GoodsService {
      * 支持商品名、商品分类、商品标签的模糊查询
      * @param session
      * @param state
-     * @param keyWord
+     * @param keyword
      * @param pageNum
      * @param pageSize
      * @return
      */
     @SuppressWarnings("unchecked")
-    public PageBean<SFTGoods> getGoodsListBySeller(MySession session, int state, String keyWord, int pageNum, int pageSize) {
+    public PageBean<SFTGoods> getGoodsListBySeller(MySession session, int state, String keyword, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<SFTGoods> goodsList=goodsDao.getGoodsListForSeller(state,keyWord,session.getShopId());
+        List<SFTGoods> goodsList=goodsDao.getGoodsListForSeller(state,session.getShopId(),keyword);
         return PageBean.createByPage(goodsList);
     }
 
@@ -111,6 +123,7 @@ public class GoodsService {
         GoodsDetailForSellerVO goodsDetailForSellerVO =new GoodsDetailForSellerVO();
         goodsDetailForSellerVO.setGoods(goods);
         goodsDetailForSellerVO.setMsgForMainBt(goodsState.getMsgForMainBt());
+        goodsDetailForSellerVO.setStateDesc(goodsState.getDesc());
         goodsDetailForSellerVO.setAllowClickMainBt(goodsState.getAllowClickMainBt());
         goodsDetailForSellerVO.setAllowLowerShelf(goodsState.getAllowLowerShelf());
 
@@ -191,6 +204,9 @@ public class GoodsService {
         SFTGoodsOperateLog goodsOperateLog=new SFTGoodsOperateLog();
         if (operate == GoodsConst.OPERATE.APPLY_UPPER_SHELF.getKey()&&
                 (state== GoodsConst.STATE.LOWER_SHELF ||state== GoodsConst.STATE.APPROVE_FAIL)){//申请上架
+            if (goods.getRemainNum()<=0){
+                throw new MyException(HttpResponseEnum.PROHIBIT,"剩余库存量需大于0");
+            }
             goods.setIsSellByShop(Const.YES);
             goods.setState(
                     goods.getIsSellByManager()==Const.YES? GoodsConst.STATE.ON_SALE.getKey(): GoodsConst.STATE.WAIT_APPROVE.getKey()
@@ -250,7 +266,92 @@ public class GoodsService {
         return recommendInfoVO;
     }
 
-//    public List<GoodsListGroupByShopVO> getGoodsListBygoodsIdList(List<String> goodsIdList) {
+    /**
+     * 只会是编辑已经存在的商品
+     * @param session
+     * @param goods
+     * @param paramList
+     * @return
+     */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public SFTGoods editGoodsBySellerWithOutImage(MySession session, SFTGoods goods, List<SFTGoodsParam> paramList) {
+        if (session.getUserRole()!= Const.USER_ROLE.SELLER){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");
+        }
+        if (StringUtils.isNotBlank(goods.getGoodsId())){
+            SFTGoods oldGoods=goodsDao.getGoodsbyGoodsIdAndShopOwnerId(goods.getGoodsId(),session.getUserId());
+            if (null==oldGoods){
+                throw new MyException(HttpResponseEnum.PROHIBIT,"商品不存在或不可见");
+            }
+            goods.setId(oldGoods.getId());
+            goods.setState(GoodsConst.STATE.LOWER_SHELF.getKey());  //编辑后，自动设置为下架状态
+            //直接更新goods内容
+            goodsDao.updateGoodsByPrimaryKey(goods);
+        }else{
+            throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST);
+        }
+
+        //开始更新参数
+        //删除原先有的参数列表
+        goodsDao.delGoodsParamByGoodsId(goods.getGoodsId());
+        for (SFTGoodsParam param:paramList){
+            param.setGoodsId(goods.getGoodsId());
+        }
+        //如果参数列表不为空，插入所有参数列表
+        if (paramList.size()>0){
+            goodsDao.addGoodsParams(paramList);
+        }
+        return goods;
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public SFTGoods editGoodsBySellerWithImage(MySession session, SFTGoods goods, MultipartFile imageFile, List<SFTGoodsParam> paramList) {
+        if (session.getUserRole()!= Const.USER_ROLE.SELLER){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");
+        }
+        String imageFileName= IdGenUtils.uuid();    //默认图片名中不含.
+        MyFileUtils.saveFile(Const.IMAGE_DIR+imageFileName,imageFile);  //保存新图片，旧的图片并不删除
+        goods.setCoverImage(imageFileName);
+        if (StringUtils.isNotBlank(goods.getGoodsId())){
+            SFTGoods oldGoods=goodsDao.getGoodsbyGoodsIdAndShopOwnerId(goods.getGoodsId(),session.getUserId());
+            if (null==oldGoods){
+                throw new MyException(HttpResponseEnum.PROHIBIT,"商品不存在或不可见");
+            }
+            goods.setId(oldGoods.getId());
+            goods.setState(GoodsConst.STATE.LOWER_SHELF.getKey());  //编辑后，自动设置为下架状态
+            //直接更新goods内容
+            goodsDao.updateGoodsByPrimaryKey(goods);
+        }else{
+            //新添加的商品
+            SFTUserPersonalInfo userPersonalInfo=userDao.getUserPersonalInfoByUserId(session.getUserId());
+            SFTGoodsClassify goodsClassify=goodsDao.getGoodsClassifyByClassifyName(goods.getClassifyName());
+            if (null==goodsClassify){
+                throw new MyException(HttpResponseEnum.PROHIBIT,"参数不合法");
+            }
+            goods.setGoodsId(IdGenUtils.uuid().replace("-",""));
+            goods.setState(GoodsConst.STATE.LOWER_SHELF.getKey());
+            goods.setIsSellByShop(Const.NO);
+            goods.setIsSellByManager(Const.NO);
+            goods.setShopId(session.getShopId());
+            goods.setShopName(userPersonalInfo.getShopName());
+            goods.setShopOwnerId(session.getUserId());
+            goods.setClassifyId(goodsClassify.getId());
+            goodsDao.addGoods(goods);
+        }
+        //开始更新参数
+        //删除原先有的参数列表
+        goodsDao.delGoodsParamByGoodsId(goods.getGoodsId());
+        for (SFTGoodsParam param:paramList){
+            param.setGoodsId(goods.getGoodsId());
+        }
+        //如果参数列表不为空，插入所有参数列表
+        if (paramList.size()>0){
+            goodsDao.addGoodsParams(paramList);
+        }
+        return goods;
+    }
+
+    //    public List<GoodsListGroupByShopVO> getGoodsListBygoodsIdList(List<String> goodsIdList) {
 //        if (null==goodsIdList||goodsIdList.size()==0) return Lists.newArrayList();
 //        else {
 //            List<SFTGoods>                     goodsList                 =goodsDao.getSimpleGoodsInfoListByGoodsIdList(goodsIdList);

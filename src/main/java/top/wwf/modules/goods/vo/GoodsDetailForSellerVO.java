@@ -19,7 +19,7 @@ public class GoodsDetailForSellerVO {
     private String msgForMainBt;    //主按钮显示的字段
     private int allowClickMainBt;   //是否允许点击主要按钮
     private int allowLowerShelf;    //是否允许点击下架，只有处于下架状态的商品无法点击
-
+    private String stateDesc;
     private List<OperateLog> operateLogList;
 
     private class OperateLog{
@@ -88,5 +88,13 @@ public class GoodsDetailForSellerVO {
             operateLogList.add(operateLog);
         }
         this.operateLogList=operateLogList;
+    }
+
+    public String getStateDesc() {
+        return stateDesc;
+    }
+
+    public void setStateDesc(String stateDesc) {
+        this.stateDesc = stateDesc;
     }
 }

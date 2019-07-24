@@ -27,6 +27,7 @@ import top.wwf.modules.order.dao.enhance.OrderDao;
 import top.wwf.modules.order.entity.SFTOrder;
 import top.wwf.modules.order.entity.SFTOrderItem;
 import top.wwf.modules.order.entity.SFTOrderOperateLog;
+import top.wwf.modules.order.entity.SFTOrderPay;
 import top.wwf.modules.order.vo.OrderInfoVO;
 import top.wwf.modules.order.vo.OrderSimpleInfoVO;
 import top.wwf.modules.order.vo.SubmitOrderVO;
@@ -71,7 +72,7 @@ public class OrderService {
      * @return
      */
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public SubmitOrderVO submitOrderByCart(MySession session, List<SFTCart> carts,String receiverPeople,String receiverAddress) {
+    public SubmitOrderVO submitOrderByCart(MySession session, List<SFTCart> carts,Long totalMoney,String receiverPeople,String receiverAddress) {
         Const.USER_ROLE userRole=session.getUserRole();
 
         //权限检查（含是否是自卖自买的行为检查）
@@ -153,7 +154,12 @@ public class OrderService {
             if (StringUtils.isBlank(order.getShopName())){
                 order.setShopName(goods.getShopName()); //只需设置一次
             }
-            submitOrderVO.setTotalMoney(submitOrderVO.getTotalMoney()+order.getOrderTotalMoney());
+            submitOrderVO.setTotalMoney(submitOrderVO.getTotalMoney()+orderItem.getTotalMoney());
+        }
+
+        //校验后台计算的总金额是否与前台显示的一致
+        if (!totalMoney.equals(submitOrderVO.getTotalMoney())){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"商品价格发生变动，请返回重新操作");
         }
 
         //保存订单和订单项
@@ -176,7 +182,7 @@ public class OrderService {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public SubmitOrderVO submitOrderByBuy(MySession session, SFTCart cart,String receiverPeople,String receiverAddress) {
+    public SubmitOrderVO submitOrderByBuy(MySession session, SFTCart cart,Long totalMoney,String receiverPeople,String receiverAddress) {
         if (cart.getNum()<1){
             throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST);
         }else if (session.getUserRole()== Const.USER_ROLE.MANAGER){
@@ -205,6 +211,12 @@ public class OrderService {
         order.setShopName(goods.getShopName());
         order.setReceiverPeople(receiverPeople);
         order.setReceiverAddress(receiverAddress);
+
+        //校验后台计算的总金额是否与前台显示的一致
+        if (!totalMoney.equals(order.getOrderTotalMoney())){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"商品价格发生变动，请返回重新操作");
+        }
+
         orderDao.addOrder(order);
         addOrderOperateLog(order.getOrderId(),OrderConst.OPERATE.CREATE_ORDER);
 
@@ -271,6 +283,7 @@ public class OrderService {
         SFTOrderOperateLog orderOperateLog=new SFTOrderOperateLog();
         orderOperateLog.setOrderId(orderId);
         orderOperateLog.setOperateType(orderInfoVO.getStateDesc());
+        orderOperateLogList.add(0,orderOperateLog);
         orderInfoVO.setOperateLogList(orderOperateLogList);
         return orderInfoVO;
     }
@@ -476,6 +489,84 @@ public class OrderService {
             orderSimpleInfoVO.setOrderItemList(orderDao.getOrderItemListByOrderId(order.getOrderId()));
             orderSimpleInfoVOList.add(orderSimpleInfoVO);
         }
-        return PageBean.createByPage(orderSimpleInfoVOList);
+
+        PageBean pageBean=PageBean.createByPage(orderList);
+        pageBean.setList(orderSimpleInfoVOList);
+        return pageBean;
+    }
+
+    @Transactional
+    public void payByOrder(MySession session, String orderId, Long totalMoney,int payType) {
+        SFTOrder order=orderDao.getOrderByOrderIdAndBuyerId(orderId,session.getUserId());
+        if (null==order){
+            throw new MyException(HttpResponseEnum.PROHIBIT);
+        }
+        if (!order.getOrderTotalMoney().equals(totalMoney)){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"支付金额有误");
+        }
+        if (order.getState()==OrderConst.STATE_FOR_BUYER.WAIT_PAY.getKey()){
+            order.setState(OrderConst.STATE_FOR_BUYER.WAIT_RECEIPT.getKey());   //修改订单为等待接单
+            order.setPayId(IdGenUtils.uuid().replace("-",""));
+            order.setPayTime(DateYMDHMSJsonSerializer.dateFormat.format(new Date()));
+            orderDao.updateOrderByPrimaryKey(order);
+        }else {
+            throw new MyException(HttpResponseEnum.PROHIBIT,"状态不允许");
+        }
+
+        //开始保存支付信息
+        SFTOrderPay orderPay=new SFTOrderPay();
+        orderPay.setOrderId(order.getOrderId());
+        orderPay.setUserId(session.getUserId());
+        orderPay.setOrderActualPay(order.getOrderTotalMoney());
+        orderPay.setOrderTotalPrice(order.getOrderTotalMoney());
+        orderPay.setPayId(order.getPayId());
+        orderPay.setPayType(Const.PAY_TYPE.getPayTypeByKey(payType).getKey());
+        orderDao.addOrderPay(orderPay);
+        //保存日志
+        SFTOrderOperateLog orderOperateLog=new SFTOrderOperateLog();
+        orderOperateLog.setOrderId(order.getOrderId());
+        orderOperateLog.setOperateType(OrderConst.OPERATE.PAY);
+        orderDao.addOrderOperateLog(orderOperateLog);
+    }
+
+    @Transactional
+    public void payByCart(MySession session, String cartNum, Long totalMoney, int payType) {
+        List<SFTOrder> orderList=orderDao.getOrderListByCartNumAndBuyerId(cartNum,session.getUserId());
+        if(null==orderList||orderList.size()==0){
+            throw new MyException(HttpResponseEnum.PROHIBIT);
+        }
+        Long countTotalMoney=0L;
+        for (SFTOrder order:orderList){
+            if (order.getState()==OrderConst.STATE_FOR_BUYER.WAIT_PAY.getKey()){
+                order.setState(OrderConst.STATE_FOR_BUYER.WAIT_RECEIPT.getKey());   //修改订单为等待接单
+                order.setPayId(IdGenUtils.uuid().replace("-",""));
+                order.setPayTime(DateYMDHMSJsonSerializer.dateFormat.format(new Date()));
+                orderDao.updateOrderByPrimaryKey(order);
+            }else {
+                throw new MyException(HttpResponseEnum.PROHIBIT,"状态不允许");
+            }
+
+            //开始保存支付信息
+            SFTOrderPay orderPay=new SFTOrderPay();
+            orderPay.setOrderId(order.getOrderId());
+            orderPay.setCartNum(cartNum);
+            orderPay.setUserId(session.getUserId());
+            orderPay.setOrderActualPay(order.getOrderTotalMoney());
+            orderPay.setOrderTotalPrice(order.getOrderTotalMoney());
+            orderPay.setPayId(order.getPayId());
+            orderPay.setPayType(Const.PAY_TYPE.getPayTypeByKey(payType).getKey());
+            orderDao.addOrderPay(orderPay);
+            //保存日志
+            SFTOrderOperateLog orderOperateLog=new SFTOrderOperateLog();
+            orderOperateLog.setOrderId(order.getOrderId());
+            orderOperateLog.setOperateType(OrderConst.OPERATE.PAY);
+            orderDao.addOrderOperateLog(orderOperateLog);
+
+            //计算总金额
+            countTotalMoney+=order.getOrderTotalMoney();
+        }
+        if (!countTotalMoney.equals(totalMoney)){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"支付金额有误");
+        }
     }
 }

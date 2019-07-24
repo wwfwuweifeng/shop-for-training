@@ -30,6 +30,7 @@ public class GoodsDao {
     @Autowired
     private SFTGoodsOperateLogMapper goodsOperateLogMapper;
 
+
     public List<SFTGoods> getNewGoodsList(int listSize) {
         return goodsMapper.selectNewGoodsListByListSize(listSize);
     }
@@ -139,5 +140,25 @@ public class GoodsDao {
 
     public List<SFTGoods> getHotSellGoodsList(int listSize) {
         return goodsMapper.selectHotSellGoodsListByListSize(listSize);
+    }
+
+    public SFTGoods getGoodsbyGoodsIdAndShopOwnerId(String goodsId, String shopOwnerId) {
+        return goodsMapper.selectByGoodsIdAndShopOwnerId(goodsId,shopOwnerId);
+    }
+
+    public void delGoodsParamByGoodsId(String goodsId) {
+        goodsParamMapper.deleteByGoodsId(goodsId);
+    }
+
+    public void addGoodsParams(List<SFTGoodsParam> paramList) {
+        goodsParamMapper.insertGoodsParams(paramList);
+    }
+
+    public SFTGoodsClassify getGoodsClassifyByClassifyName(String classifyName) {
+        return goodsClassifyMapper.selectByClassifyName(classifyName);
+    }
+
+    public void addGoods(SFTGoods goods) {
+        goodsMapper.insertSelective(goods);
     }
 }

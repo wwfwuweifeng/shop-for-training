@@ -24,20 +24,7 @@
     from sft_order_pay
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from sft_order_pay
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
-    insert into sft_order_pay (id, pay_id, order_id, 
-      cart_num, user_id, pay_type, 
-      order_total_price, order_actual_pay, create_time
-      )
-    values (#{id,jdbcType=BIGINT}, #{payId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
-      #{cartNum,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
-      #{orderTotalPrice,jdbcType=BIGINT}, #{orderActualPay,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
+
   <insert id="insertSelective" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
     insert into sft_order_pay
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -127,18 +114,6 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="top.wwf.modules.order.entity.SFTOrderPay" >
-    update sft_order_pay
-    set pay_id = #{payId,jdbcType=VARCHAR},
-      order_id = #{orderId,jdbcType=VARCHAR},
-      cart_num = #{cartNum,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=VARCHAR},
-      pay_type = #{payType,jdbcType=INTEGER},
-      order_total_price = #{orderTotalPrice,jdbcType=BIGINT},
-      order_actual_pay = #{orderActualPay,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

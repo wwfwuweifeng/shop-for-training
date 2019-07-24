@@ -274,5 +274,9 @@
     <select id="selectMaxId" resultType="java.lang.Long">
       select max(id) from sft_order
     </select>
+    <select id="selectListByCartNumAndBuyerId" resultType="top.wwf.modules.order.entity.SFTOrder">
+      select <include refid="Base_Column_List"/> from sft_order
+      where cart_num=#{param1} and buyer_id=#{param2}
+    </select>
 
 </mapper>

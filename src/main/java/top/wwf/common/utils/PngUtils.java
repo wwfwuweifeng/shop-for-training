@@ -23,4 +23,8 @@ public class PngUtils {
         return MyFileUtils.getFileNameListByDir(pngDirName);
     }
 
+    public static void main(String[] args){
+        System.out.println(3504/100);
+        System.out.println(3504/100.0);
+    }
 }

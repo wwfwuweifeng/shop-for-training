@@ -24,8 +24,11 @@
     delete from sft_goods_param
     where id = #{id,jdbcType=BIGINT}
   </delete>
+    <delete id="deleteByGoodsId">
+      delete from sft_goods_param where goods_id=#{goodsId}
+    </delete>
 
-  <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
+    <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsParam" >
     insert into sft_goods_param
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -84,4 +87,15 @@
     select <include refid="Base_Column_List"/>
     from sft_goods_param where goods_id=#{goodsId}
   </select>
+  <insert id="insertGoodsParams">
+    insert into sft_goods_param (goods_id, param_name, param_value)
+    values
+    <foreach collection="list" item="param" separator="," close=";">
+      (
+      <if test="param.goodsId != null" >#{param.goodsId},</if>
+      <if test="param.paramName != null" >#{param.paramName},</if>
+      <if test="param.paramValue != null" >#{param.paramValue}</if>
+      )
+    </foreach>
+  </insert>
 </mapper>
