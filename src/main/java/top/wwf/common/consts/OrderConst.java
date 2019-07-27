@@ -27,24 +27,26 @@ public class OrderConst {
      * 针对购买者的订单状态
      */
     public enum STATE_FOR_BUYER {
-        CREATE(1, "订单已创建", "订单已创建", Const.YES, Const.NO),
-        WAIT_PAY(2, "待付款", "立即支付", Const.YES, Const.YES),
-        WAIT_RECEIPT(3, "等待商家接单", "等待商家接单", Const.YES, Const.NO),
-        WAIT_SEND(4, "等待商家发货", "等待商家发货", Const.NO, Const.NO),
-        WAIT_SIGN(5, "待签收", "确认收货", Const.NO, Const.YES),
-        ALREADY_DEAL(6, "已成交", "已成交", Const.NO, Const.NO),
-        ALREADY_CANCEL(7, "已取消", "已取消", Const.NO, Const.NO);
+        CREATE(1, "订单已创建", "订单已创建", "",Const.YES, Const.NO),
+        WAIT_PAY(2, "待付款", "立即支付","pay" ,Const.YES, Const.YES),
+        WAIT_RECEIPT(3, "等待商家接单", "等待商家接单", "",Const.YES, Const.NO),
+        WAIT_SEND(4, "等待商家发货", "等待商家发货", "",Const.NO, Const.NO),
+        WAIT_SIGN(5, "待签收", "签收","sign", Const.NO, Const.YES),
+        ALREADY_DEAL(6, "已成交", "已成交","", Const.NO, Const.NO),
+        ALREADY_CANCEL(7, "已取消", "已取消", "",Const.NO, Const.NO);
 
         private int    key;
         private String desc;             //状态显示内容
         private String msgForBt;        //主按钮显示的内容
+        private String btOperate;       //主按钮点击的操作
         private int    allowCancel;     //是否允许取消订单
         private int    allowClickMain; //是否允许点击主按钮
 
-        STATE_FOR_BUYER(int key, String desc, String msgForBt, int allowCancel, int allowClickMain) {
+        STATE_FOR_BUYER(int key, String desc, String msgForBt,String btOperate, int allowCancel, int allowClickMain) {
             this.key = key;
             this.desc = desc;
             this.msgForBt = msgForBt;
+            this.btOperate=btOperate;
             this.allowCancel = allowCancel;
             this.allowClickMain = allowClickMain;
         }
@@ -63,6 +65,10 @@ public class OrderConst {
 
         public int getAllowCancel() {
             return allowCancel;
+        }
+
+        public String getBtOperate() {
+            return btOperate;
         }
 
         public int getAllowClickMain() {
@@ -84,24 +90,26 @@ public class OrderConst {
      * 针对商家的订单状态
      */
     public enum STATE_FOR_SELLER {
-        CREATE(1, "订单已创建", "订单已创建", Const.NO, Const.NO),
-        WAIT_PAY(2, "等待买家付款", "等待买家付款", Const.NO, Const.NO),
-        WAIT_RECEIPT(3, "待接单", "接单", Const.YES, Const.NO),
-        WAIT_SEND(4, "待发货", "立即发货", Const.NO, Const.YES),
-        WAIT_SIGN(5, "等待买家签收", "等待买家签收", Const.NO, Const.NO),
-        ALREADY_DEAL(6, "已成交", "已成交", Const.NO, Const.NO),
-        ALREADY_CANCEL(7, "已取消", "已取消", Const.NO, Const.NO);
+        CREATE(1, "订单已创建", "订单已创建", "",Const.NO, Const.NO),
+        WAIT_PAY(2, "等待买家付款", "等待买家付款", "",Const.NO, Const.NO),
+        WAIT_RECEIPT(3, "待接单", "接单","receipt", Const.YES, Const.YES),
+        WAIT_SEND(4, "待发货", "发货", "send",Const.NO, Const.YES),
+        WAIT_SIGN(5, "等待买家签收", "等待买家签收", "",Const.NO, Const.NO),
+        ALREADY_DEAL(6, "已成交", "已成交", "",Const.NO, Const.NO),
+        ALREADY_CANCEL(7, "已取消", "已取消","", Const.NO, Const.NO);
 
         private int    key;
         private String desc;            //状态显示内容
         private String msgForBt;        //主按钮显示的内容
+        private String btOperate;       //主按钮点击的操作
         private int    allowCancel;     //是否允许取消订单
         private int    allowClickMain; //是否允许点击主按钮
 
-        STATE_FOR_SELLER(int key, String desc, String msgForBt, int allowCancel, int allowClickMain) {
+        STATE_FOR_SELLER(int key, String desc, String msgForBt, String btOperate,int allowCancel, int allowClickMain) {
             this.key = key;
             this.desc = desc;
             this.msgForBt = msgForBt;
+            this.btOperate=btOperate;
             this.allowCancel = allowCancel;
             this.allowClickMain = allowClickMain;
         }
@@ -124,6 +132,10 @@ public class OrderConst {
 
         public int getAllowClickMain() {
             return allowClickMain;
+        }
+
+        public String getBtOperate() {
+            return btOperate;
         }
 
         //获取订单状态

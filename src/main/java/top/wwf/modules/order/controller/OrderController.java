@@ -63,7 +63,8 @@ public class OrderController {
     public ServerResponse payByOrder(String orderId,Long totalMoney,int payType){
         MySession session=MySession.getInstance();
         orderService.payByOrder(session,orderId,totalMoney,payType);
-        return ServerResponse.create();
+        OrderInfoVO result=orderService.getOrderDetail(session,orderId,Const.USER_ROLE.BUYER.getKey());
+        return ServerResponse.create(result);
     }
 
     /**

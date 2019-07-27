@@ -267,12 +267,14 @@ public class OrderService {
             orderInfoVO.setAllowClickMain(orderState.getAllowClickMain());
             orderInfoVO.setMsgForBt(orderState.getMsgForBt());
             orderInfoVO.setStateDesc(orderState.getDesc());
+            orderInfoVO.setBtOperate(orderState.getBtOperate());
         }else {//卖家
             OrderConst.STATE_FOR_SELLER orderState= OrderConst.STATE_FOR_SELLER.getStateByKey(order.getState());
             orderInfoVO.setAllowCancel(orderState.getAllowCancel());
             orderInfoVO.setAllowClickMain(orderState.getAllowClickMain());
             orderInfoVO.setMsgForBt(orderState.getMsgForBt());
             orderInfoVO.setStateDesc(orderState.getDesc());
+            orderInfoVO.setBtOperate(orderState.getBtOperate());
         }
 
         //获取orderItems
@@ -346,9 +348,9 @@ public class OrderService {
     }
 
     public void signOrder(MySession session, String orderId) {
-        if (session.getUserRole()!= Const.USER_ROLE.BUYER) {//不是买家
-            throw new MyException(HttpResponseEnum.UNAUTHORIZED);
-        }
+//        if (session.getUserRole()!= Const.USER_ROLE.BUYER) {//不是买家
+//            throw new MyException(HttpResponseEnum.UNAUTHORIZED);
+//        }
         SFTOrder order=orderDao.getOrderByOrderIdAndBuyerId(orderId,session.getUserId());
         if (null==order){
             throw new MyException(HttpResponseEnum.PROHIBIT,"查询不到相关订单");

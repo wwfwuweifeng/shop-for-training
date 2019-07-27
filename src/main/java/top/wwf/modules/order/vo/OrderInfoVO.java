@@ -20,6 +20,7 @@ public class OrderInfoVO {
     private String receiverAddress;
     private String stateDesc;        //状态显示内容
     private String msgForBt;        //主按钮显示的内容
+    private String btOperate;       //点击主按钮进行的操作
     private int    allowCancel;     //是否允许取消订单
     private int    allowClickMain; //是否允许点击主按钮
     private List<SFTOrderItem> orderItemList;
@@ -124,5 +125,13 @@ public class OrderInfoVO {
 
     public void setStateDesc(String stateDesc) {
         this.stateDesc = stateDesc;
+    }
+
+    public String getBtOperate() {
+        return btOperate;
+    }
+
+    public void setBtOperate(String btOperate) {
+        this.btOperate = btOperate;
     }
 }
