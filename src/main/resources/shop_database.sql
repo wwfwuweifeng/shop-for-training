@@ -126,6 +126,8 @@ create table if not exists sft_cart(
   create_time timestamp not null default current_timestamp
 );
 
+
+
 create table if not exists sft_order_pay(
   id bigint(20) unsigned auto_increment primary key ,
   pay_id varchar(50) not null comment '付款编号，一个订单对应一个付款编号',
@@ -137,9 +139,12 @@ create table if not exists sft_order_pay(
   order_actual_pay bigint(20) unsigned default 0 comment '订单实际付款金额，单位分',
   create_time timestamp not null default current_timestamp
 );
+
 create table if not exists sft_goods_operate_log(
   id bigint(20) unsigned auto_increment primary key ,
   goods_id varchar(50)not null ,
   operate_time timestamp not null default current_timestamp,
   operate_type varchar(255) not null comment '操作类型'
 );
+
+
