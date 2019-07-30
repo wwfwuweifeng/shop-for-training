@@ -19,7 +19,7 @@ public interface SFTUserSysInfoMapper {
 
     SFTUserSysInfo selectByRegisterCode(String registerCode);
 
-    List<SFTUserSysInfo> selectUserListWithoutManager(int managerRole);
+    List<SFTUserSysInfo> selectUserListByKeywordWithoutManager(int managerRole, String keyword);
 
     Long selectMaxId();
 }

@@ -131,8 +131,12 @@ public class OrderController {
     ){
         MySession session=MySession.getInstance();
         orderService.cancelOrder(session,role,orderId);
-        OrderInfoVO result=orderService.getOrderDetail(session, orderId,role);
-        return ServerResponse.create(result);
+        if (Const.USER_ROLE.MANAGER.getKey()==role){
+            return ServerResponse.create();
+        }else {
+            OrderInfoVO result=orderService.getOrderDetail(session, orderId,role);
+            return ServerResponse.create(result);
+        }
     }
 
     /**
@@ -182,5 +186,23 @@ public class OrderController {
         MySession session=MySession.getInstance();
         OrderInfoVO result=orderService.getOrderDetail(session,orderId,role);
         return ServerResponse.create(result);
+    }
+
+
+    /**
+     * 管理员
+     * 支持订单号、付款编号、收货人、收获地址、快递编号的模糊查询
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/orderListByManager")
+    public ServerResponse getOrderListByManager(
+            @RequestParam(value = "keyword",defaultValue ="") String keyword,
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
+    ){
+        MySession session               =MySession.getInstance();
+        PageBean  orderSimpleInfoVOList =orderService.getOrderListByManager(session, keyword, pageNum, pageSize);
+        return ServerResponse.create(orderSimpleInfoVOList);
     }
 }

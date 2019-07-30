@@ -23,6 +23,9 @@
     delete from sft_goods_classify
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteSecondGoodsById">
+    delete from sft_goods_classify where id=#{goodsClassifyId} and parent_classify_id!=0
+  </delete>
 
   <insert id="insertSelective" parameterType="top.wwf.modules.goods.entity.SFTGoodsClassify" >
     insert into sft_goods_classify
@@ -90,6 +93,9 @@
   </select>
     <select id="selectByClassifyName" resultType="top.wwf.modules.goods.entity.SFTGoodsClassify">
       select <include refid="Base_Column_List"/> from sft_goods_classify where classify_name=#{classifyName}
+    </select>
+    <select id="selectSecondClassifyList" resultType="top.wwf.modules.goods.entity.SFTGoodsClassify">
+      select <include refid="Base_Column_List"/> from sft_goods_classify where parent_classify_id!=0 order by create_time desc
     </select>
 
 </mapper>

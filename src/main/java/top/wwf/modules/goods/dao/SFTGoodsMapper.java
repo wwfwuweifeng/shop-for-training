@@ -32,4 +32,8 @@ public interface SFTGoodsMapper {
     List<SFTGoods> selectHotSellGoodsListByListSize(int listSize);
 
     SFTGoods selectByGoodsIdAndShopOwnerId(String goodsId, String shopOwnerId);
+
+    int countGoodsNumByGoodsClassifyId(Long goodsClassifyId);
+
+    List<SFTGoods> selectListByKeyword(@Param("keyword") String keyword);
 }

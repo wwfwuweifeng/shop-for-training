@@ -1,10 +1,8 @@
 package top.wwf.modules.goods.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,15 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 import top.wwf.common.base.MySession;
 import top.wwf.common.base.ServerResponse;
 import top.wwf.common.page.PageBean;
-import top.wwf.common.utils.JsonUtils;
-import top.wwf.modules.goods.dto.EditGoodsDTO;
 import top.wwf.modules.goods.entity.SFTGoods;
 import top.wwf.modules.goods.entity.SFTGoodsParam;
 import top.wwf.modules.goods.service.GoodsService;
 import top.wwf.modules.goods.vo.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
 * @Description:    TODO
@@ -43,12 +38,12 @@ public class GoodsController {
     public ServerResponse getGoodsListByBuyer(
             @RequestParam(value = "classifyId",defaultValue = "0") Long classifyId,
             @RequestParam(value = "shopId",defaultValue = "")String shopId,
-            @RequestParam(value = "keyword",defaultValue ="") String keyWord,
+            @RequestParam(value = "keyword",defaultValue ="") String keyword,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
             ){
         MySession session=MySession.getInstance();
-        PageBean<SFTGoods> result=goodsService.getGoodsListByBuyer(session,classifyId,shopId,keyWord,pageNum,pageSize);
+        PageBean<SFTGoods> result=goodsService.getGoodsListByBuyer(session, classifyId, shopId, keyword, pageNum, pageSize);
         return ServerResponse.create(result);
     }
 
@@ -161,8 +156,8 @@ public class GoodsController {
             @RequestParam(value = "operate",defaultValue = "0") int operate
     ){
         MySession session=MySession.getInstance();
-        goodsService.operateGoodsStateByManager(session,goodsId,operate);
-        return ServerResponse.create("还未设置返回数据！！！");
+        SFTGoods result=goodsService.operateGoodsStateByManager(session,goodsId,operate);
+        return ServerResponse.create(result);
     }
 
     /**
@@ -201,29 +196,27 @@ public class GoodsController {
      */
     @ResponseBody
     @RequestMapping("/addClassify")
-    public ServerResponse addGoodsClassify(Long parentId,String classifyName){
-        return null;
+    public ServerResponse addGoodsClassify(Long parentId,String classifyName,MultipartFile image){
+        MySession session=MySession.getInstance();
+        goodsService.addGoodsClassify(session,parentId,classifyName,image);
+        return ServerResponse.create(goodsService.getGoodsClassifyListForManager(session));
     }
 
+
     /**
-     * 编辑商品参数，含添加、删除、修改
-     * @param operate 操作类型：1 add;2 update;3 del;
-     * @param paramId
-     * @param goodsId
-     * @param paramkey
-     * @param paramValue
+     * 只限管理员使用，此部分数据不会过多，因此不使用分页
      * @return
      */
     @ResponseBody
-    @RequestMapping("/editParam")
-    public ServerResponse editGoodsParam(
-            @RequestParam(value = "operate",defaultValue = "0") int operate,
-            @RequestParam(value = "paramId",defaultValue = "0") Long paramId,
-            String goodsId,String paramkey,String paramValue
-    ){
-        //未实现
-        return null;
+    @RequestMapping("/goodsClassifyListForManager")
+    public ServerResponse getGoodsClassifyListForManager(){
+        MySession                     session =MySession.getInstance();
+        GoodsClassifyListForManagerVO result  =goodsService.getGoodsClassifyListForManager(session);
+        return ServerResponse.create(result);
     }
+
+
+
 
     /**
      * 获取推荐首页的内容
@@ -236,6 +229,32 @@ public class GoodsController {
         return ServerResponse.create(result);
     }
 
+    @ResponseBody
+    @RequestMapping("/delGoodsClassify")
+    public ServerResponse delGoodsClassify(Long goodsClassifyId){
+        MySession session=MySession.getInstance();
+        goodsService.delGoodsClassify(session,goodsClassifyId);
+        return ServerResponse.create(goodsService.getGoodsClassifyListForManager(session));
+    }
+
+    /**
+     * 买方获取商品列表，若无搜索条件，则KeyWord设为空字符，分页查询返回
+     * 只有处于上架状态的商品会返回，自己出售的商品也会出现在此列表中
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/goodsListByManager")
+    public ServerResponse getGoodsListByManager(
+            @RequestParam(value = "classifyId",defaultValue = "0") Long classifyId,
+            @RequestParam(value = "shopId",defaultValue = "")String shopId,
+            @RequestParam(value = "keyword",defaultValue ="") String keyword,
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
+    ){
+        MySession session=MySession.getInstance();
+        PageBean<SFTGoods> result=goodsService.getGoodsListByManager(session, classifyId, shopId, keyword, pageNum, pageSize);
+        return ServerResponse.create(result);
+    }
     /**
      * 该接口只进行登录状态检验，不进行权限检验
      * 暂时废弃该接口

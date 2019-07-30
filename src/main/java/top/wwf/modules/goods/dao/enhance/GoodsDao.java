@@ -161,4 +161,26 @@ public class GoodsDao {
     public void addGoods(SFTGoods goods) {
         goodsMapper.insertSelective(goods);
     }
+
+    public List<SFTGoodsClassify> getSecondGoodsClassifyList() {
+        return goodsClassifyMapper.selectSecondClassifyList();
+    }
+
+    public void addGoodsClassify(SFTGoodsClassify goodsClassify) {
+        goodsClassifyMapper.insertSelective(goodsClassify);
+    }
+
+
+    public int getGoodsNumByGoodsClassifyId(Long goodsClassifyId) {
+        return goodsMapper.countGoodsNumByGoodsClassifyId(goodsClassifyId);
+    }
+
+    public List<SFTGoods> getGoodsListForManager(String keyword) {
+        if (StringUtils.isBlank(keyword)){keyword=null;}
+        return goodsMapper.selectListByKeyword(keyword);
+    }
+
+    public int delSecondGoodsClassifyById(Long goodsClassifyId) {
+       return goodsClassifyMapper.deleteSecondGoodsById(goodsClassifyId);
+    }
 }

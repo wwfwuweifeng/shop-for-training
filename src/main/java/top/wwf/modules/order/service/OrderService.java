@@ -571,4 +571,16 @@ public class OrderService {
             throw new MyException(HttpResponseEnum.PROHIBIT,"支付金额有误");
         }
     }
+
+    public PageBean getOrderListByManager(MySession session, String keyword, int pageNum, int pageSize) {
+        if (session.getUserRole()!= Const.USER_ROLE.MANAGER){
+            throw new MyException(HttpResponseEnum.PROHIBIT);
+        }
+        PageHelper.startPage(pageNum,pageSize);
+//        List<OrderSimpleInfoVO> orderSimpleInfoVOList=Lists.newLinkedList();
+        List<SFTOrder> orderList=orderDao.getOrderListForManager(keyword);
+        PageBean pageBean=PageBean.createByPage(orderList);
+//        pageBean.setList(orderSimpleInfoVOList);
+        return pageBean;
+    }
 }

@@ -123,4 +123,11 @@ public class OrderDao {
     public List<SFTOrder> getOrderListByCartNumAndBuyerId(String cartNum, String userId) {
         return orderMapper.selectListByCartNumAndBuyerId(cartNum,userId);
     }
+
+    public List<SFTOrder> getOrderListForManager(String keyword) {
+        if (StringUtils.isBlank(keyword)){
+            keyword=null;
+        }
+        return orderMapper.selectListForManager(keyword);
+    }
 }

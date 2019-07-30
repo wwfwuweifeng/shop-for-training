@@ -20,6 +20,8 @@ public class PageBean<T> implements Serializable {
 
     //总页数
     private int     pages;
+    //总的记录数
+    private Long count;
     //结果集
     private List<T> list;
     //当前页，从1开始
@@ -50,7 +52,9 @@ public class PageBean<T> implements Serializable {
             pageBean.isByPage=true;
             pageBean.pages=page.getPages();
             pageBean.list=page;
+            pageBean.pages=page.getPages();
             pageBean.nowPage=page.getPageNum();
+            pageBean.count=page.getTotal();
             pageBean.prePage=pageBean.nowPage==1 ? 1 : (pageBean.nowPage-1);
             pageBean.nextPage=pageBean.nowPage>=pageBean.pages ? pageBean.nowPage : (pageBean.nowPage+1);
             return pageBean;
@@ -108,5 +112,13 @@ public class PageBean<T> implements Serializable {
 
     public int getNowPage() {
         return nowPage;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    public Long getCount() {
+        return count;
     }
 }

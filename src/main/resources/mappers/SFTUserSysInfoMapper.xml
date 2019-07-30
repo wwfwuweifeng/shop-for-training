@@ -178,9 +178,14 @@
     select <include refid="Base_Column_List"/>
     from sft_user_sys_info where register_code=#{registerCode}
   </select>
-  <select id="selectUserListWithoutManager" resultType="top.wwf.modules.user.entity.SFTUserSysInfo">
+  <select id="selectUserListByKeywordWithoutManager" resultType="top.wwf.modules.user.entity.SFTUserSysInfo">
     select <include refid="Base_Column_List"/>
-    from sft_user_sys_info where user_role!=#{managerRole} and is_delete=0
+    from sft_user_sys_info where user_role!=#{param1} and is_delete=0
+    <if test="param2!=null">
+      and (register_code like "%"#{param2}"%" or
+      user_name like "%"#{param2}"%")
+    </if>
+    order by create_time desc
   </select>
     <select id="selectMaxId" resultType="java.lang.Long">
       select max(id) from sft_user_sys_info

@@ -1,5 +1,6 @@
 package top.wwf.modules.user.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,8 @@ import top.wwf.modules.user.entity.SFTUserPersonalInfo;
 import top.wwf.modules.user.service.UserService;
 import top.wwf.modules.user.vo.RegisterUserVO;
 import top.wwf.modules.user.vo.UserInfoVO;
+
+
 
 /**
 * @Description:    TODO
@@ -120,14 +123,16 @@ public class UserController {
     @RequestMapping("/delUser")
     public ServerResponse delUser(String registerCode,
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "7") int pageSize){
+            @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
+    ){
         MySession session=MySession.getInstance();
-        PageBean<RegisterUserVO> result=userService.delUser(session,registerCode,pageNum,pageSize);
-        return ServerResponse.create(result);
+        userService.delUser(session,registerCode,pageNum,pageSize);
+//        PageBean<RegisterUserVO> result=userService.delUser(session,registerCode,pageNum,pageSize);
+        return ServerResponse.create();
     }
 
     /**
-     * 获取用户列表，暂不支持搜索，有时间了再加
+     * 获取用户列表
      * @param pageNum
      * @param pageSize
      * @return
@@ -136,11 +141,20 @@ public class UserController {
     @RequestMapping("/userList")
     public ServerResponse getUserList(
             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "7") int pageSize
+            @RequestParam(value = "pageSize",defaultValue = "7") int pageSize,
+            @RequestParam(value = "keyword",defaultValue = "") String keyword
     ){
         MySession session=MySession.getInstance();
-        PageBean<RegisterUserVO> result=userService.getUserList(session,pageNum,pageSize);
+        PageBean<RegisterUserVO> result=userService.getUserList(session,pageNum,pageSize,keyword);
         return ServerResponse.create(result);
+    }
+
+    @ResponseBody
+    @RequestMapping("/exit")
+    public ServerResponse exitLogin(){
+        MySession session=MySession.getInstance();
+        session.delSession();
+        return ServerResponse.create();
     }
 
 }

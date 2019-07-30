@@ -1,5 +1,6 @@
 package top.wwf.modules.order.dao;
 
+import org.apache.ibatis.annotations.Param;
 import top.wwf.modules.order.entity.SFTOrder;
 import top.wwf.modules.order.vo.OrderSimpleInfoVO;
 
@@ -32,4 +33,6 @@ public interface SFTOrderMapper {
     Long selectMaxId();
 
     List<SFTOrder> selectListByCartNumAndBuyerId(String cartNum, String userId);
+
+    List<SFTOrder> selectListForManager(@Param("keyword") String keyword);
 }

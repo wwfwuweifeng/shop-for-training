@@ -72,4 +72,8 @@ public class MySession {
         JedisUtils.expire(userId,Const.SESSION_TIMEOUT);
     }
 
+    public void delSession(){
+        JedisUtils.del(token);
+        JedisUtils.del(userId);
+    }
 }

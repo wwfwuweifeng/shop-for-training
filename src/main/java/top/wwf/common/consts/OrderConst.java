@@ -156,7 +156,7 @@ public class OrderConst {
         CREATE(1, "订单已创建",Const.YES),
         WAIT_PAY(2, "等待买家付款",Const.YES),
         WAIT_RECEIPT(3, "等待商家接单",Const.YES),
-        WAIT_SEND(4, "等待商家发货",Const.YES),
+        WAIT_SEND(4, "等待商家发货",Const.YES),       //管理员只有在卖家发货前，才能进行订单取消
         WAIT_SIGN(5, "等待买家签收",Const.NO),
         ALREADY_DEAL(6, "已成交",Const.NO),
         ALREADY_CANCEL(7, "已取消",Const.NO);

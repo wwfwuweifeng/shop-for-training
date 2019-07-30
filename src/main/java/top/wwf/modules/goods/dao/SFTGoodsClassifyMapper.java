@@ -21,4 +21,8 @@ public interface SFTGoodsClassifyMapper {
     List<SFTGoodsClassify> selectSecondClassifyListByParentClassifyId(Long parentClassifyId);
 
     SFTGoodsClassify selectByClassifyName(String classifyName);
+
+    List<SFTGoodsClassify> selectSecondClassifyList();
+
+    int deleteSecondGoodsById(Long goodsClassifyId);
 }

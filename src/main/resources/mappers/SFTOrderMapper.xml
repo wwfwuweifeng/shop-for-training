@@ -279,4 +279,20 @@
       where cart_num=#{param1} and buyer_id=#{param2}
     </select>
 
+    <select id="selectListForManager" resultType="top.wwf.modules.order.entity.SFTOrder">
+      select <include refid="Base_Column_List"/> from sft_order
+      <where>
+        <if test="keyword != null">
+          (
+          order_id like "%"#{keyword}"%" or
+          shop_name like "%"#{keyword}"%" or
+          shop_id like "%"#{keyword}"%" or
+          express_num like "%"#{keyword}"%" or
+          pay_id like "%"#{keyword}"%"
+          )
+        </if>
+      </where>
+      order by create_time desc
+    </select>
+
 </mapper>

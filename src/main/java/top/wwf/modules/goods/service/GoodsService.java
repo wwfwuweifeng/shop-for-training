@@ -29,6 +29,7 @@ import top.wwf.modules.goods.vo.*;
 import top.wwf.modules.user.dao.enhance.UserDao;
 import top.wwf.modules.user.entity.SFTUserPersonalInfo;
 
+import javax.swing.plaf.metal.MetalTextFieldUI;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +141,7 @@ public class GoodsService {
 
 
     @Transactional
-    public Object operateGoodsStateByManager(MySession session, String goodsId, int operate) {
+    public SFTGoods operateGoodsStateByManager(MySession session, String goodsId, int operate) {
         if (session.getUserRole()!= Const.USER_ROLE.MANAGER){
             throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");
         }
@@ -172,8 +173,9 @@ public class GoodsService {
             goodsOperateLog.setOperateType(session.getUserRole().getDesc()+"："+GoodsConst.OPERATE.APPROVE_SUCCESS.getDesc());
             goodsDao.addGoodsOperateLog(goodsOperateLog);
 
-        }else if (operate== GoodsConst.OPERATE.LOWER_SHELF.getKey()&&
-                (state!= GoodsConst.STATE.LOWER_SHELF&&state!= GoodsConst.STATE.SELL_OUT)){
+        }else if (operate== GoodsConst.OPERATE.LOWER_SHELF.getKey()
+//                && (state!= GoodsConst.STATE.LOWER_SHELF&&state!= GoodsConst.STATE.SELL_OUT)
+        ){
             //下架商品，由管理员下架的商品，再重新上架时，需要再次审批
             goods.setState(GoodsConst.STATE.LOWER_SHELF.getKey());
             goods.setIsSellByManager(Const.NO);
@@ -186,8 +188,7 @@ public class GoodsService {
         }else {
             throw new MyException(HttpResponseEnum.PROHIBIT);
         }
-        //返回数据待定！！！！！！！！！！！！
-        return null;
+        return goods;
     }
 
     @Transactional
@@ -349,6 +350,55 @@ public class GoodsService {
             goodsDao.addGoodsParams(paramList);
         }
         return goods;
+    }
+
+    public GoodsClassifyListForManagerVO getGoodsClassifyListForManager(MySession session) {
+        if (session.getUserRole()!= Const.USER_ROLE.MANAGER){
+            throw new MyException(HttpResponseEnum.PROHIBIT);
+        }
+        GoodsClassifyListForManagerVO goodsClassifyListForManagerVO=new GoodsClassifyListForManagerVO();
+        goodsClassifyListForManagerVO.setFirstGoodsClassifyList(goodsDao.getFirstGoodsClassifyList());  //必须先设置一级分配
+        goodsClassifyListForManagerVO.setSecondGoodsClassifyList(goodsDao.getSecondGoodsClassifyList());
+        return goodsClassifyListForManagerVO;
+    }
+
+    public void addGoodsClassify(MySession session,Long parentId, String classifyName, MultipartFile image) {
+        if (session.getUserRole()!= Const.USER_ROLE.MANAGER){
+            throw new MyException(HttpResponseEnum.PROHIBIT);
+        }
+        if (null==parentId||StringUtils.isBlank(classifyName)||classifyName.length()>5||image.isEmpty()){
+            throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST);
+        }
+        String imageFileName= IdGenUtils.uuid();
+        MyFileUtils.saveFile(Const.IMAGE_DIR+imageFileName,image);  //保存新图片，旧的图片并不删除
+        SFTGoodsClassify goodsClassify=new SFTGoodsClassify();
+        goodsClassify.setClassifyName(classifyName);
+        goodsClassify.setCoverImage(imageFileName);
+        goodsClassify.setParentClassifyId(parentId);
+        goodsDao.addGoodsClassify(goodsClassify);
+    }
+
+    @Transactional
+    public void delGoodsClassify(MySession session, Long goodsClassifyId) {
+        if (session.getUserRole()!= Const.USER_ROLE.MANAGER){
+            throw new MyException(HttpResponseEnum.PROHIBIT);
+        }else if (null==goodsClassifyId){
+            throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST);
+        }
+
+        int goodsNum=goodsDao.getGoodsNumByGoodsClassifyId(goodsClassifyId);
+        if (goodsNum>0){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"有商品属于此类别，无法删除");
+        }
+        if (goodsDao.delSecondGoodsClassifyById(goodsClassifyId)!=1){
+            throw new MyException(HttpResponseEnum.PROHIBIT);
+        }
+    }
+
+    public PageBean<SFTGoods> getGoodsListByManager(MySession session, Long classifyId, String shopId, String keyword, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<SFTGoods> goodsList=goodsDao.getGoodsListForManager(keyword);
+        return PageBean.createByPage(goodsList);
     }
 
     //    public List<GoodsListGroupByShopVO> getGoodsListBygoodsIdList(List<String> goodsIdList) {

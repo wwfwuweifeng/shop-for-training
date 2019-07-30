@@ -1,5 +1,6 @@
 package top.wwf.modules.user.dao.enhance;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import top.wwf.modules.user.dao.SFTUserSysInfoMapper;
@@ -59,12 +60,15 @@ public class UserDao {
         userPersonalInfoMapper.insertSelective(userPersonalInfo);
     }
 
-    //记得isDelete的字段设为0
-    public List<SFTUserSysInfo> getUserListWithoutManager(int managerRole) {
-        return userSysInfoMapper.selectUserListWithoutManager(managerRole);
-    }
-
     public Long getUserSysInfoNowMaxId() {
         return userSysInfoMapper.selectMaxId();
+    }
+
+    //记得isDelete的字段设为0
+    public List<SFTUserSysInfo> getUserListByKeywordWithoutManager(int managerRole, String keyword) {
+        if (StringUtils.isBlank(keyword)){
+            keyword=null;
+        }
+        return userSysInfoMapper.selectUserListByKeywordWithoutManager(managerRole,keyword);
     }
 }

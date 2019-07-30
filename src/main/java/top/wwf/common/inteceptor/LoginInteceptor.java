@@ -37,7 +37,7 @@ public class LoginInteceptor implements HandlerInterceptor {
         }
         MySession session=MySession.getInstanceByToken(token);
         if (null==session){
-            responseJson(response,ServerResponse.create(HttpResponseEnum.PROHIBIT,"登录信息已过期，请先关闭小程序，然后重新登录"));
+            responseJson(response,ServerResponse.create(HttpResponseEnum.PROHIBIT,"登录信息已过期，请重新登录"));
             return false;
         }
         Const.SESSION_THREAD_LOCAL.set(session);

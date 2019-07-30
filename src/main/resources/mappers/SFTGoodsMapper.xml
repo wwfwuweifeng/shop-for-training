@@ -265,17 +265,33 @@
     </select>
     <select id="selectNewGoodsListByListSize" resultType="top.wwf.modules.goods.entity.SFTGoods">
       select <include refid="Base_Column_List"/>
-      from sft_goods order by create_time desc limit #{listSize}
+      from sft_goods where state=1 order by create_time desc limit #{listSize}
     </select>
   <select id="selectHotSellGoodsListByListSize" resultType="top.wwf.modules.goods.entity.SFTGoods">
     select <include refid="Base_Column_List"/>
-    from sft_goods order by sell_num desc limit #{listSize}
+    from sft_goods where state=1 order by sell_num desc limit #{listSize}
   </select>
     <select id="selectByGoodsIdAndShopOwnerId" resultType="top.wwf.modules.goods.entity.SFTGoods">
       select <include refid="Base_Column_List"/> from sft_goods where goods_id=#{param1} and shop_owner_id=#{param2}
     </select>
+  <select id="countGoodsNumByGoodsClassifyId" resultType="java.lang.Integer">
+    select count(*) from sft_goods where classify_id=#{goodsClassifyId}
+  </select>
+  <select id="selectListByKeyword" resultType="top.wwf.modules.goods.entity.SFTGoods">
+    select <include refid="Base_Column_List"/> from sft_goods
+    <where>
+      <if test="keyword != null">
+        (
+        name like "%"#{keyword}"%" or
+        classify_name like "%"#{keyword}"%" or
+        tag like "%"#{keyword}"%"
+        )
+      </if>
+    </where>
+    order by create_time desc
+  </select>
 
-    <update id="updateStateByShopId">
+  <update id="updateStateByShopId">
         update sft_goods set state=#{param1} where shop_id=#{param2}
     </update>
 </mapper>

@@ -234,25 +234,35 @@ public class UserService {
     public RegisterUserVO editUser(MySession session,String registerCode, String userName, int role) {
         if (StringUtils.isBlank(registerCode)){
             throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST);
-        } else if (session.getUserRole()!=Const.USER_ROLE.MANAGER){
-            throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");
-        }else if (StringUtils.isBlank(userName)){
+        }else if (StringUtils.isBlank(userName)&&role==0){
             throw new MyException(HttpResponseEnum.ERRONEOUS_REQUEST);
-        }else if (Const.USER_ROLE.getRoleByKey(role)==Const.USER_ROLE.MANAGER){
-            throw new MyException(HttpResponseEnum.PROHIBIT,"参数非法");
         }
+
         SFTUserSysInfo userSysInfo=userDao.getUserSysInfoByRegisterCode(registerCode);
         if (null==userSysInfo){
-            throw new MyException(HttpResponseEnum.PROHIBIT,"参数有误");
+            throw new MyException(HttpResponseEnum.PROHIBIT,"无效注册码");
         }
+
+        if (session.getUserRole()!=Const.USER_ROLE.MANAGER){
+            throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");
+        }
+        if (StringUtils.isBlank(userName)){
+            userName=userSysInfo.getUserName();
+        }else {
+            userSysInfo.setUserName(userName);
+        }
+
+        if (role==0){
+            role=userSysInfo.getUserRole();
+        }
+
         //当前注册码用户的角色
         Const.USER_ROLE userRole=Const.USER_ROLE.getRoleByKey(role);
-        userSysInfo.setUserName(userName);
-        userSysInfo.setUserRole(role);
+
         if (StringUtils.isBlank(userSysInfo.getShopId())&&userRole==Const.USER_ROLE.SELLER){
             //是卖家，且还未分配shopId
             userSysInfo.setShopId(IdGenUtils.uuid().replace("-",""));
-        }else if (Const.USER_ROLE.getRoleByKey(userSysInfo.getUserRole())== Const.USER_ROLE.SELLER && userRole==Const.USER_ROLE.BUYER){
+        }else if ((Const.USER_ROLE.getRoleByKey(userSysInfo.getUserRole())== Const.USER_ROLE.SELLER) && (userRole==Const.USER_ROLE.BUYER)){
             //由卖家切换为买家，则需要判断是否有未结束的销售订单
             List<SFTOrder> orderList=orderDao.getNotFinishSellOrderListByShopId(userSysInfo.getShopId(),OrderConst.STATE_FOR_SELLER.ALREADY_DEAL.getKey(),OrderConst.STATE_FOR_SELLER.ALREADY_CANCEL.getKey());
             if (null!=orderList&&orderList.size()>0){
@@ -260,6 +270,7 @@ public class UserService {
                 throw new MyException(HttpResponseEnum.PROHIBIT,"该用户仍有未结束的销售订单");
             }
         }
+        userSysInfo.setUserRole(role);
         userDao.updateUserSysInfoByPrimaryKey(userSysInfo);
         RegisterUserVO registerUserVO=new RegisterUserVO();
         registerUserVO.setRegisterCode(registerCode);
@@ -326,7 +337,8 @@ public class UserService {
 
         }
 
-        return getUserList(session,pageNum,pageSize);
+//        return getUserList(session,pageNum,pageSize,"");
+        return null;
     }
 
     /**
@@ -337,23 +349,27 @@ public class UserService {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public PageBean<RegisterUserVO> getUserList(MySession session, int pageNum, int pageSize) {
+    public PageBean<RegisterUserVO> getUserList(MySession session, int pageNum, int pageSize,String keyword) {
         if (session.getUserRole()!=Const.USER_ROLE.MANAGER){
             throw new MyException(HttpResponseEnum.PROHIBIT,"权限不允许");
         }
         PageHelper.startPage(pageNum,pageSize);
         List<RegisterUserVO> registerUserVOList= Lists.newLinkedList();
-        List<SFTUserSysInfo> userSysInfoList= userDao.getUserListWithoutManager(Const.USER_ROLE.MANAGER.getKey());
+        List<SFTUserSysInfo> userSysInfoList= userDao.getUserListByKeywordWithoutManager(Const.USER_ROLE.MANAGER.getKey(),keyword);
         RegisterUserVO registerUserVO;
         for (SFTUserSysInfo userSysInfo:userSysInfoList){
             registerUserVO=new RegisterUserVO();
             registerUserVO.setUserRole(Const.USER_ROLE.getRoleByKey(userSysInfo.getUserRole()).getDesc());
             registerUserVO.setCodeUsedTime(userSysInfo.getCodeUsedTime());
             registerUserVO.setUserName(userSysInfo.getUserName());
-            registerUserVO.setRegisterCode(registerUserVO.getRegisterCode());
+            registerUserVO.setRegisterCode(userSysInfo.getRegisterCode());
             registerUserVOList.add(registerUserVO);
         }
-        return PageBean.createByPage(registerUserVOList);
+
+        PageBean pageBean=PageBean.createByPage(userSysInfoList);
+        pageBean.setList(registerUserVOList);
+        return pageBean;
+
 
     }
 }

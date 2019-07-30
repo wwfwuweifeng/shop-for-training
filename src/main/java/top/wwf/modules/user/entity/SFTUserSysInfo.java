@@ -19,13 +19,13 @@ public class SFTUserSysInfo {
     private String password;
     @JsonIgnore
     private String sessionKey;
-    @JsonIgnore
+
     private String registerCode;
 
     private Integer userRole;
 
     private String userName;
-    @JsonIgnore
+
     private String codeUsedTime;
 
     private String shopId;
