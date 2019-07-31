@@ -213,6 +213,7 @@ public class UserService {
         userPersonalInfo.setHaveReceiverAddress(Const.NO);
         userDao.addUserPersonalInfo(userPersonalInfo);
 
+        saveUserSysInfoToCache(userSysInfo);
         UserInfoVO userInfoVO=new UserInfoVO();
         userInfoVO.setToken(session.getToken());
         userInfoVO.setIsRegister(Const.YES);

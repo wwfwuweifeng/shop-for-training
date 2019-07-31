@@ -325,6 +325,9 @@ public class GoodsService {
         }else{
             //新添加的商品
             SFTUserPersonalInfo userPersonalInfo=userDao.getUserPersonalInfoByUserId(session.getUserId());
+            if (StringUtils.isBlank(userPersonalInfo.getShopName())){
+                throw new MyException(HttpResponseEnum.PROHIBIT,"请先设置商铺名");
+            }
             SFTGoodsClassify goodsClassify=goodsDao.getGoodsClassifyByClassifyName(goods.getClassifyName());
             if (null==goodsClassify){
                 throw new MyException(HttpResponseEnum.PROHIBIT,"参数不合法");
